@@ -1,8 +1,11 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
 >
+    <style>
 
+    </style>
+    <h:outputScript library="js" name="ui-galleria-panel.js"/>
     <p:panelGrid columns="2" columnClasses="labelClass">
         <p:outputLabel for="id" value="Код:"/>
         <p:inputText id="id" value="#{productTypeEditor.selected.id}"/>
@@ -30,17 +33,28 @@
         </p:autoComplete>
     </p:panelGrid>
 
-    <p:graphicImage value="/spring//file/#{1}" />
-    <p:graphicImage value="/spring//file/#{2}" />
+    <p:fileUpload multiple="true" auto="true" fileUploadListener="#{productTypeEditor.handleFileUpload}"
+                  update="gallerea">
+
+    </p:fileUpload>
+    <ui:repeat value="#{productTypeEditor.selected.files}" var="file">
+        <p:graphicImage value="/spring/file/#{file.id}/0x0"
+                        alt="#{file.name}"
+                        title="#{file.name}"/>
+    </ui:repeat>
     <p:galleria id="gallerea" value="#{productTypeEditor.selected.files}"
                 var="file"
                 panelHeight="300"
                 panelWidth="500"
                 frameHeight="80"
                 frameWidth="120"
-                style=""
+                transitionInterval="5000"
+                style="overflow: hidden"
                 rendered="#{not empty productTypeEditor.selected.files}">
-        <p:graphicImage style="height: 200px;width: 500px" value="/spring//file/#{file.id}" alt="#{file.name}" title="#{file.name}"/>
+        <p:graphicImage
+                        value="/spring/file/#{file.id}/500x300"
+                        alt="#{file.name}"
+                        title="#{file.name}"/>
     </p:galleria>
     <!--<p:contentFlow value="#{productTypeEditor.selected.files}" var="f">
         <p:graphicImage  value="/spring/file/#{f.id}" styleClass="content"/>

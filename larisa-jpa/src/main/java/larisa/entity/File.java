@@ -34,6 +34,12 @@ public class File extends AbstractAuditableEntity<Integer> {
     @Column(name = "data", nullable = false)
     byte[] data;
 
+    @Column(name = "image_with")
+    int imageWidth;
+
+    @Column(name = "image_height")
+    int imageHeight;
+
     @Override
     public Integer getId() {
         return id;
@@ -73,5 +79,21 @@ public class File extends AbstractAuditableEntity<Integer> {
 
     public void setEncoding(String encoding) {
         this.encoding = encoding;
+    }
+
+    public int getImageWidth() {
+        return imageWidth;
+    }
+
+    public void setImageWidth(int imageWidth) {
+        this.imageWidth = imageWidth;
+    }
+
+    public int getImageHeight() {
+        return imageHeight;
+    }
+
+    public void setImageHeight(int imageHeight) {
+        this.imageHeight = imageHeight;
     }
 }

@@ -12,6 +12,11 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.List;
 
@@ -42,6 +47,14 @@ public class FileEditor<T extends AbstractEntity<ID> & IGetFiles, ID extends Ser
         f.setName(uf.getFileName());
         f.setData(uf.getContents());
         f.setType(uf.getContentType());
+        ImageIO.getImageReadersByMIMEType(uf.getContentType());
+        try (InputStream in = new ByteArrayInputStream(uf.getContents())) {
+            BufferedImage img = ImageIO.read(in);
+            f.setImageHeight(img.getHeight());
+            f.setImageWidth(img.getWidth());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return f;
     }
 }
