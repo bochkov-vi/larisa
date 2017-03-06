@@ -1,4 +1,11 @@
-.labelClass{
+.labelClass {
     font-style: italic;
     text-align: right;
+}
+
+.borderNone tbody tr td{
+    border: 0 !important;
+}
+.borderNone tbody tr {
+    border: 0 !important;
 }

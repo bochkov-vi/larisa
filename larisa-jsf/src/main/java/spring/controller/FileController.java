@@ -31,6 +31,12 @@ public class FileController {
 
     }
 
+    @RequestMapping("file/{id}")
+    @ResponseBody
+    public void showFile(HttpServletResponse response, @PathVariable("id") Integer id) throws IOException {
+        showFile(response, id, null, null);
+    }
+
     @RequestMapping("file/{id}/{width}x{height}")
     @ResponseBody
     public void showFile(HttpServletResponse response, @PathVariable("id") Integer id, @PathVariable("width") Integer scaledWidth, @PathVariable("height") Integer scaledHeight) throws IOException {

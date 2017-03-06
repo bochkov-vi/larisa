@@ -15,6 +15,10 @@ import java.io.Serializable;
 @Scope("view")
 public class DefaultEditorBean<T extends AbstractEntity<ID>, ID extends Serializable> extends EditManagedBean<T, ID> {
 
+    public DefaultEditorBean() {
+        this.saveOutcome ="list";
+    }
+
     @Autowired
     EntityRepository<T, ID> repository;
 

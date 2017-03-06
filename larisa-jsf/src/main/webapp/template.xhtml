@@ -3,15 +3,25 @@
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
 <h:head>
     <title>
         <ui:insert name="header"><h:outputText value="Крымская косметика"/></ui:insert>
     </title>
     <h:outputStylesheet library="css" name="default.css"/>
 </h:head>
-<h:body>
-    <ui:insert name="body"></ui:insert>
+<h:body id="body">
+    <p:growl escape="false" autoUpdate="true" sticky="true" id="messages" />
+    <p:dialog widgetVar="status" resizable="false" modal="true" closable="false">
+        Пожалуйста подождите
+    </p:dialog>
+    <p:ajaxStatus onstart="PF('status').show()"
+                  oncomplete="PF('status').hide()"
+                  onerror="PF('status').hide()"
+                  onsuccess="PF('status').hide()"/>
+
+    <ui:insert name="body"/>
 </h:body>
 
 </html>

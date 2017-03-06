@@ -91,4 +91,8 @@ public class Product extends AbstractAuditableEntity<Integer> implements IGetFil
     public void setFiles(List<File> files) {
         this.files = files;
     }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }

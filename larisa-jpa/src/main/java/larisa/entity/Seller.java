@@ -11,10 +11,11 @@ import java.util.List;
 public class Seller extends AbstractEntity<Integer> implements IGetFiles {
     @Id
     @Column(name = "id_seller")
-    @GeneratedValue
+    @GeneratedValue(generator = "seller")
+    @TableGenerator(name = "seller", initialValue = 1, allocationSize = 1)
     Integer id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     String name;
 
     @Column(name = "note")
@@ -27,6 +28,10 @@ public class Seller extends AbstractEntity<Integer> implements IGetFiles {
     @Override
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {

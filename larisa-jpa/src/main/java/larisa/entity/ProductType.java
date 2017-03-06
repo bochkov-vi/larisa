@@ -12,9 +12,10 @@ import java.util.List;
  */
 @Entity
 @Table(name = "product_type")
-public class ProductType extends AbstractAuditableEntity<Integer> implements IGetNamed, IHierarchical<Integer, ProductType>,IGetFiles {
+public class ProductType extends AbstractAuditableEntity<Integer> implements IGetNamed, IHierarchical<Integer, ProductType>, IGetFiles {
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "product_type")
+    @TableGenerator(name = "product_type", initialValue = 100, allocationSize = 1)
     @Column(name = "id_product_type")
     @ColumnPosition(1)
     Integer id;
@@ -27,17 +28,21 @@ public class ProductType extends AbstractAuditableEntity<Integer> implements IGe
     @ColumnPosition(3)
     String volumeNote;
 
+    @ManyToOne
+    @JoinColumn(name = "id_seller")
+    Seller seller;
+
 
     @ManyToMany
     @JoinTable(name = "product_type_file", joinColumns = @JoinColumn(name = "id_product_type"), inverseJoinColumns = @JoinColumn(name = "id_file"))
     List<File> files;
 
     @ManyToMany
-    @JoinTable(name = "product_type_p", joinColumns = @JoinColumn(name = "id_product_type",referencedColumnName = "id_product_type"), inverseJoinColumns = @JoinColumn(name = "id_product_type_parent",referencedColumnName = "id_product_type"))
+    @JoinTable(name = "product_type_p", joinColumns = @JoinColumn(name = "id_product_type", referencedColumnName = "id_product_type"), inverseJoinColumns = @JoinColumn(name = "id_product_type_parent", referencedColumnName = "id_product_type"))
     List<ProductType> childs;
 
     @ManyToMany
-    @JoinTable(name = "product_type_p", joinColumns = @JoinColumn(name = "id_product_type_parent",referencedColumnName = "id_product_type"), inverseJoinColumns = @JoinColumn(name = "id_product_type",referencedColumnName = "id_product_type"))
+    @JoinTable(name = "product_type_p", joinColumns = @JoinColumn(name = "id_product_type_parent", referencedColumnName = "id_product_type"), inverseJoinColumns = @JoinColumn(name = "id_product_type", referencedColumnName = "id_product_type"))
     List<ProductType> parents;
 
 
@@ -91,5 +96,13 @@ public class ProductType extends AbstractAuditableEntity<Integer> implements IGe
 
     public void setParents(List<ProductType> parents) {
         this.parents = parents;
+    }
+
+    public Seller getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Seller seller) {
+        this.seller = seller;
     }
 }

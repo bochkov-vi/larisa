@@ -1,11 +1,11 @@
 package larisa.repository;
 
+import larisa.EntityRepository;
 import larisa.entity.Customer;
-import org.entity3.repository.CustomRepository;
 
 /**
  * Created by home on 23.02.17.
  */
 
-public interface CustomerRepository extends CustomRepository<Customer,Integer>{
+public interface CustomerRepository extends EntityRepository<Customer,Integer> {
 }

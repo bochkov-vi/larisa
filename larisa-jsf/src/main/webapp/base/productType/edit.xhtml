@@ -1,12 +1,45 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:my="http://java.sun.com/jsf/composite/my"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="../template.xhtml">
 
     <ui:define name="content">
-        <my:editToolbarForEditor editorBean="#{productTypeEditor}"/>
-        <ui:include src="fields.xhtml"/>
-        <my:editToolbarForEditor editorBean="#{productTypeEditor}"/>
+        <h:form id="main">
+            <my:editToolbarForEditor editorBean="#{productTypeEditor}">
+                <p:toolbarGroup>
+                    <p:commandButton icon="fa fa-plus" onclick="PF('createSeller').show()"
+                                     process="@this"
+                                     value="Добавить производителя"
+                                     actionListener="#{sellerEditor.prepareCreate()}"
+                                     update=":createSeller"/>
+                </p:toolbarGroup>
+            </my:editToolbarForEditor>
+
+            <ui:include src="inputs.xhtml"/>
+
+            <my:editToolbarForEditor editorBean="#{productTypeEditor}">
+                <p:toolbarGroup>
+                    <p:commandButton icon="fa fa-plus" onclick="PF('createSeller').show()" process="@this"
+                                     value="Добавить производителя"
+                                     update=":createSeller"/>
+                </p:toolbarGroup>
+            </my:editToolbarForEditor>
+        </h:form>
+        <p:dialog widgetVar="createSeller">
+            <h:form id="createSeller">
+                <ui:include src="../seller/inputs.xhtml"/>
+                <p:commandButton value="Создать"
+                                 actionListener="#{sellerEditor.save()}"
+                                 onsuccess="PF('createSeller').hide();"
+                                 update="main:seller messages">
+                    <f:setPropertyActionListener value="#{sellerEditor.selected}"
+                                                 target="#{productTypeEditor.selected.seller}"/>
+                </p:commandButton>
+                <p:button value="Отмена" onclick="PF('createSeller').hide();"/>
+            </h:form>
+        </p:dialog>
     </ui:define>
 
 </ui:composition>

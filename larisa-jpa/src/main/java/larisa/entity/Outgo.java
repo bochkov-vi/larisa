@@ -59,4 +59,8 @@ public class Outgo extends AbstractAuditableEntity<Integer> {
     public void setProductType(ProductType productType) {
         this.productType = productType;
     }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }

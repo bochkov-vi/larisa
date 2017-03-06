@@ -1,0 +1,21 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:my="http://java.sun.com/jsf/composite/my"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+                template="../template.xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <my:editToolbarForEditor editorBean="#{sellerEditor}">
+                <p:toolbarGroup>
+
+                </p:toolbarGroup>
+            </my:editToolbarForEditor>
+            <ui:include src="inputs.xhtml"/>
+            <my:editToolbarForEditor editorBean="#{sellerEditor}">
+
+            </my:editToolbarForEditor>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

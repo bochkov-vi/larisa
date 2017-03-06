@@ -159,4 +159,5 @@ public class Customer extends AbstractEntity<Integer> implements IGetFiles {
     public void setCustomerOrders(List<CustomerOrder> customerOrders) {
         this.customerOrders = customerOrders;
     }
+
 }

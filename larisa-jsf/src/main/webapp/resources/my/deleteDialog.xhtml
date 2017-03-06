@@ -1,0 +1,15 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cc="http://java.sun.com/jsf/composite" xmlns:h="http://xmlns.jcp.org/jsf/html">
+<cc:interface>
+    <cc:attribute name="editorBean" required="true" type="larisa.jsf.DefaultEditorBean"/>
+</cc:interface>
+<cc:implementation>
+    <p:commandButton value="Удалить" icon="fa fa-ban" onclick="PF('deleteDialog').show()" process="@this"  />
+    <p:dialog widgetVar="deleteDialog" appendTo=":deleteForm">
+            <cc:insertChildren></cc:insertChildren>
+            <p:commandButton ajax="false" action="#{cc.attrs.editorBean.delete()}" value="Удалить" icon="fa fa-fw fa-close"/>
+            <p:button value="Отменить" onclick="PF('deleteDialog').hide()" icon="fa fa-fw fa-ban"/>
+    </p:dialog>
+</cc:implementation>
+</html>

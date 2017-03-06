@@ -96,4 +96,5 @@ public class File extends AbstractAuditableEntity<Integer> {
     public void setImageHeight(int imageHeight) {
         this.imageHeight = imageHeight;
     }
+
 }

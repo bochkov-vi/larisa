@@ -1,16 +1,28 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
->
-    <style>
-
-    </style>
+                xmlns:f="http://java.sun.com/jsf/core">
     <h:outputScript library="js" name="ui-galleria-panel.js"/>
+
+
     <p:panelGrid columns="2" columnClasses="labelClass">
         <p:outputLabel for="id" value="Код:"/>
         <p:inputText id="id" value="#{productTypeEditor.selected.id}"/>
         <p:outputLabel for="name" value="Наименование:"/>
-        <p:inputText id="name" value="#{productTypeEditor.selected.name}"/>
+        <p:inputText id="name" value="#{productTypeEditor.selected.name}" style="width: 100%" required="true"
+                     requiredMessage="Наименование продукта обязательно для заполнения"/>
+        <p:outputLabel for="volume" value="Объем:"/>
+        <p:inputText id="volume" value="#{productTypeEditor.selected.volumeNote}" style="width: 100%"/>
+        <p:outputLabel for="seller" value="Производитель:"/>
+
+        <p:selectOneMenu widgetVar="seller" id="seller" value="#{productTypeEditor.selected.seller}"
+                         converter="#{sellerEditor}"
+                         style="width: 90%">
+            <f:selectItem itemLabel="---------------------------------"/>
+            <f:selectItems value="#{sellerRepository.findAll()}" itemValue="#{e}" itemLabel="#{e.name}"
+                           var="e"/>
+        </p:selectOneMenu>
+
         <p:outputLabel for="childs" value="Детки:"/>
         <p:autoComplete id="childs"
                         value="#{productTypeEditor.selected.childs}"
@@ -20,6 +32,7 @@
                         itemValue="#{e}"
                         var="e"
                         multiple="true">
+            <p:ajax event="query" global="false"/>
         </p:autoComplete>
         <p:outputLabel for="parents" value="Предки:"/>
         <p:autoComplete id="parents"
@@ -30,6 +43,7 @@
                         itemValue="#{e}"
                         var="e"
                         multiple="true">
+            <p:ajax event="query" global="false"/>
         </p:autoComplete>
     </p:panelGrid>
 
@@ -52,10 +66,11 @@
                 style="overflow: hidden"
                 rendered="#{not empty productTypeEditor.selected.files}">
         <p:graphicImage
-                        value="/spring/file/#{file.id}/500x300"
-                        alt="#{file.name}"
-                        title="#{file.name}"/>
+                value="/spring/file/#{file.id}/500x300"
+                alt="#{file.name}"
+                title="#{file.name}"/>
     </p:galleria>
+
     <!--<p:contentFlow value="#{productTypeEditor.selected.files}" var="f">
         <p:graphicImage  value="/spring/file/#{f.id}" styleClass="content"/>
     </p:contentFlow>-->

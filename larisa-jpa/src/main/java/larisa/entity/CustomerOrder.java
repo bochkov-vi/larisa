@@ -29,4 +29,8 @@ public class CustomerOrder extends AbstractEntity<Integer> {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }
