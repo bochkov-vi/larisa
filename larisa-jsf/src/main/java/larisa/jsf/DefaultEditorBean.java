@@ -14,16 +14,25 @@ import java.io.Serializable;
  */
 @Scope("view")
 public class DefaultEditorBean<T extends AbstractEntity<ID>, ID extends Serializable> extends EditManagedBean<T, ID> {
-
-    public DefaultEditorBean() {
-        this.saveOutcome ="list";
-    }
+    private boolean canEditId = false;
 
     @Autowired
     EntityRepository<T, ID> repository;
 
+    public DefaultEditorBean() {
+        this.saveOutcome = "list";
+    }
+
     @Override
     protected CustomRepository<T, ID> getRepository() {
         return repository;
+    }
+
+    public boolean isCanEditId() {
+        return canEditId;
+    }
+
+    public void setCanEditId(boolean canEditId) {
+        this.canEditId = canEditId;
     }
 }

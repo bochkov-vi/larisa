@@ -10,7 +10,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("view")
-public class SellerEditor extends FileEditor<Seller,Integer> {
+public class SellerEditor extends FileEditor<Seller, Integer> {
+
+
+
     public SellerEditor() {
 
     }

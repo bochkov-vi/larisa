@@ -3,13 +3,22 @@
       xmlns:cc="http://java.sun.com/jsf/composite" xmlns:h="http://xmlns.jcp.org/jsf/html">
 <cc:interface>
     <cc:attribute name="editorBean" required="true" type="larisa.jsf.DefaultEditorBean"/>
+    <cc:attribute name="header" default="Удаление"/>
 </cc:interface>
 <cc:implementation>
-    <p:commandButton value="Удалить" icon="fa fa-ban" onclick="PF('deleteDialog').show()" process="@this"  />
-    <p:dialog widgetVar="deleteDialog" appendTo=":deleteForm">
-            <cc:insertChildren></cc:insertChildren>
-            <p:commandButton ajax="false" action="#{cc.attrs.editorBean.delete()}" value="Удалить" icon="fa fa-fw fa-close"/>
-            <p:button value="Отменить" onclick="PF('deleteDialog').hide()" icon="fa fa-fw fa-ban"/>
+
+    <p:dialog widgetVar="deleteDialog" header="#{cc.attrs.header}" modal="true" resizable="false">
+        <h:form id="form">
+            <cc:insertChildren/>
+            <h:panelGroup layout="block" style="text-align: center">
+                <p:commandButton ajax="false"
+                                 action="#{cc.attrs.editorBean.delete()}"
+                                 value="Удалить"
+                                 icon="fa fa-fw fa-close"/>
+                <p:button value="Отменить" onclick="PF('deleteDialog').hide()" icon="fa fa-fw fa-ban"/>
+            </h:panelGroup>
+        </h:form>
     </p:dialog>
+
 </cc:implementation>
 </html>

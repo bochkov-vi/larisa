@@ -14,6 +14,8 @@
                                      value="Добавить производителя"
                                      actionListener="#{sellerEditor.prepareCreate()}"
                                      update=":createSeller"/>
+                    <p:commandButton value="Удалить" icon="fa fa-ban" onclick="PF('deleteDialog').show()"
+                                     process="@this"/>
                 </p:toolbarGroup>
             </my:editToolbarForEditor>
 
@@ -21,9 +23,13 @@
 
             <my:editToolbarForEditor editorBean="#{productTypeEditor}">
                 <p:toolbarGroup>
-                    <p:commandButton icon="fa fa-plus" onclick="PF('createSeller').show()" process="@this"
+                    <p:commandButton icon="fa fa-plus" onclick="PF('createSeller').show()"
+                                     process="@this"
                                      value="Добавить производителя"
+                                     actionListener="#{sellerEditor.prepareCreate()}"
                                      update=":createSeller"/>
+                    <p:commandButton value="Удалить" icon="fa fa-ban" onclick="PF('deleteDialog').show()"
+                                     process="@this"/>
                 </p:toolbarGroup>
             </my:editToolbarForEditor>
         </h:form>
@@ -40,6 +46,12 @@
                 <p:button value="Отмена" onclick="PF('createSeller').hide();"/>
             </h:form>
         </p:dialog>
+        <my:deleteDialog id="delete" editorBean="#{productTypeEditor}" header="Удаление вида продукции">
+            <h:outputText style="border: none;font-weight: bolder"
+                          styleClass="ui-widget ui-widget-content"
+                          value="Подтвердите удаление вида продукции"/>
+            <ui:include src="view.xhtml"/>
+        </my:deleteDialog>
     </ui:define>
 
 </ui:composition>

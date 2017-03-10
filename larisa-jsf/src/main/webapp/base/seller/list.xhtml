@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:my="http://java.sun.com/jsf/composite/my"
                 template="../template.xhtml">
 
     <ui:define name="content">
@@ -34,26 +34,25 @@
                     <h:outputLink value="edit.xhtml?#{sellerEditor.idParameterName}=#{e.id}"><h:outputText
                             value="#{e.name}"/></h:outputLink>
                 </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Продукция"/>
+                    </f:facet>
+                    <h:outputLink value="../productType/?#{sellerEditor.idParameterName}=#{e.id}"
+                    ><h:outputText value="#{productTypeRepository.countBySeller(e)}"/></h:outputLink>
+                </p:column>
                 <p:column style="width: 2em">
                     <p:commandLink styleClass="fa fa-fw fa-lg fa-close" style="text-decoration: none"
-                                   onclick="PF('deleteDialog').show()" update=":deleteFrom" partialSubmit="@this"
+                                   onclick="PF('deleteDialog').show()" update=":delete:form" partialSubmit="@this"
                                    actionListener="#{sellerEditor.prepareDelete(e)}"/>
                 </p:column>
             </p:dataTable>
         </h:form>
-        <p:dialog header="Удаление производителя" widgetVar="deleteDialog" modal="true" resizable="false">
-            <h:outputText style="border: none;font-weight: bolder" styleClass="ui-widget ui-widget-content"
+        <my:deleteDialog id="delete" editorBean="#{sellerEditor}" header="Удаление производителя">
+            <h:outputText style="border: none;font-weight: bolder"
+                          styleClass="ui-widget ui-widget-content"
                           value="Подтвердите удаление производителя"/>
-            <h:form id="deleteFrom">
-                <ui:include src="fields.xhtml"/>
-                <p:commandButton icon="fa fa-close" actionListener="#{sellerEditor.delete()}"
-                                 update="messages :tableForm"
-                                 onsuccess="PF('deleteDialog').hide()"
-                                 value="Удалить"/>
-                <p:button value="Отменить" icon="fa fa-ban" onclick="PF('deleteDialog').hide()"/>
-
-            </h:form>
-
-        </p:dialog>
+            <ui:include src="view.xhtml"/>
+        </my:deleteDialog>
     </ui:define>
 </ui:composition>

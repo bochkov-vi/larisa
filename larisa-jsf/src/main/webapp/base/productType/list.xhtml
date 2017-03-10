@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:my="http://java.sun.com/jsf/composite/my"
                 template="../template.xhtml">
 
     <ui:define name="content">
@@ -12,59 +12,92 @@
             </p:toolbarGroup>
         </p:toolbar>
 
-        <p:dataTable lazy="true"
-                     rows="50"
-                     value="#{productTypeData}"
-                     var="e"
-                     tableStyle="table-layout: auto;">
-            <p:column>
-                <f:facet name="header">
-                    <h:outputText value="Код"/>
-                </f:facet>
-                <h:outputLink
-                        value="edit.xhtml?#{productTypeEditor.idParameterName}=#{productTypeEditor.stringFromId(e.id)}">
-                    <h:outputText value="#{e.id}"/>
-                </h:outputLink>
-            </p:column>
-            <p:column>
-                <f:facet name="header">
-                    <h:outputText value="Наименование"/>
-                </f:facet>
-                <h:outputLink value="edit.xhtml?#{productTypeEditor.idParameterName}=#{e.id}"><h:outputText
-                        value="#{e.name}"/></h:outputLink>
-            </p:column>
-            <p:column>
-                <f:facet name="header">
-                    <h:outputText value="Детки"/>
-                </f:facet>
-                <ul style="margin: 0;padding: 0">
-                    <ui:repeat value="#{e.childs}" var="c">
-                        <li style="list-style: none">
-                            <h:outputText value="#{c}"/>
-                        </li>
-                    </ui:repeat>
-                </ul>
-            </p:column>
-            <p:column>
-                <f:facet name="header">
-                    <h:outputText value="Родители"/>
-                </f:facet>
-                <ul style="margin: 0;padding: 0">
-                    <ui:repeat value="#{e.parents}" var="c">
-                        <li style="list-style: none">
-                            <h:outputText value="#{c}"/>
-                        </li>
-                    </ui:repeat>
-                </ul>
-            </p:column>
-            <p:column>
-                <f:facet name="header">
-                    <h:outputText value="Объем еденицы"/>
-                </f:facet>
-                <h:outputText value="#{e.volumeNote}"/>
-            </p:column>
-
-        </p:dataTable>
+        <h:form>
+            <p:panel header="Фильтр">
+                <p:panelGrid columns="2" columnClasses="labelClass">
+                    <p:outputLabel for="seller" value="Производитель:"/>
+                    <p:selectOneMenu widgetVar="seller" id="seller" value="#{productTypeData.seller}"
+                                     converter="#{sellerEditor}" style="width: 20em">
+                        <f:selectItem itemLabel="---------------------------------"/>
+                        <f:selectItems value="#{sellerRepository.findAll()}" itemValue="#{e}" itemLabel="#{e.name}"
+                                       var="e"/>
+                        <p:ajax process="@this" update="@form"/>
+                    </p:selectOneMenu>
+                </p:panelGrid>
+                <p:commandButton value="Очистить" icon="fa fa-clear" process="@this" actionListener="#{productTypeData.clear()}" update="@form"/>
+            </p:panel>
+            <p:dataTable lazy="true"
+                         rows="50"
+                         value="#{productTypeData}"
+                         var="e"
+                         tableStyle="table-layout: auto;">
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Код"/>
+                    </f:facet>
+                    <h:outputLink
+                            value="edit.xhtml?#{productTypeEditor.idParameterName}=#{productTypeEditor.stringFromId(e.id)}">
+                        <h:outputText value="#{e.id}"/>
+                    </h:outputLink>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Наименование"/>
+                    </f:facet>
+                    <h:outputLink value="edit.xhtml?#{productTypeEditor.idParameterName}=#{e.id}"><h:outputText
+                            value="#{e.name}"/></h:outputLink>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Производитель"/>
+                    </f:facet>
+                    <h:outputLink
+                            value="../seller/edit.xhtml?#{sellerEditor.idParameterName}=#{e.seller.id}"><h:outputText
+                            value="#{e.seller.name}"/></h:outputLink>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Детки"/>
+                    </f:facet>
+                    <ul style="margin: 0;padding: 0">
+                        <ui:repeat value="#{e.childs}" var="c">
+                            <li style="list-style: none">
+                                <h:outputText value="#{c.name}"/>
+                            </li>
+                        </ui:repeat>
+                    </ul>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Родители"/>
+                    </f:facet>
+                    <ul style="margin: 0;padding: 0">
+                        <ui:repeat value="#{e.parents}" var="c">
+                            <li style="list-style: none">
+                                <h:outputText value="#{c.name}"/>
+                            </li>
+                        </ui:repeat>
+                    </ul>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Объем еденицы"/>
+                    </f:facet>
+                    <h:outputText value="#{e.volumeNote}"/>
+                </p:column>
+                <p:column style="width: 2em">
+                    <p:commandLink styleClass="fa fa-fw fa-lg fa-close" style="text-decoration: none"
+                                   onclick="PF('deleteDialog').show()" update=":delete:form" partialSubmit="@this"
+                                   actionListener="#{productTypeEditor.prepareDelete(e)}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <my:deleteDialog id="delete" editorBean="#{productTypeEditor}" header="Удаление вида продукции">
+            <h:outputText style="border: none;font-weight: bolder"
+                          styleClass="ui-widget ui-widget-content"
+                          value="Подтвердите удаление вида продукции"/>
+            <ui:include src="view.xhtml"/>
+        </my:deleteDialog>
     </ui:define>
 
 </ui:composition>

@@ -6,8 +6,13 @@
 
 
     <p:panelGrid columns="2" columnClasses="labelClass">
+        <p:outputLabel for="canEdit" value="Редактировать код:"/>
+        <p:selectBooleanCheckbox id="canEdit" value="#{productTypeEditor.canEditId}">
+            <p:ajax update="@parent"/>
+        </p:selectBooleanCheckbox>
         <p:outputLabel for="id" value="Код:"/>
-        <p:inputText id="id" value="#{productTypeEditor.selected.id}"/>
+        <p:inputText disabled="#{not productTypeEditor.canEditId and productTypeEditor.selected['new']}" id="id"
+                     value="#{productTypeEditor.selected.id}"/>
         <p:outputLabel for="name" value="Наименование:"/>
         <p:inputText id="name" value="#{productTypeEditor.selected.name}" style="width: 100%" required="true"
                      requiredMessage="Наименование продукта обязательно для заполнения"/>
@@ -15,9 +20,10 @@
         <p:inputText id="volume" value="#{productTypeEditor.selected.volumeNote}" style="width: 100%"/>
         <p:outputLabel for="seller" value="Производитель:"/>
 
-        <p:selectOneMenu widgetVar="seller" id="seller" value="#{productTypeEditor.selected.seller}"
+        <p:selectOneMenu required="false" widgetVar="seller" id="seller" value="#{productTypeEditor.selected.seller}"
                          converter="#{sellerEditor}"
-                         style="width: 90%">
+                         style="width: 90%"
+                         requiredMessage="Поле 'Производитель' обязательно для заполнения">
             <f:selectItem itemLabel="---------------------------------"/>
             <f:selectItems value="#{sellerRepository.findAll()}" itemValue="#{e}" itemLabel="#{e.name}"
                            var="e"/>
@@ -48,7 +54,7 @@
     </p:panelGrid>
 
     <p:fileUpload multiple="true" auto="true" fileUploadListener="#{productTypeEditor.handleFileUpload}"
-                  update="gallerea">
+                  update="gallerea" cancelLabel="Отмена" uploadLabel="Выгрузить" label="Выбрать">
 
     </p:fileUpload>
     <ui:repeat value="#{productTypeEditor.selected.files}" var="file">

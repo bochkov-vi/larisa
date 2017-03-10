@@ -7,15 +7,27 @@
     <ui:define name="content">
         <h:form>
             <my:editToolbarForEditor editorBean="#{sellerEditor}">
-                <p:toolbarGroup>
-
-                </p:toolbarGroup>
+                <my:editToolbarForEditor editorBean="#{productTypeEditor}">
+                    <p:toolbarGroup>
+                        <p:commandButton value="Удалить" icon="fa fa-ban" onclick="PF('deleteDialog').show()"
+                                         process="@this"/>
+                    </p:toolbarGroup>
+                </my:editToolbarForEditor>
             </my:editToolbarForEditor>
             <ui:include src="inputs.xhtml"/>
             <my:editToolbarForEditor editorBean="#{sellerEditor}">
-
+                <p:toolbarGroup>
+                    <p:commandButton value="Удалить" icon="fa fa-ban" onclick="PF('deleteDialog').show()"
+                                     process="@this"/>
+                </p:toolbarGroup>
             </my:editToolbarForEditor>
         </h:form>
+        <my:deleteDialog id="delete" editorBean="#{sellerEditor}" header="Удаление производителя">
+            <h:outputText style="border: none;font-weight: bolder"
+                          styleClass="ui-widget ui-widget-content"
+                          value="Подтвердите удаление производителя"/>
+            <ui:include src="view.xhtml"/>
+        </my:deleteDialog>
     </ui:define>
 
 </ui:composition>

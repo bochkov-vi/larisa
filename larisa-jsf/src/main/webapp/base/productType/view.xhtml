@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+>
+    <p:panelGrid columns="2" columnClasses="labelClass">
+        <h:outputLabel for="id" value="Код:"/>
+        <h:outputText id="id" value="#{productTypeEditor.selected.id}"/>
+        <h:outputLabel for="name" value="Наименование:"/>
+        <h:outputText id="name" value="#{productTypeEditor.selected.name}"/>
+        <h:outputLabel for="volume" value="Объем:"/>
+        <h:outputText id="volume" value="#{productTypeEditor.selected.volumeNote}" style="width: 100%"/>
+        <h:outputLabel for="seller" value="Производитель:"/>
+        <h:outputText id="seller" value="#{productTypeEditor.selected.seller.name}"/>
+        <p:outputLabel for="childs" value="Детки:"/>
+        <h:panelGroup><ul style="padding: 0;margin: 0">
+            <ui:repeat id="childs"
+                       value="#{productTypeEditor.selected.childs}"
+                       var="e">
+                <li style="list-style: none"><h:outputText value="#{e.name}"/></li>
+            </ui:repeat>
+        </ul></h:panelGroup>
+        <p:outputLabel for="parents" value="Предки:"/>
+        <h:panelGroup><ul style="padding: 0;margin: 0">
+            <ui:repeat id="parents"
+                       value="#{productTypeEditor.selected.parents}"
+                       var="e">
+                <li style="list-style: none"><h:outputText value="#{e.name}"/></li>
+            </ui:repeat>
+        </ul></h:panelGroup>
+    </p:panelGrid>
+</ui:composition>
