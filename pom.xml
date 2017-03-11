@@ -16,6 +16,7 @@
         <log4j.version>2.6.2</log4j.version>
         <junit.version>4.12</junit.version>
         <spring.version>4.3.5.RELEASE</spring.version>
+        <eclipselink.version>2.6.4</eclipselink.version>
     </properties>
     <dependencies>
         <dependency>

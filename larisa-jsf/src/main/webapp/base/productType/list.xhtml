@@ -16,8 +16,8 @@
             <p:panel header="Фильтр">
                 <p:panelGrid columns="2" columnClasses="labelClass">
                     <p:outputLabel for="seller" value="Производитель:"/>
-                    <p:selectOneMenu widgetVar="seller" id="seller" value="#{productTypeData.seller}"
-                                     converter="#{sellerEditor}" style="width: 20em">
+                    <p:selectOneMenu widgetVar="seller" id="seller" value="#{productTypeData.maker}"
+                                     converter="#{makerEditor}" style="width: 20em">
                         <f:selectItem itemLabel="---------------------------------"/>
                         <f:selectItems value="#{sellerRepository.findAll()}" itemValue="#{e}" itemLabel="#{e.name}"
                                        var="e"/>
@@ -52,7 +52,7 @@
                         <h:outputText value="Производитель"/>
                     </f:facet>
                     <h:outputLink
-                            value="../seller/edit.xhtml?#{sellerEditor.idParameterName}=#{e.seller.id}"><h:outputText
+                            value="../seller/edit.xhtml?#{makerEditor.idParameterName}=#{e.seller.id}"><h:outputText
                             value="#{e.seller.name}"/></h:outputLink>
                 </p:column>
                 <p:column>

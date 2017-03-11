@@ -2,7 +2,6 @@ package larisa.entity;
 
 
 import org.eclipse.persistence.annotations.Customizer;
-import org.entity3.IdableEntity;
 import org.entity3.column.ColumnPosition;
 import org.entity3.column.EntityColumnPositionCustomizer;
 import org.entity3.converter.JodaDateTimeConverter;
@@ -19,7 +18,7 @@ import java.io.Serializable;
 @MappedSuperclass
 @EntityListeners(AbstractEntity.CreateListener.class)
 @Customizer(EntityColumnPositionCustomizer.class)
-public abstract class AbstractEntity<ID extends Serializable> extends IdableEntity<ID> implements Persistable<ID> {
+public abstract class AbstractEntity<ID extends Serializable> extends AbstractIdableEntity<ID> implements Persistable<ID> {
     @ColumnPosition(100)
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)

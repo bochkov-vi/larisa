@@ -1,6 +1,6 @@
-package larisa.jsf.seller;
+package larisa.jsf.maker;
 
-import larisa.entity.Seller;
+import larisa.entity.Maker;
 import larisa.jsf.productType.FileEditor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("view")
-public class SellerEditor extends FileEditor<Seller, Integer> {
+public class MakerEditor extends FileEditor<Maker, Integer> {
 
 
 
-    public SellerEditor() {
+    public MakerEditor() {
 
     }
 

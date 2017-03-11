@@ -12,7 +12,7 @@
                     <p:commandButton icon="fa fa-plus" onclick="PF('createSeller').show()"
                                      process="@this"
                                      value="Добавить производителя"
-                                     actionListener="#{sellerEditor.prepareCreate()}"
+                                     actionListener="#{makerEditor.prepareCreate()}"
                                      update=":createSeller"/>
                     <p:commandButton value="Удалить" icon="fa fa-ban" onclick="PF('deleteDialog').show()"
                                      process="@this"/>
@@ -26,7 +26,7 @@
                     <p:commandButton icon="fa fa-plus" onclick="PF('createSeller').show()"
                                      process="@this"
                                      value="Добавить производителя"
-                                     actionListener="#{sellerEditor.prepareCreate()}"
+                                     actionListener="#{makerEditor.prepareCreate()}"
                                      update=":createSeller"/>
                     <p:commandButton value="Удалить" icon="fa fa-ban" onclick="PF('deleteDialog').show()"
                                      process="@this"/>
@@ -37,11 +37,11 @@
             <h:form id="createSeller">
                 <ui:include src="../seller/inputs.xhtml"/>
                 <p:commandButton value="Создать"
-                                 actionListener="#{sellerEditor.save()}"
+                                 actionListener="#{makerEditor.save()}"
                                  onsuccess="PF('createSeller').hide();"
                                  update="main:seller messages">
-                    <f:setPropertyActionListener value="#{sellerEditor.selected}"
-                                                 target="#{productTypeEditor.selected.seller}"/>
+                    <f:setPropertyActionListener value="#{makerEditor.selected}"
+                                                 target="#{productTypeEditor.selected.maker}"/>
                 </p:commandButton>
                 <p:button value="Отмена" onclick="PF('createSeller').hide();"/>
             </h:form>

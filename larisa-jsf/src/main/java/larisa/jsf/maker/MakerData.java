@@ -1,6 +1,6 @@
-package larisa.jsf.seller;
+package larisa.jsf.maker;
 
-import larisa.entity.Seller;
+import larisa.entity.Maker;
 import larisa.jsf.DefaultDataBean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -10,6 +10,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("session")
-public class SellerData extends DefaultDataBean<Seller, Integer> {
+public class MakerData extends DefaultDataBean<Maker, Integer> {
 
 }

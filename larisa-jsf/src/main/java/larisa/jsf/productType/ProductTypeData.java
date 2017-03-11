@@ -1,10 +1,10 @@
 package larisa.jsf.productType;
 
+import larisa.entity.Maker;
 import larisa.entity.ProductType;
-import larisa.entity.Seller;
 import larisa.jsf.ContextHolder;
 import larisa.jsf.DefaultDataBean;
-import larisa.jsf.seller.SellerEditor;
+import larisa.jsf.maker.MakerEditor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
@@ -19,7 +19,7 @@ import java.util.Map;
 @Scope("session")
 public class ProductTypeData extends DefaultDataBean<ProductType, Integer> {
 
-    Seller seller;
+    Maker maker;
 
     @Override
     protected Specification<ProductType> getSpecification(Map<String, Object> filters) {
@@ -28,26 +28,26 @@ public class ProductTypeData extends DefaultDataBean<ProductType, Integer> {
 
     Specification<ProductType> getSpecification() {
         Specifications<ProductType> result = Specifications.where((root, criteriaQuery, criteriaBuilder) -> null);
-        if (getSeller() != null) {
-            result = result.and((root, query, cb) -> cb.equal(root.get("seller"), getSeller()));
+        if (getMaker() != null) {
+            result = result.and((root, query, cb) -> cb.equal(root.get("maker"), getMaker()));
         }
         return result;
     }
 
-    public Seller getSeller() {
-        SellerEditor sellerEditor = ContextHolder.context.getBean(SellerEditor.class);
-        if (sellerEditor.entityFromRequest() != null) {
-            this.seller = sellerEditor.entityFromRequest();
+    public Maker getMaker() {
+        MakerEditor makerEditor = ContextHolder.context.getBean(MakerEditor.class);
+        if (makerEditor.entityFromRequest() != null) {
+            this.maker = makerEditor.entityFromRequest();
 
         }
-        return seller;
+        return maker;
     }
 
     public void clear(){
-        this.seller=null;
+        this.maker =null;
     }
 
-    public void setSeller(Seller seller) {
-        this.seller = seller;
+    public void setMaker(Maker maker) {
+        this.maker = maker;
     }
 }

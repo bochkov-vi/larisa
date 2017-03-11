@@ -20,7 +20,8 @@ public class ProductType extends AbstractAuditableEntity<Integer> implements IGe
     @ColumnPosition(1)
     Integer id;
 
-    @Column(name = "name", unique = true)
+    @Column(name = "name", unique = true,columnDefinition = "VARCHAR_IGNORECASE NOT NULL")
+
     @ColumnPosition(2)
     String name;
 
@@ -30,19 +31,18 @@ public class ProductType extends AbstractAuditableEntity<Integer> implements IGe
 
     @ManyToOne
     @JoinColumn(name = "id_seller")
-    Seller seller;
+    Maker maker;
 
 
     @ManyToMany
     @JoinTable(name = "product_type_file", joinColumns = @JoinColumn(name = "id_product_type"), inverseJoinColumns = @JoinColumn(name = "id_file"))
     List<File> files;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "product_type_p", joinColumns = @JoinColumn(name = "id_product_type", referencedColumnName = "id_product_type"), inverseJoinColumns = @JoinColumn(name = "id_product_type_parent", referencedColumnName = "id_product_type"))
     List<ProductType> childs;
 
-    @ManyToMany
-    @JoinTable(name = "product_type_p", joinColumns = @JoinColumn(name = "id_product_type_parent", referencedColumnName = "id_product_type"), inverseJoinColumns = @JoinColumn(name = "id_product_type", referencedColumnName = "id_product_type"))
+    @ManyToMany(mappedBy = "childs",cascade = CascadeType.MERGE)
     List<ProductType> parents;
 
 
@@ -98,11 +98,11 @@ public class ProductType extends AbstractAuditableEntity<Integer> implements IGe
         this.parents = parents;
     }
 
-    public Seller getSeller() {
-        return seller;
+    public Maker getMaker() {
+        return maker;
     }
 
-    public void setSeller(Seller seller) {
-        this.seller = seller;
+    public void setMaker(Maker maker) {
+        this.maker = maker;
     }
 }

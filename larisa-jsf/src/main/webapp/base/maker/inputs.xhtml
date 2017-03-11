@@ -3,17 +3,17 @@
                 xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
     <p:panelGrid columns="2" columnClasses="labelClass">
         <p:outputLabel for="id" value="Код:"/>
-        <p:inputText id="id" value="#{sellerEditor.selected.id}"/>
+        <p:inputText id="id" value="#{makerEditor.selected.id}"/>
         <p:outputLabel for="name" value="Наименование:"/>
-        <p:inputText id="name" value="#{sellerEditor.selected.name}" required="true"
+        <p:inputText id="name" value="#{makerEditor.selected.name}" required="true"
                      requiredMessage="Нименование производителя обязательно для заполнения"/>
     </p:panelGrid>
 
-    <p:fileUpload multiple="true" auto="true" fileUploadListener="#{sellerEditor.handleFileUpload}"
+    <p:fileUpload multiple="true" auto="true" fileUploadListener="#{makerEditor.handleFileUpload}"
                   update="gallerea"  cancelLabel="Отмена" uploadLabel="Выгрузить" label="Выбрать">
 
     </p:fileUpload>
-    <p:galleria id="gallerea" value="#{sellerEditor.selected.files}"
+    <p:galleria id="gallerea" value="#{makerEditor.selected.files}"
                 var="file"
                 panelHeight="300"
                 panelWidth="500"
@@ -21,7 +21,7 @@
                 frameWidth="120"
                 transitionInterval="5000"
                 style="overflow: hidden"
-                rendered="#{not empty sellerEditor.selected.files}">
+                rendered="#{not empty makerEditor.selected.files}">
         <p:graphicImage
                 value="/spring/file/#{file.id}/500x300"
                 alt="#{file.name}"

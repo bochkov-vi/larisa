@@ -11,7 +11,7 @@
             <p:ajax update="@parent"/>
         </p:selectBooleanCheckbox>
         <p:outputLabel for="id" value="Код:"/>
-        <p:inputText disabled="#{not productTypeEditor.canEditId and productTypeEditor.selected['new']}" id="id"
+        <p:inputText disabled="#{not productTypeEditor.canEditId or not productTypeEditor.selected['new']}" id="id"
                      value="#{productTypeEditor.selected.id}"/>
         <p:outputLabel for="name" value="Наименование:"/>
         <p:inputText id="name" value="#{productTypeEditor.selected.name}" style="width: 100%" required="true"
@@ -20,12 +20,12 @@
         <p:inputText id="volume" value="#{productTypeEditor.selected.volumeNote}" style="width: 100%"/>
         <p:outputLabel for="seller" value="Производитель:"/>
 
-        <p:selectOneMenu required="false" widgetVar="seller" id="seller" value="#{productTypeEditor.selected.seller}"
-                         converter="#{sellerEditor}"
+        <p:selectOneMenu required="false" widgetVar="seller" id="seller" value="#{productTypeEditor.selected.maker}"
+                         converter="#{makerEditor}"
                          style="width: 90%"
                          requiredMessage="Поле 'Производитель' обязательно для заполнения">
             <f:selectItem itemLabel="---------------------------------"/>
-            <f:selectItems value="#{sellerRepository.findAll()}" itemValue="#{e}" itemLabel="#{e.name}"
+            <f:selectItems value="#{makerRepository.findAll()}" itemValue="#{e}" itemLabel="#{e.name}"
                            var="e"/>
         </p:selectOneMenu>
 

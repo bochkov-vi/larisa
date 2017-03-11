@@ -1,5 +1,7 @@
 package test;
 
+import com.google.common.collect.ImmutableList;
+import larisa.entity.ProductType;
 import larisa.repository.ProductTypeRepository;
 import larisa.service.ProductTypeService;
 import org.entity3.repository.CustomRepository;
@@ -28,17 +30,61 @@ public class ProductTypeRepositoryTest implements ApplicationContextAware {
     ProductTypeService productTypeService;
 
     @Test
+    public void testSaveChild() {
+        ProductType parentProductType = null;
+        parentProductType = productTypeRepository.findByName("Parent");
+        if (parentProductType != null) {
+            productTypeService.delete(parentProductType);
+        }
+        parentProductType = new ProductType();
+        parentProductType.setName("Parent");
+
+        parentProductType = productTypeService.save(parentProductType);
+
+        ProductType childProductType = productTypeRepository.findByName("child");
+
+        if (childProductType != null) {
+            productTypeService.delete(childProductType);
+        }
+        childProductType = new ProductType();
+
+        childProductType.setName("child");
+        childProductType.setParents(ImmutableList.of(parentProductType));
+        childProductType.setVolumeNote("1 kg");
+        childProductType = productTypeService.save(childProductType);
+        parentProductType = productTypeService.findOne(parentProductType.getId());
+        System.err.println(childProductType);
+        System.err.println(parentProductType);
+
+    }
+
+    @Test
+    public void testDelete() {
+        ProductType parentProductType = null;
+        parentProductType = productTypeRepository.findByName("Parent");
+        if (parentProductType != null) {
+            productTypeService.delete(parentProductType);
+        }
+        ProductType childProductType = productTypeRepository.findByName("child");
+        if (childProductType != null) {
+            productTypeService.delete(childProductType);
+        }
+    }
+
+    @Test
     public void mainTest() {
 
-       for(String name: applicationContext.getBeanNamesForType(CustomRepository.class)){
-           CustomRepository customRepository = (CustomRepository) applicationContext.getBean(name);
-           customRepository.findAll();
-       }
+        for (String name : applicationContext.getBeanNamesForType(CustomRepository.class)) {
+            CustomRepository customRepository = (CustomRepository) applicationContext.getBean(name);
+            customRepository.findAll();
+        }
     }
+
     @Test
-    public void testService(){
+    public void testService() {
         productTypeService.findAll();
     }
+
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
