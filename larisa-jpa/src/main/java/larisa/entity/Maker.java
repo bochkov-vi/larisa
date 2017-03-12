@@ -12,13 +12,13 @@ public class Maker extends AbstractEntity<Integer> implements IGetFiles {
     @Id
     @Column(name = "id_maker")
     @GeneratedValue(generator = "maker")
-    @TableGenerator(name = "maker", initialValue = 1, allocationSize = 1)
+    @TableGenerator(name = "maker", initialValue = 100, allocationSize = 1)
     Integer id;
 
-    @Column(name = "name", unique = true,columnDefinition = "VARCHAR_IGNORECASE NOT NULL")
+    @Column(name = "name", unique = true, nullable = false)
     String name;
 
-    @Column(name = "note",columnDefinition = "VARCHAR_IGNORECASE")
+    @Column(name = "note")
     String note;
 
     @ManyToMany
@@ -56,5 +56,10 @@ public class Maker extends AbstractEntity<Integer> implements IGetFiles {
 
     public void setFiles(List<File> files) {
         this.files = files;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

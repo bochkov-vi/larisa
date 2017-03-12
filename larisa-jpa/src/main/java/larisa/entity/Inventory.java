@@ -11,13 +11,13 @@ import java.util.List;
  * Created by home on 23.02.17.
  */
 @Entity
-@Table(name = "product")
-public class Product extends AbstractAuditableEntity<Integer> implements IGetFiles {
+@Table(name = "inventory")
+public class Inventory extends AbstractAuditableEntity<Integer> implements IGetFiles {
     @Id
-    @GeneratedValue(generator = "product")
-    @TableGenerator(name = "product", initialValue = 100, allocationSize = 1)
-    @Column(name = "id_product")
+    @GeneratedValue(generator = "inventory")
+    @Column(name = "id_inventory")
     @ColumnPosition(1)
+    @TableGenerator(name = "inventory", initialValue = 100)
     Integer id;
 
     @Column(name = "date", nullable = true)
@@ -47,7 +47,7 @@ public class Product extends AbstractAuditableEntity<Integer> implements IGetFil
 
 
     @ManyToMany
-    @JoinTable(name = "product_file", joinColumns = @JoinColumn(name = "id_product"), inverseJoinColumns = @JoinColumn(name = "id_file"))
+    @JoinTable(name = "inventory_file", joinColumns = @JoinColumn(name = "id_inventory"), inverseJoinColumns = @JoinColumn(name = "id_file"))
     List<File> files;
 
     @Override

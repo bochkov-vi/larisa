@@ -3,6 +3,8 @@ package larisa.entity;
 import org.entity3.IGetNamed;
 import org.entity3.IHierarchical;
 import org.entity3.column.ColumnPosition;
+import org.entity3.converter.JodaLocalDateConverter;
+import org.joda.time.LocalDate;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,8 +22,7 @@ public class ProductType extends AbstractAuditableEntity<Integer> implements IGe
     @ColumnPosition(1)
     Integer id;
 
-    @Column(name = "name", unique = true,columnDefinition = "VARCHAR_IGNORECASE NOT NULL")
-
+    @Column(name = "name", unique = true, nullable = false)
     @ColumnPosition(2)
     String name;
 
@@ -29,10 +30,16 @@ public class ProductType extends AbstractAuditableEntity<Integer> implements IGe
     @ColumnPosition(3)
     String volumeNote;
 
-    @ManyToOne
-    @JoinColumn(name = "id_seller")
-    Maker maker;
+    @Temporal(TemporalType.DATE)
+    @Convert(converter = JodaLocalDateConverter.class)
+    @Column(name = "sertificated", nullable = false)
+    @ColumnPosition(4)
+    LocalDate sertificated;
 
+
+    @ManyToOne
+    @JoinColumn(name = "id_maker")
+    Maker maker;
 
     @ManyToMany
     @JoinTable(name = "product_type_file", joinColumns = @JoinColumn(name = "id_product_type"), inverseJoinColumns = @JoinColumn(name = "id_file"))
@@ -42,7 +49,7 @@ public class ProductType extends AbstractAuditableEntity<Integer> implements IGe
     @JoinTable(name = "product_type_p", joinColumns = @JoinColumn(name = "id_product_type", referencedColumnName = "id_product_type"), inverseJoinColumns = @JoinColumn(name = "id_product_type_parent", referencedColumnName = "id_product_type"))
     List<ProductType> childs;
 
-    @ManyToMany(mappedBy = "childs",cascade = CascadeType.MERGE)
+    @ManyToMany(mappedBy = "childs", cascade = CascadeType.MERGE)
     List<ProductType> parents;
 
 
@@ -104,5 +111,18 @@ public class ProductType extends AbstractAuditableEntity<Integer> implements IGe
 
     public void setMaker(Maker maker) {
         this.maker = maker;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    public LocalDate getSertificated() {
+        return sertificated;
+    }
+
+    public void setSertificated(LocalDate sertificated) {
+        this.sertificated = sertificated;
     }
 }

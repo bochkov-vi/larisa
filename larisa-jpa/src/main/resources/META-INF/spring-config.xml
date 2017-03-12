@@ -6,15 +6,16 @@
 
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
     <context:component-scan base-package="larisa.serviceimpl"/>
-    <jdbc:initialize-database data-source="dataSource">
+    <context:component-scan base-package="larisa.repository"/>
+    <jdbc:initialize-database data-source="dataSource" ignore-failures="ALL">
         <jdbc:script location="classpath:/META-INF/init.sql" separator=";" encoding="UTF-8" execution="INIT"/>
     </jdbc:initialize-database>
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="org.h2.Driver"/>
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
         <property name="password" value="1234"/>
-        <property name="username" value="admin"/>
-        <property name="url" value="jdbc:h2:tcp://localhost:9092/~/larisa"/>
+        <property name="username" value="larisa"/>
+        <property name="url" value="jdbc:mysql://localhost/larisa"/>
     </bean>
     <jpa:repositories base-package="larisa.repository"
                       base-class="org.entity3.repository.CustomRepositoryImpl"
@@ -30,6 +31,8 @@
                 <entry key="eclipselink.weaving" value="static"/>
                 <entry key="eclipselink.logging.level.sql" value="FINE"/>
                 <entry key="eclipselink.logging.parameters" value="true"/>
+                <entry key="eclipselink.ddl-generation" value="create-tables"/>
+               <!-- <entry key="eclipselink.ddl-generation" value="create-or-extend-tables"/>-->
             </map>
         </property>
         <!--<property name="loadTimeWeaver">
@@ -37,7 +40,7 @@
         </property>-->
     </bean>
     <bean id="jpaAdapter" class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter">
-        <property name="databasePlatform" value="org.eclipse.persistence.platform.database.H2Platform"/>
+        <property name="databasePlatform" value="org.eclipse.persistence.platform.database.MySQLPlatform"/>
         <property name="showSql" value="true"/>
     </bean>
     <bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">

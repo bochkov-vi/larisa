@@ -17,7 +17,7 @@ public class Customer extends AbstractEntity<Integer> implements IGetFiles {
     @ColumnPosition(1)
     Integer id;
 
-    @Column(name = "name",columnDefinition = "VARCHAR_IGNORECASE NOT NULL")
+    @Column(name = "name")
     @ColumnPosition(2)
     String name;
 
