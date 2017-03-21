@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+>
+    <p:panelGrid columns="2" columnClasses="labelClass">
+        <h:outputLabel for="id" value="Код:"/>
+        <h:outputText id="id" value="#{productEditor.selected.id}"/>
+        <h:outputLabel for="date" value="Дата:"/>
+        <h:outputText id="date" value="#{productEditor.selected.date.toString(msg.datePattern)}"/>
+        <h:outputLabel for="name" value="Наименование:"/>
+        <h:outputText id="name" value="#{productEditor.selected.productType.name} #{productEditor.selected.productType.maker.name}"/>
+        <h:outputLabel for="volume" value="Количество:"/>
+        <h:outputText id="volume" value="#{productEditor.selected.volume}"/>
+        <h:outputLabel for="price" value="Цена:"/>
+        <h:outputText id="price" value="#{productEditor.selected.price}"/>
+        <h:outputLabel for="maker" value="Производитель:"/>
+        <h:outputText id="maker" value="#{productEditor.selected.productType.maker.name}"/>
+        <h:outputLabel for="expirationDate" value="Срок годности:"/>
+        <h:outputText id="expirationDate" value="#{productEditor.selected.expirationDate.toString(msg.datePattern)}"/>
+
+    </p:panelGrid>
+</ui:composition>

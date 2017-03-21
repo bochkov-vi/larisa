@@ -1,4 +1,4 @@
-package larisa.jsf.productType;
+package larisa.jsf.file;
 
 import com.google.common.base.Strings;
 import larisa.entity.File;
@@ -7,12 +7,8 @@ import larisa.jsf.File2StreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by home on 24.02.17.

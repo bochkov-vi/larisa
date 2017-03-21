@@ -3,9 +3,7 @@
                 xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core" xmlns:my="http://java.sun.com/jsf/composite/my"
                 template="../template.xhtml">
-
     <ui:define name="content">
-        <!--@elvariable id="e" type="larisa.entity.ProductType"-->
         <p:toolbar>
             <p:toolbarGroup>
                 <p:button icon="fa fa-document" value="Новый" href="edit.xhtml"/>
@@ -13,24 +11,30 @@
         </p:toolbar>
 
         <h:form>
-            <p:panel header="Фильтр">
-                <p:panelGrid columns="2" columnClasses="labelClass">
-                    <p:outputLabel for="seller" value="Производитель:"/>
-                    <p:selectOneMenu widgetVar="seller" id="seller" value="#{productTypeData.maker}"
-                                     converter="#{makerEditor}" style="width: 20em">
-                        <f:selectItem itemLabel="---------------------------------"/>
-                        <f:selectItems value="#{sellerRepository.findAll()}" itemValue="#{e}" itemLabel="#{e.name}"
-                                       var="e"/>
-                        <p:ajax process="@this" update="@form"/>
-                    </p:selectOneMenu>
-                </p:panelGrid>
-                <p:commandButton value="Очистить" icon="fa fa-clear" process="@this" actionListener="#{productTypeData.clear()}" update="@form"/>
+            <p:panel header="Фильтр" collapsed="#{productTypeData.filterHide}" toggleable="true">
+                <p:autoComplete required="false"
+                                id="maker" value="#{productTypeData.maker}"
+                                converter="#{makerEditor}"
+                                style="width: 100%"
+                                inputStyle="width: 90%"
+                                completeMethod="#{makerService.findByMask}"
+                                var="e"
+                                itemValue="#{e}"
+                                itemLabel="#{e.name}"
+                                dropdown="true">
+                    <p:ajax event="query" global="false"/>
+                    <p:ajax event="itemSelect" process="@this" update="@form"/>
+                </p:autoComplete>
+                <p:commandButton value="Очистить" icon="fa fa-clear" process="@this"
+                                 actionListener="#{productTypeData.clear()}" update="@form"/>
             </p:panel>
+
             <p:dataTable lazy="true"
                          rows="50"
                          value="#{productTypeData}"
                          var="e"
                          tableStyle="table-layout: auto;">
+                <!--@elvariable id="e" type="larisa.entity.ProductType"-->
                 <p:column>
                     <f:facet name="header">
                         <h:outputText value="Код"/>
@@ -52,32 +56,50 @@
                         <h:outputText value="Производитель"/>
                     </f:facet>
                     <h:outputLink
-                            value="../seller/edit.xhtml?#{makerEditor.idParameterName}=#{e.seller.id}"><h:outputText
-                            value="#{e.seller.name}"/></h:outputLink>
+                            value="../maker/edit.xhtml?#{makerEditor.idParameterName}=#{e.maker.id}"><h:outputText
+                            value="#{e.maker.name}"/></h:outputLink>
                 </p:column>
                 <p:column>
                     <f:facet name="header">
                         <h:outputText value="Детки"/>
                     </f:facet>
-                    <ul style="margin: 0;padding: 0">
-                        <ui:repeat value="#{e.childs}" var="c">
-                            <li style="list-style: none">
-                                <h:outputText value="#{c.name}"/>
-                            </li>
-                        </ui:repeat>
-                    </ul>
+                    <h:panelGroup rendered="#{e.childs.size() le 3}">
+                        <ul style="margin: 0;padding: 0">
+                            <ui:repeat value="#{e.childs}" var="c">
+                                <li style="list-style: none">
+                                    <h:outputLink
+                                            value="edit.xhtml?#{productTypeEditor.idParameterName}=#{c.id}"><h:outputText
+                                            value="#{c.name}"/></h:outputLink>
+                                </li>
+                            </ui:repeat>
+                        </ul>
+                    </h:panelGroup>
+                    <h:outputText rendered="#{not empty e.childs and e.childs.size() gt 3}" value="#{e.childs.size()}"/>
                 </p:column>
                 <p:column>
                     <f:facet name="header">
                         <h:outputText value="Родители"/>
                     </f:facet>
-                    <ul style="margin: 0;padding: 0">
-                        <ui:repeat value="#{e.parents}" var="c">
-                            <li style="list-style: none">
-                                <h:outputText value="#{c.name}"/>
-                            </li>
-                        </ui:repeat>
-                    </ul>
+
+                    <h:panelGroup rendered="#{e.parents.size() le 3}">
+                        <ul style="margin: 0;padding: 0">
+                            <ui:repeat value="#{e.parents}" var="c">
+                                <li style="list-style: none">
+                                    <h:outputLink
+                                            value="edit.xhtml?#{productTypeEditor.idParameterName}=#{c.id}"><h:outputText
+                                            value="#{c.name}"/></h:outputLink>
+                                </li>
+                            </ui:repeat>
+                        </ul>
+                    </h:panelGroup>
+                    <h:outputText rendered="#{not empty e.parents and e.parents.size() gt 3}"
+                                  value="#{e.parents.size()}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Серт."/>
+                    </f:facet>
+                    <h:outputText value="#{e.sertificated.toString(msg.datePattern)}"/>
                 </p:column>
                 <p:column>
                     <f:facet name="header">
@@ -89,6 +111,11 @@
                     <p:commandLink styleClass="fa fa-fw fa-lg fa-close" style="text-decoration: none"
                                    onclick="PF('deleteDialog').show()" update=":delete:form" partialSubmit="@this"
                                    actionListener="#{productTypeEditor.prepareDelete(e)}"/>
+                </p:column>
+                <p:column style="width: 2em">
+                    <h:outputLink rendered="#{empty e.childs and not empty e.maker}"
+                                  styleClass="fa fa-fw fa-lg fa-mail-forward" style="text-decoration: none"
+                                  value="../product/edit.xhtml?#{productTypeEditor.idParameterName}=#{e.id}"/>
                 </p:column>
             </p:dataTable>
         </h:form>

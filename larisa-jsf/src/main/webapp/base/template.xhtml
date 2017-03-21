@@ -6,15 +6,16 @@
         <h:outputText value="База данных"/>
     </ui:define>
     <ui:define name="body">
-        <p:panel style="margin-right: 20%;margin-left: 20%">
+        <p:panel style="margin-right: 0%;margin-left: 0%">
             <p:toolbar>
                 <p:toolbarGroup>
                     <p:button href="/base" icon="fa fa-home"/>
+                    <p:button href="/base/product" icon="fa fa-cubes" value="Поступления"/>
                     <p:button href="/base/productType" icon="fa fa-archive" value="Продукция"/>
-                    <p:button href="/base/seller" icon="fa fa-gear" value="Производители"/>
-                </p:toolbarGroup> </p:toolbar>
-
-
+                    <p:button href="/base/price" icon="fa fa-price" value="Отпускные цены"/>
+                    <p:button href="/base/maker" icon="fa fa-gear" value="Производители"/>
+                </p:toolbarGroup>
+            </p:toolbar>
             <ui:insert name="content">Шаблон</ui:insert>
         </p:panel>
     </ui:define>

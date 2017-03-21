@@ -1,4 +1,4 @@
-package larisa.serviceimpl;
+package larisa.service.impl;
 
 import larisa.entity.AbstractEntity;
 import larisa.EntityRepository;

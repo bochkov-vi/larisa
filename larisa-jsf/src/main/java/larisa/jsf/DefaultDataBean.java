@@ -14,8 +14,9 @@ import java.util.Map;
  * Created by home on 24.02.17.
  */
 
-public class DefaultDataBean<T extends AbstractEntity<ID>, ID extends Serializable> extends DataManagedBean<T>  {
+public class DefaultDataBean<T extends AbstractEntity<ID>, ID extends Serializable> extends DataManagedBean<T> {
 
+    boolean filterHide = true;
 
     @Autowired
     EntityRepository<T, ID> repository;
@@ -28,5 +29,20 @@ public class DefaultDataBean<T extends AbstractEntity<ID>, ID extends Serializab
     @Override
     protected Specification<T> getSpecification(Map<String, Object> filters) {
         return null;
+    }
+
+    public boolean isEmptyFilter() {
+        return true;
+    }
+
+    public boolean isFilterHide() {
+        if (!isEmptyFilter()) {
+            filterHide = false;
+        }
+        return filterHide;
+    }
+
+    public void setFilterHide(boolean filterHide) {
+        this.filterHide = filterHide;
     }
 }

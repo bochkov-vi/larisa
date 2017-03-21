@@ -1,11 +1,12 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core">
+                xmlns:f="http://java.sun.com/jsf/core"
+>
     <h:outputScript library="js" name="ui-galleria-panel.js"/>
 
-
-    <p:panelGrid columns="2" columnClasses="labelClass">
+    <f:event listener="#{productTypeEditor.validatePassword}" type="postValidate" />
+    <p:panelGrid columns="2" columnClasses="labelClass" style="width: 100%">
         <p:outputLabel for="canEdit" value="Редактировать код:"/>
         <p:selectBooleanCheckbox id="canEdit" value="#{productTypeEditor.canEditId}">
             <p:ajax update="@parent"/>
@@ -18,17 +19,29 @@
                      requiredMessage="Наименование продукта обязательно для заполнения"/>
         <p:outputLabel for="volume" value="Объем:"/>
         <p:inputText id="volume" value="#{productTypeEditor.selected.volumeNote}" style="width: 100%"/>
-        <p:outputLabel for="seller" value="Производитель:"/>
-
-        <p:selectOneMenu required="false" widgetVar="seller" id="seller" value="#{productTypeEditor.selected.maker}"
-                         converter="#{makerEditor}"
-                         style="width: 90%"
-                         requiredMessage="Поле 'Производитель' обязательно для заполнения">
-            <f:selectItem itemLabel="---------------------------------"/>
-            <f:selectItems value="#{makerRepository.findAll()}" itemValue="#{e}" itemLabel="#{e.name}"
-                           var="e"/>
-        </p:selectOneMenu>
-
+        <p:outputLabel for="maker" value="Производитель:"/>
+        <p:autoComplete required="false"
+                        id="maker" value="#{productTypeEditor.selected.maker}"
+                        converter="#{makerEditor}"
+                        style="width: 100%"
+                        inputStyle="width: 90%"
+                        completeMethod="#{makerService.findByMask}"
+                        requiredMessage="Поле 'Производитель' обязательно для заполнения"
+                        var="e"
+                        itemValue="#{e}"
+                        itemLabel="#{e.name}"
+                        dropdown="true">
+            <p:ajax event="query" global="false"/>
+        </p:autoComplete>
+        <p:outputLabel for="sertificated" value="Срок сертификации:"/>
+        <p:calendar id="sertificated"
+                    value="#{productTypeEditor.selected.sertificated}"
+                    converter="#{localDateConverter}"
+                    pattern="dd.MM.yy"
+                    size="#{msg.dateSize}"
+                    maxlength="#{msg.dateSize}"
+                    required="false"
+                    requiredMessage="Поле 'Срок сертификации' обязательно для заполнения"/>
         <p:outputLabel for="childs" value="Детки:"/>
         <p:autoComplete id="childs"
                         value="#{productTypeEditor.selected.childs}"
@@ -38,6 +51,7 @@
                         itemValue="#{e}"
                         var="e"
                         multiple="true">
+            <f:attribute value="#{productTypeEditor.selected}" name="entity"/>
             <p:ajax event="query" global="false"/>
         </p:autoComplete>
         <p:outputLabel for="parents" value="Предки:"/>
@@ -49,12 +63,13 @@
                         itemValue="#{e}"
                         var="e"
                         multiple="true">
+            <f:attribute value="#{productTypeEditor.selected}" name="entity"/>
             <p:ajax event="query" global="false"/>
         </p:autoComplete>
     </p:panelGrid>
 
     <p:fileUpload multiple="true" auto="true" fileUploadListener="#{productTypeEditor.handleFileUpload}"
-                  update="gallerea" cancelLabel="Отмена" uploadLabel="Выгрузить" label="Выбрать">
+                  update="gallerea" cancelLabel="Отмена" uploadLabel="Выгрузить" label="Файлы">
 
     </p:fileUpload>
     <ui:repeat value="#{productTypeEditor.selected.files}" var="file">

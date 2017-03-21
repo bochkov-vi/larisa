@@ -1,4 +1,4 @@
-package larisa.jsf.productType;
+package larisa.jsf.file;
 
 import com.google.common.collect.Iterables;
 import larisa.entity.AbstractEntity;

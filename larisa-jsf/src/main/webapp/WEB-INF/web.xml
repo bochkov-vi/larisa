@@ -13,9 +13,7 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>-->
-    <listener>
-        <listener-class>web.H2StarterListener</listener-class>
-    </listener>
+
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
@@ -38,11 +36,10 @@
         <param-name>primefaces.UPLOADER</param-name>
         <param-value>auto</param-value>
     </context-param>
-    <!-- <context-param>
+     <context-param>
          <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
          <param-value>true</param-value>
      </context-param>
-    -->
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>

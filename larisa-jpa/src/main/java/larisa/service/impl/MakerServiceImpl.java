@@ -1,4 +1,4 @@
-package larisa.serviceimpl;
+package larisa.service.impl;
 
 import larisa.entity.Maker;
 import larisa.repository.MakerRepository;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 /**
  * Created by home on 25.02.17.
  */
-@Service("makerService")
+@Service("makeService")
 public class MakerServiceImpl extends EntityServiceImpl<Maker, Integer> implements MakerService {
     @Autowired
     MakerRepository repository;

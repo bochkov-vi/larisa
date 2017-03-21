@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <h:outputScript library="js" name="ui-galleria-panel.js"/>
+
+
+    <p:panelGrid columns="2" columnClasses="labelClass">
+        <p:outputLabel for="id" value="Код:"/>
+        <p:inputText disabled="true" id="id"
+                     value="#{priceEditor.selected.id}"/>
+        <p:outputLabel for="productType" value="Наименование:"/>
+        <!--@elvariable id="e" type="larisa.entity.ProductType"-->
+        <p:autoComplete id="productType"
+                        value="#{priceEditor.selected.productType}"
+                        completeMethod="#{productTypeService.findByMaskAndEmptyChilds}"
+                        style="width: 100%"
+                        required="true"
+                        requiredMessage="Наименование продукта обязательно для заполнения"
+                        converter="#{productTypeEditor}"
+                        var="e"
+                        forceSelection="false"
+                        itemLabel="#{e.name}"
+                        itemValue="#{e}"
+                        inputStyle="width: 20em">
+            <p:ajax event="query" global="false"/>
+
+
+            <p:column>#{e.name}</p:column>
+            <p:column>#{e.maker.name}</p:column>
+        </p:autoComplete>
+        <p:outputLabel for="date" value="Дата:"/>
+        <p:calendar id="date"
+                    value="#{priceEditor.selected.dateFrom}"
+                    converter="#{localDateConverter}"
+                    pattern="dd.MM.yy"
+                    size="#{msg.dateSize}"
+                    maxlength="#{msg.dateSize}"
+                    required="true"
+                    requiredMessage="Поле 'Дата' обязательно для заполнения"/>
+        <p:outputLabel for="dateTo" value="Окончание действия:"/>
+        <p:calendar id="dateTo"
+                    value="#{priceEditor.selected.dateTo}"
+                    converter="#{localDateConverter}"
+                    pattern="dd.MM.yy"
+                    size="#{msg.dateSize}"
+                    maxlength="#{msg.dateSize}"
+                    required="false"
+                    requiredMessage="Поле 'Окончание действия' обязательно для заполнения"/>
+        <p:outputLabel for="price" value="Цена:"/>
+        <p:inputText id="price" value="#{priceEditor.selected.price}" required="true"
+                     requiredMessage="Поле 'Цена' обязательно для заполнения">
+            <f:convertNumber integerOnly="true"/>
+        </p:inputText>
+
+    </p:panelGrid>
+
+    <!--<p:contentFlow value="#{priceEditor.selected.files}" var="f">
+        <p:graphicImage  value="/spring/file/#{f.id}" styleClass="content"/>
+    </p:contentFlow>-->
+</ui:composition>

@@ -45,11 +45,11 @@ public class ProductType extends AbstractAuditableEntity<Integer> implements IGe
     @JoinTable(name = "product_type_file", joinColumns = @JoinColumn(name = "id_product_type"), inverseJoinColumns = @JoinColumn(name = "id_file"))
     List<File> files;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany
     @JoinTable(name = "product_type_p", joinColumns = @JoinColumn(name = "id_product_type", referencedColumnName = "id_product_type"), inverseJoinColumns = @JoinColumn(name = "id_product_type_parent", referencedColumnName = "id_product_type"))
     List<ProductType> childs;
 
-    @ManyToMany(mappedBy = "childs", cascade = CascadeType.MERGE)
+    @ManyToMany(mappedBy = "childs")
     List<ProductType> parents;
 
 

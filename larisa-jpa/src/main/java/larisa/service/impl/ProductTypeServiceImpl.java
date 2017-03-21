@@ -1,9 +1,8 @@
-package larisa.serviceimpl;
+package larisa.service.impl;
 
 import larisa.entity.ProductType;
 import larisa.repository.ProductTypeRepository;
 import larisa.service.ProductTypeService;
-import org.entity3.repository.CustomRepository;
 import org.entity3.service.impl.HierarchicalEntityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

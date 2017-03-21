@@ -5,7 +5,7 @@
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
 
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
-    <context:component-scan base-package="larisa.serviceimpl"/>
+    <context:component-scan base-package="larisa.service"/>
     <context:component-scan base-package="larisa.repository"/>
     <jdbc:initialize-database data-source="dataSource" ignore-failures="ALL">
         <jdbc:script location="classpath:/META-INF/init.sql" separator=";" encoding="UTF-8" execution="INIT"/>
@@ -18,7 +18,7 @@
         <property name="url" value="jdbc:mysql://localhost/larisa"/>
     </bean>
     <jpa:repositories base-package="larisa.repository"
-                      base-class="org.entity3.repository.CustomRepositoryImpl"
+                      base-class="org.entity3.repository.BidirectionalCustomRepository"
                       entity-manager-factory-ref="entityManagerFactory"
                       transaction-manager-ref="txManager"/>
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">

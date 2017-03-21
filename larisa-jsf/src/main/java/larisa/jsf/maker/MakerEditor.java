@@ -1,7 +1,7 @@
 package larisa.jsf.maker;
 
 import larisa.entity.Maker;
-import larisa.jsf.productType.FileEditor;
+import larisa.jsf.file.FileEditor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 

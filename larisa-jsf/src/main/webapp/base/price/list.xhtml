@@ -1,0 +1,104 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:my="http://java.sun.com/jsf/composite/my"
+                template="../template.xhtml">
+
+    <ui:define name="content">
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:button icon="fa fa-document" value="Новый" href="edit.xhtml"/>
+            </p:toolbarGroup>
+        </p:toolbar>
+
+        <h:form>
+            <p:panel header="Фильтр" collapsed="#{priceData.filterHide}" toggleable="true">
+                <p:panelGrid columns="2" columnClasses="labelClass">
+                    <p:outputLabel for="maker" value="Производитель:"/>
+                    <p:selectOneMenu widgetVar="maker" id="maker" value="#{priceData.maker}"
+                                     converter="#{makerEditor}" style="width: 20em">
+                        <f:selectItem itemLabel="---------------------------------"/>
+                        <f:selectItems value="#{makerRepository.findAll()}" itemValue="#{e}" itemLabel="#{e.name}"
+                                       var="e"/>
+                        <p:ajax process="@this" update="@form"/>
+                    </p:selectOneMenu>
+                </p:panelGrid>
+                <p:commandButton value="Очистить" icon="fa fa-clear" process="@this"
+                                 actionListener="#{priceData.clear()}" update="@form"/>
+            </p:panel>
+
+
+            <p:dataTable lazy="true"
+                         rows="50"
+                         value="#{priceData}"
+                         var="e"
+                         tableStyle="table-layout: auto;">
+                <!--@elvariable id="e" type="larisa.entity.Price"-->
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Код"/>
+                    </f:facet>
+                    <h:outputLink
+                            value="edit.xhtml?#{productEditor.idParameterName}=#{productEditor.stringFromId(e.id)}">
+                        <h:outputText value="#{e.id}"/>
+                    </h:outputLink>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Дата"/>
+                    </f:facet>
+                    <h:outputLink
+                            value="edit.xhtml?#{priceEditor.idParameterName}=#{priceEditor.stringFromId(e.id)}">
+                        <h:outputText value="#{e.dateFrom.toString(msg.datePattern)}"/>
+                    </h:outputLink>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Окончание действия"/>
+                    </f:facet>
+                    <h:outputLink
+                            value="edit.xhtml?#{priceEditor.idParameterName}=#{priceEditor.stringFromId(e.id)}">
+                        <h:outputText value="#{e.dateTo.toString(msg.datePattern)}"/>
+                    </h:outputLink>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Наименование"/>
+                    </f:facet>
+                    <h:outputLink
+                            value="../productType/edit.xhtml?#{productTypeEditor.idParameterName}=#{e.productType.id}"><h:outputText
+                            value="#{e.productType.name}"/></h:outputLink>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Производитель"/>
+                    </f:facet>
+                    <h:outputLink
+                            value="../maker/edit.xhtml?#{makerEditor.idParameterName}=#{e.productType.maker.id}">
+                        <h:outputText value="#{e.productType.maker.name}"/></h:outputLink>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Цена"/>
+                    </f:facet>
+                    <h:outputText value="#{e.price}">
+                        <f:convertNumber integerOnly="true" type="currency"/>
+                    </h:outputText>
+                </p:column>
+                <p:column style="width: 2em">
+                    <p:commandLink styleClass="fa fa-fw fa-lg fa-close" style="text-decoration: none"
+                                   onclick="PF('deleteDialog').show()" update=":delete:form" partialSubmit="@this"
+                                   actionListener="#{priceEditor.prepareDelete(e)}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <my:deleteDialog id="delete" editorBean="#{priceEditor}" header="Удаление отпускной цены">
+            <h:outputText style="border: none;font-weight: bolder"
+                          styleClass="ui-widget ui-widget-content"
+                          value="Подтвердите удаление отпускной цены"/>
+            <ui:include src="view.xhtml"/>
+        </my:deleteDialog>
+    </ui:define>
+
+</ui:composition>

@@ -9,13 +9,23 @@
         <h:form id="main">
             <my:editToolbarForEditor editorBean="#{productTypeEditor}">
                 <p:toolbarGroup>
-                    <p:commandButton icon="fa fa-plus" onclick="PF('createSeller').show()"
+                    <p:button rendered="#{not productTypeEditor.selected['new']}" icon="fa fa-copy"
+                              value="Дублировать"
+                              href="edit.xhtml?clone=#{productTypeEditor.selected.id}"/>
+                    <p:commandButton icon="fa fa-plus" onclick="PF('createMaker').show()"
                                      process="@this"
-                                     value="Добавить производителя"
+                                     value="Производитель"
                                      actionListener="#{makerEditor.prepareCreate()}"
-                                     update=":createSeller"/>
+                                     update=":createMaker"/>
                     <p:commandButton value="Удалить" icon="fa fa-ban" onclick="PF('deleteDialog').show()"
                                      process="@this"/>
+                </p:toolbarGroup>
+                <p:toolbarGroup
+                        rendered="#{not productTypeEditor.selected['new'] and empty productTypeEditor.selected.childs}">
+                    <p:button
+                            icon="fa fa-gift"
+                            href="../product/edit.xhtml?#{productTypeEditor.idParameterName}=#{productEditor.selected.productType.id}"
+                            value="Поступление"/>
                 </p:toolbarGroup>
             </my:editToolbarForEditor>
 
@@ -23,27 +33,34 @@
 
             <my:editToolbarForEditor editorBean="#{productTypeEditor}">
                 <p:toolbarGroup>
-                    <p:commandButton icon="fa fa-plus" onclick="PF('createSeller').show()"
+                    <p:commandButton icon="fa fa-plus" onclick="PF('createMaker').show()"
                                      process="@this"
-                                     value="Добавить производителя"
+                                     value="Производитель"
                                      actionListener="#{makerEditor.prepareCreate()}"
-                                     update=":createSeller"/>
+                                     update=":createMaker"/>
                     <p:commandButton value="Удалить" icon="fa fa-ban" onclick="PF('deleteDialog').show()"
                                      process="@this"/>
                 </p:toolbarGroup>
+                <p:toolbarGroup
+                        rendered="#{not productTypeEditor.selected['new'] and empty productTypeEditor.selected.childs}">
+                    <p:button
+                            icon="fa fa-gift"
+                            href="../product/edit.xhtml?#{productTypeEditor.idParameterName}=#{productEditor.selected.productType.id}"
+                            value="Поступление"/>
+                </p:toolbarGroup>
             </my:editToolbarForEditor>
         </h:form>
-        <p:dialog widgetVar="createSeller">
-            <h:form id="createSeller">
-                <ui:include src="../seller/inputs.xhtml"/>
+        <p:dialog widgetVar="createMaker">
+            <h:form id="createMaker">
+                <ui:include src="../maker/inputs.xhtml"/>
                 <p:commandButton value="Создать"
                                  actionListener="#{makerEditor.save()}"
-                                 onsuccess="PF('createSeller').hide();"
-                                 update="main:seller messages">
+                                 onsuccess="PF('createMaker').hide();"
+                                 update="main:maker messages">
                     <f:setPropertyActionListener value="#{makerEditor.selected}"
                                                  target="#{productTypeEditor.selected.maker}"/>
                 </p:commandButton>
-                <p:button value="Отмена" onclick="PF('createSeller').hide();"/>
+                <p:button value="Отмена" onclick="PF('createMaker').hide();"/>
             </h:form>
         </p:dialog>
         <my:deleteDialog id="delete" editorBean="#{productTypeEditor}" header="Удаление вида продукции">
