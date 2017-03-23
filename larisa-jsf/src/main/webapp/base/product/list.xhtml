@@ -32,7 +32,11 @@
                          rows="50"
                          value="#{productData}"
                          var="e"
-                         tableStyle="table-layout: auto;">
+                         tableStyle="table-layout: auto;"
+                         paginator="true"
+                         rowsPerPageTemplate="50,100,200"
+
+            >
                 <!--@elvariable id="e" type="larisa.entity.Product"-->
                 <p:column>
                     <f:facet name="header">
@@ -82,6 +86,14 @@
                     </f:facet>
                     <h:outputText value="#{e.price}">
                         <f:convertNumber integerOnly="true" type="currency"/>
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Итого"/>
+                    </f:facet>
+                    <h:outputText value="#{e.price * e.volume}">
+                        <f:convertNumber type="currency"/>
                     </h:outputText>
                 </p:column>
                 <p:column style="width: 2em">

@@ -30,6 +30,29 @@
             </my:editToolbarForEditor>
 
             <ui:include src="inputs.xhtml"/>
+            <p:fileUpload multiple="true" auto="true" fileUploadListener="#{productTypeEditor.handleFileUpload}"
+                          update="gallerea" cancelLabel="Отмена" uploadLabel="Выгрузить" label="Файлы">
+
+            </p:fileUpload>
+            <ui:repeat value="#{productTypeEditor.selected.files}" var="file">
+                <p:graphicImage value="/spring/file/#{file.id}/0x0"
+                                alt="#{file.name}"
+                                title="#{file.name}"/>
+            </ui:repeat>
+            <p:galleria id="gallerea" value="#{productTypeEditor.selected.files}"
+                        var="file"
+                        panelHeight="300"
+                        panelWidth="500"
+                        frameHeight="80"
+                        frameWidth="120"
+                        transitionInterval="5000"
+                        style="overflow: hidden"
+                        rendered="#{not empty productTypeEditor.selected.files}">
+                <p:graphicImage
+                        value="/spring/file/#{file.id}/500x300"
+                        alt="#{file.name}"
+                        title="#{file.name}"/>
+            </p:galleria>
 
             <my:editToolbarForEditor editorBean="#{productTypeEditor}">
                 <p:toolbarGroup>

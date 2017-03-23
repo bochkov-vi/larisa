@@ -33,7 +33,9 @@
                          rows="50"
                          value="#{productTypeData}"
                          var="e"
-                         tableStyle="table-layout: auto;">
+                         tableStyle="table-layout: auto;"
+                         paginator="true"
+                         rowsPerPageTemplate="50,100,200">
                 <!--@elvariable id="e" type="larisa.entity.ProductType"-->
                 <p:column>
                     <f:facet name="header">

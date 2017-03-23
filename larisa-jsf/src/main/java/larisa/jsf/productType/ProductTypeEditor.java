@@ -4,11 +4,7 @@ import com.google.common.collect.Iterables;
 import jsf.util3.JsfUtil;
 import larisa.entity.ProductType;
 import larisa.jsf.file.FileEditor;
-import larisa.service.ProductTypeService;
-import org.entity3.repository.CustomRepository;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -23,19 +19,10 @@ import javax.faces.event.ComponentSystemEvent;
 @Component
 @Scope("view")
 public class ProductTypeEditor extends FileEditor<ProductType, Integer> {
-    @Qualifier("productTypeService")
-    @Autowired
-    ProductTypeService service;
 
     public ProductTypeEditor() {
 
     }
-
-    @Override
-    protected CustomRepository<ProductType, Integer> getRepository() {
-        return service;
-    }
-
 
     @Override
     public ProductType createNewInstance() {

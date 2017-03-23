@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 public class ProductEditor extends FileEditor<Product, Integer> {
 
 
+    private boolean productTypeEdit =false;
+
     public ProductEditor() {
 
     }
@@ -28,5 +30,17 @@ public class ProductEditor extends FileEditor<Product, Integer> {
         product.setDate(new LocalDate());
         product.setProductType(productType);
         return product;
+    }
+
+    public boolean getProductTypeEdit() {
+        return productTypeEdit;
+    }
+
+    public boolean isProductTypeEdit() {
+        return productTypeEdit;
+    }
+
+    public void setProductTypeEdit(boolean productTypeEdit) {
+        this.productTypeEdit = productTypeEdit;
     }
 }

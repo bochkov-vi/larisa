@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 /**
  * Created by home on 25.02.17.
  */
-@Service("makeService")
+@Service("makerService")
 public class MakerServiceImpl extends EntityServiceImpl<Maker, Integer> implements MakerService {
     @Autowired
     MakerRepository repository;

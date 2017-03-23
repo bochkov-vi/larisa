@@ -5,7 +5,7 @@
 >
     <h:outputScript library="js" name="ui-galleria-panel.js"/>
 
-    <f:event listener="#{productTypeEditor.validatePassword}" type="postValidate" />
+    <f:event listener="#{circleHierarchicalValidator.validate}" type="postValidate" />
     <p:panelGrid columns="2" columnClasses="labelClass" style="width: 100%">
         <p:outputLabel for="canEdit" value="Редактировать код:"/>
         <p:selectBooleanCheckbox id="canEdit" value="#{productTypeEditor.canEditId}">
@@ -44,6 +44,7 @@
                     requiredMessage="Поле 'Срок сертификации' обязательно для заполнения"/>
         <p:outputLabel for="childs" value="Детки:"/>
         <p:autoComplete id="childs"
+                        binding="#{circleHierarchicalValidator.childsInput}"
                         value="#{productTypeEditor.selected.childs}"
                         converter="#{productTypeEditor}"
                         completeMethod="#{productTypeService.findByMask}"
@@ -56,6 +57,7 @@
         </p:autoComplete>
         <p:outputLabel for="parents" value="Предки:"/>
         <p:autoComplete id="parents"
+                        binding="#{circleHierarchicalValidator.parentsInput}"
                         value="#{productTypeEditor.selected.parents}"
                         converter="#{productTypeEditor}"
                         completeMethod="#{productTypeService.findByMask}"
@@ -68,29 +70,6 @@
         </p:autoComplete>
     </p:panelGrid>
 
-    <p:fileUpload multiple="true" auto="true" fileUploadListener="#{productTypeEditor.handleFileUpload}"
-                  update="gallerea" cancelLabel="Отмена" uploadLabel="Выгрузить" label="Файлы">
-
-    </p:fileUpload>
-    <ui:repeat value="#{productTypeEditor.selected.files}" var="file">
-        <p:graphicImage value="/spring/file/#{file.id}/0x0"
-                        alt="#{file.name}"
-                        title="#{file.name}"/>
-    </ui:repeat>
-    <p:galleria id="gallerea" value="#{productTypeEditor.selected.files}"
-                var="file"
-                panelHeight="300"
-                panelWidth="500"
-                frameHeight="80"
-                frameWidth="120"
-                transitionInterval="5000"
-                style="overflow: hidden"
-                rendered="#{not empty productTypeEditor.selected.files}">
-        <p:graphicImage
-                value="/spring/file/#{file.id}/500x300"
-                alt="#{file.name}"
-                title="#{file.name}"/>
-    </p:galleria>
 
     <!--<p:contentFlow value="#{productTypeEditor.selected.files}" var="f">
         <p:graphicImage  value="/spring/file/#{f.id}" styleClass="content"/>
