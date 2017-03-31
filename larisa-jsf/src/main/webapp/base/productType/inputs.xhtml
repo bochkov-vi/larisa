@@ -5,10 +5,10 @@
 >
     <h:outputScript library="js" name="ui-galleria-panel.js"/>
 
-    <f:event listener="#{circleHierarchicalValidator.validate}" type="postValidate" />
+    <f:event listener="#{circleHierarchicalValidator.validate}" type="postValidate"/>
     <p:panelGrid columns="2" columnClasses="labelClass" style="width: 100%">
-        <p:outputLabel for="canEdit" value="Редактировать код:"/>
-        <p:selectBooleanCheckbox id="canEdit" value="#{productTypeEditor.canEditId}">
+        <p:outputLabel rendered="#{productTypeEditor.selected['new']}" for="canEdit" value="Редактировать код:"/>
+        <p:selectBooleanCheckbox rendered="#{productTypeEditor.selected['new']}" id="canEdit" value="#{productTypeEditor.canEditId}">
             <p:ajax update="@parent"/>
         </p:selectBooleanCheckbox>
         <p:outputLabel for="id" value="Код:"/>
@@ -51,7 +51,9 @@
                         itemLabel="#{e.name}"
                         itemValue="#{e}"
                         var="e"
-                        multiple="true">
+                        multiple="true"
+
+                        >
             <f:attribute value="#{productTypeEditor.selected}" name="entity"/>
             <p:ajax event="query" global="false"/>
         </p:autoComplete>
@@ -64,7 +66,8 @@
                         itemLabel="#{e.name}"
                         itemValue="#{e}"
                         var="e"
-                        multiple="true">
+                        multiple="true"
+                       >
             <f:attribute value="#{productTypeEditor.selected}" name="entity"/>
             <p:ajax event="query" global="false"/>
         </p:autoComplete>

@@ -11,10 +11,10 @@
             <ui:include src="inputs.xhtml"/>
             <ui:include src="toolbar.xhtml"/>
         </h:form>
-        <my:deleteDialog id="delete" editorBean="#{priceEditor}" header="Удаление отпускной цены">
+        <my:deleteDialog id="delete" editorBean="#{outgoEditor}" header="Удаление списания">
             <h:outputText style="border: none;font-weight: bolder"
                           styleClass="ui-widget ui-widget-content"
-                          value="Подтвердите удаление отпускной цены"/>
+                          value="Подтвердите удаление списания"/>
             <ui:include src="view.xhtml"/>
         </my:deleteDialog>
     </ui:define>

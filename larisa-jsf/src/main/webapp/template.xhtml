@@ -4,7 +4,8 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:my="http://java.sun.com/jsf/composite/my">
 <h:head>
     <title>
         <ui:insert name="header"><h:outputText value="Крымская косметика"/></ui:insert>
@@ -21,7 +22,14 @@
                   onerror="PF('status').hide()"
                   onsuccess="PF('status').hide()"/>
 
-    <ui:insert name="body"/>
-</h:body>
+    <p:panel>
+        <ui:insert name="body"/>
+        <f:facet name="footer">
+            <h:panelGroup style="text-align: right;display:table;margin-left: auto">
+                <my:logoutForm signoutAction="logout" signoutLabel="#{securitySupport.remoteUser}"/>
+            </h:panelGroup>
+        </f:facet>
+    </p:panel>
 
+</h:body>
 </html>

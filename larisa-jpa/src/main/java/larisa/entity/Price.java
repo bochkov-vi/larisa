@@ -10,11 +10,12 @@ import javax.persistence.*;
  * Created by home on 23.02.17.
  */
 @Entity
-@Table(name = "price")
+@Table(name = "price", uniqueConstraints = {@UniqueConstraint(name = "price_unique", columnNames = {"id_product_type", "date_from"})})
 public class Price extends AbstractAuditableEntity<Integer> {
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "price")
     @Column(name = "id_price")
+    @TableGenerator(name = "price",initialValue = 100,allocationSize = 1)
     @ColumnPosition(1)
     Integer id;
 
@@ -32,11 +33,11 @@ public class Price extends AbstractAuditableEntity<Integer> {
 
     @Temporal(TemporalType.DATE)
     @Convert(converter = JodaLocalDateConverter.class)
-    @Column(name = "date_to", nullable = false)
+    @Column(name = "date_to", nullable = true)
     @ColumnPosition(4)
     LocalDate dateTo;
 
-    @Column(name = "price", precision = 4, scale = 2,nullable = true)
+    @Column(name = "price", precision = 4, scale = 2, nullable = true)
     @ColumnPosition(5)
     Double price;
 

@@ -2,6 +2,9 @@ package larisa.repository;
 
 import larisa.EntityRepository;
 import larisa.entity.Outgo;
+import larisa.entity.ProductType;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,4 +12,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface OutgoRepository extends EntityRepository<Outgo, Integer> {
+
+    @Query("SELECT SUM(o.volume) FROM Outgo  o WHERE o.productType=:productType")
+    Long outgo(@Param("productType") ProductType productType);
 }

@@ -3,9 +3,19 @@
     text-align: right;
 }
 
+.leftAlign{
+    text-align: left;
+}
 .borderNone tbody tr td{
     border: 0 !important;
 }
 .borderNone tbody tr {
     border: 0 !important;
 }
+.ui-autocomplete-token-label{
+    white-space: normal !important;
+}
+/*
+.ui-autocomplete-multiple-container{
+    width: auto !important;
+}*/
