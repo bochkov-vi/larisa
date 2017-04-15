@@ -9,14 +9,32 @@
     <context:component-scan base-package="larisa.repository"/>
     <jdbc:initialize-database data-source="dataSource" ignore-failures="ALL">
         <jdbc:script location="classpath:/META-INF/init.sql" separator=";" encoding="UTF-8" execution="INIT"/>
+        <jdbc:script location="classpath:/META-INF/h2-init.sql" separator=";" encoding="UTF-8" execution="INIT"/>
     </jdbc:initialize-database>
     <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
+        <property name="driverClassName" value="org.h2.Driver"/>
+        <property name="password" value="1234"/>
+        <property name="username" value="admin"/>
+        <property name="url" value="jdbc:h2:tcp://localhost:9092/~/larisa"/>
+    </bean>
+    <!--<bean class="org.h2.tools.Server" factory-method="createTcpServer" init-method="start" destroy-method="stop">
+        <constructor-arg>
+            <array>
+                <value>-tcp</value>
+                <value>-tcpAllowOthers</value>
+                <value>-tcpPort</value>
+                <value>9092</value>
+            </array>
+        </constructor-arg>
+    </bean>-->
+   <!-- <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
         <property name="password" value="1234"/>
         <property name="username" value="larisa"/>
         <property name="url" value="jdbc:mysql://localhost/larisa"/>
-    </bean>
+    </bean>-->
     <jpa:repositories base-package="larisa.repository"
                       base-class="org.entity3.repository.BidirectionalCustomRepository"
                       entity-manager-factory-ref="entityManagerFactory"
@@ -31,7 +49,7 @@
                 <entry key="eclipselink.weaving" value="static"/>
                 <entry key="eclipselink.logging.level.sql" value="FINE"/>
                 <entry key="eclipselink.logging.parameters" value="true"/>
-                <entry key="eclipselink.ddl-generation" value="create-tables"/>
+                <!--<entry key="eclipselink.ddl-generation" value="create-tables"/>-->
                <!-- <entry key="eclipselink.ddl-generation" value="create-or-extend-tables"/>-->
             </map>
         </property>
