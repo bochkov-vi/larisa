@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:my="http://java.sun.com/jsf/composite/my"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/layout/data-template.xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <my:editToolbarForEditor>
+                <p:toolbarGroup>
+                    <p:commandButton value="Удалить" icon="fa fa-ban" onclick="PF('deleteDialog').show()"
+                                     process="@this"/>
+                </p:toolbarGroup>
+            </my:editToolbarForEditor>
+            <ui:include src="inputs.xhtml"/>
+            <my:editToolbarForEditor >
+                <p:toolbarGroup>
+                    <p:commandButton value="Удалить" icon="fa fa-ban" onclick="PF('deleteDialog').show()"
+                                     process="@this"/>
+                </p:toolbarGroup>
+            </my:editToolbarForEditor>
+        </h:form>
+        <my:deleteDialog id="delete" header="Удаление производителя">
+            <h:outputText style="border: none;font-weight: bolder"
+                          styleClass="ui-widget ui-widget-content"
+                          value="Подтвердите удаление производителя"/>
+            <ui:include src="view.xhtml"/>
+        </my:deleteDialog>
+    </ui:define>
+
+</ui:composition>

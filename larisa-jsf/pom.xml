@@ -11,10 +11,25 @@
     <packaging>war</packaging>
     <name>larisa-jsf</name>
     <properties>
-        <spring.security.version>4.2.1.RELEASE</spring.security.version>
+        <webxml>src/main/webapp/WEB-INF/web-production.xml</webxml>
+        <spring.security.version>4.2.3.RELEASE</spring.security.version>
+        <spring.webflow.version>2.4.5.RELEASE</spring.webflow.version>
     </properties>
-    <dependencies>
+    <profiles>
+        <profile>
+            <id>development</id>
+            <properties>
+                <webxml>src/main/webapp/WEB-INF/web-development.xml</webxml>
+            </properties>
+        </profile>
+    </profiles>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.8.9</version>
+        </dependency>
         <dependency>
             <groupId>org.primefaces.extensions</groupId>
             <artifactId>all-themes</artifactId>
@@ -28,23 +43,44 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
             <version>${spring.security.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-expression</artifactId>
-            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.webflow</groupId>
+            <artifactId>spring-webflow</artifactId>
+            <version>${spring.webflow.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.webflow</groupId>
+            <artifactId>spring-faces</artifactId>
+            <version>${spring.webflow.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.webflow</groupId>
+            <artifactId>spring-js</artifactId>
+            <version>${spring.webflow.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
         </dependency>
         <dependency>
             <groupId>org.primefaces</groupId>
@@ -81,6 +117,7 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.0.1</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.el</groupId>
@@ -91,6 +128,14 @@
     </dependencies>
     <build>
         <finalName>larisa</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webXml>${webxml}</webXml>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
 </project>

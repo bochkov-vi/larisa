@@ -3,7 +3,7 @@ package larisa.jsf.product;
 import larisa.entity.Product;
 import larisa.entity.ProductType;
 import larisa.jsf.ContextHolder;
-import larisa.jsf.file.FileEditor;
+import larisa.jsf.DefaultJsfService;
 import larisa.jsf.productType.ProductTypeEditor;
 import org.joda.time.LocalDate;
 import org.springframework.context.annotation.Scope;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("view")
-public class ProductEditor extends FileEditor<Product, Integer> {
+public class ProductEditor extends DefaultJsfService<Product, Integer> {
 
 
     private boolean productTypeEdit =false;

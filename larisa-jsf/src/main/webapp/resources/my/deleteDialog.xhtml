@@ -2,7 +2,6 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:cc="http://java.sun.com/jsf/composite" xmlns:h="http://xmlns.jcp.org/jsf/html">
 <cc:interface>
-    <cc:attribute name="editorBean" required="true" type="larisa.jsf.DefaultEditorBean"/>
     <cc:attribute name="header" default="Удаление"/>
 </cc:interface>
 <cc:implementation>
@@ -12,7 +11,7 @@
             <cc:insertChildren/>
             <h:panelGroup layout="block" style="text-align: center">
                 <p:commandButton ajax="false"
-                                 action="#{cc.attrs.editorBean.delete()}"
+                                 action="delete"
                                  value="Удалить"
                                  icon="fa fa-fw fa-close"/>
                 <p:button value="Отменить" onclick="PF('deleteDialog').hide()" icon="fa fa-fw fa-ban"/>

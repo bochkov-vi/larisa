@@ -3,7 +3,7 @@ package larisa.jsf.price;
 import larisa.entity.Price;
 import larisa.entity.ProductType;
 import larisa.jsf.ContextHolder;
-import larisa.jsf.DefaultEditorBean;
+import larisa.jsf.DefaultJsfService;
 import larisa.jsf.productType.ProductTypeEditor;
 import org.joda.time.LocalDate;
 import org.springframework.beans.BeanUtils;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("view")
-public class PriceEditor extends DefaultEditorBean<Price, Integer> {
+public class PriceEditor extends DefaultJsfService<Price, Integer> {
 
 
     public PriceEditor() {
@@ -24,8 +24,7 @@ public class PriceEditor extends DefaultEditorBean<Price, Integer> {
     }
 
     @Override
-    public String save() {
-        Price price = getSelected();
+    public Price save(Price price) {
         Price prev = findPrev(price);
         Price next = findNext(price);
         if (prev != null) {
@@ -33,18 +32,16 @@ public class PriceEditor extends DefaultEditorBean<Price, Integer> {
             getRepository().save(prev);
         }
         if (next != null) {
-            selected.setDateTo(next.getDateFrom());
-        }else{
-            selected.setDateTo(null);
+            next.setDateTo(next.getDateFrom());
+        } else {
+            next.setDateTo(null);
         }
-        return super.save();
+        return super.save(price);
     }
 
     @Override
-    public String delete() {
-        Price price = getSelected();
-        String result = super.delete();
-
+    public void delete(Price price) {
+        super.delete(price);
         Price prev = findPrev(price);
         Price next = findNext(price);
         if (prev != null) {
@@ -54,8 +51,6 @@ public class PriceEditor extends DefaultEditorBean<Price, Integer> {
             }
             getRepository().save(prev);
         }
-
-        return result;
     }
 
 
@@ -80,7 +75,7 @@ public class PriceEditor extends DefaultEditorBean<Price, Integer> {
         price.setDateFrom(new LocalDate());
         price.setProductType(productType);
         Price template = entityFromRequest("clone");
-        if(template!=null){
+        if (template != null) {
             BeanUtils.copyProperties(template, price, "id", "createdDate");
         }
         return price;

@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
+    <p:panelGrid columns="2" columnClasses="labelClass" style="width: 100%">
+        <p:outputLabel for="id" value="Код:"/>
+        <p:inputText id="id" value="#{entity.id}"/>
+        <p:outputLabel for="name" value="Наименование:"/>
+        <p:inputText id="name" value="#{entity.name}" required="true"
+                     style="width: 100%"
+                     requiredMessage="Нименование производителя обязательно для заполнения"/>
+    </p:panelGrid>
+
+    <p:fileUpload multiple="true" auto="true" fileUploadListener="#{uploadHandler.handleFileUpload}"
+                  update="gallerea"  cancelLabel="Отмена" uploadLabel="Выгрузить" label="Выбрать">
+
+    </p:fileUpload>
+    <p:galleria id="gallerea" value="#{entity.files}"
+                var="file"
+                panelHeight="300"
+                panelWidth="500"
+                frameHeight="80"
+                frameWidth="120"
+                transitionInterval="5000"
+                style="overflow: hidden"
+                rendered="#{not empty entity.files}">
+        <p:graphicImage
+                value="/spring/file/#{file.id}/500x300"
+                alt="#{file.name}"
+                title="#{file.name}"/>
+    </p:galleria>
+</ui:composition>

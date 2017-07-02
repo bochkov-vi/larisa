@@ -1,7 +1,7 @@
 package larisa.jsf.productType;
 
 import larisa.entity.ProductType;
-import larisa.jsf.file.FileEditor;
+import larisa.jsf.DefaultJsfService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("view")
-public class ProductTypeEditor extends FileEditor<ProductType, Integer> {
+public class ProductTypeEditor extends DefaultJsfService<ProductType, Integer> {
 
     public ProductTypeEditor() {
 

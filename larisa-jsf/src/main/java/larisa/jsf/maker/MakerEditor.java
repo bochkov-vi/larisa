@@ -1,19 +1,13 @@
 package larisa.jsf.maker;
 
 import larisa.entity.Maker;
-import larisa.jsf.file.FileEditor;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import larisa.jsf.DefaultJsfService;
 
 /**
  * Created by home on 24.02.17.
  */
-@Component
-@Scope("view")
-public class MakerEditor extends FileEditor<Maker, Integer> {
 
-
-
+public class MakerEditor extends DefaultJsfService<Maker, Integer>  {
     public MakerEditor() {
 
     }

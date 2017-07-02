@@ -2,17 +2,19 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:cc="http://java.sun.com/jsf/composite">
 <cc:interface>
-    <cc:attribute name="editorBean" required="true"/>
+
 </cc:interface>
 <cc:implementation>
-
     <p:toolbar>
         <p:toolbarGroup>
-            <p:commandButton value="Сохранить" icon="fa fa-fw fa-save"
-                             action="#{cc.attrs.editorBean.save()}"
+            <p:commandButton rendered="#{not entity['new']}" value="Сохранить" icon="fa fa-fw fa-save"
+                             action="save"
                              ajax="true"/>
-            <p:button value="К таблице" href="list.xhtml" icon="fa fa-fw fa-mail-reply"/>
-            <p:button value="Новый" href="edit.xhtml" icon="fa fa-fw fa-file-o"/>
+            <p:commandButton rendered="#{entity['new']}" value="Создать" icon="fa fa-fw fa-save"
+                             action="save"
+                             ajax="true"/>
+            <p:commandButton immediate="true" value="К таблице" action="list" icon="fa fa-fw fa-mail-reply"/>
+            <p:commandButton immediate="true" value="Новый" action="new" icon="fa fa-fw fa-file-o"/>
         </p:toolbarGroup>
         <cc:insertChildren></cc:insertChildren>
     </p:toolbar>

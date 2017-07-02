@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Created by home on 10.03.17.
  */
-public abstract class AbstractIdableEntity<ID extends Serializable> implements IIdable<ID> {
+public abstract class AbstractIdableEntity<ID extends Serializable> implements IIdable<ID> ,Serializable{
 
     @Override
     public boolean equals(Object o) {

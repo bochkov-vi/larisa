@@ -1,7 +1,7 @@
 package larisa.jsf.outgo;
 
 import larisa.entity.Outgo;
-import larisa.jsf.DefaultEditorBean;
+import larisa.jsf.DefaultJsfService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("view")
-public class OutgoEditor extends DefaultEditorBean<Outgo, Integer> {
+public class OutgoEditor extends DefaultJsfService<Outgo, Integer> {
 
 
     public OutgoEditor() {
