@@ -14,17 +14,43 @@
         <webxml>src/main/webapp/WEB-INF/web-production.xml</webxml>
         <spring.security.version>4.2.3.RELEASE</spring.security.version>
         <spring.webflow.version>2.4.5.RELEASE</spring.webflow.version>
+        <cacheSeconds>-1</cacheSeconds>
     </properties>
     <profiles>
         <profile>
             <id>development</id>
             <properties>
                 <webxml>src/main/webapp/WEB-INF/web-development.xml</webxml>
+                <cacheSeconds>0</cacheSeconds>
             </properties>
         </profile>
     </profiles>
+    <build>
+        <finalName>larisa</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webXml>${webxml}</webXml>
+                    <webResources>
+                        <resource>
+                            <filtering>true</filtering>
+                            <directory>
+                                src/main/webapp
+                            </directory>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+        </plugins>
 
+    </build>
     <dependencies>
+        <dependency>
+            <groupId>com.bochkov</groupId>
+            <artifactId>jsf-utils</artifactId>
+            <version>3.0</version>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -126,16 +152,6 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-    <build>
-        <finalName>larisa</finalName>
-        <plugins>
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <webXml>${webxml}</webXml>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+
 
 </project>

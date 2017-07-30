@@ -1,0 +1,13 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:my="http://java.sun.com/jsf/composite/my"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <my:deleteDialog id="delete" header="#{msg['productType.deleting']}">
+        <h:outputText style="border: none;font-weight: bolder"
+                      styleClass="ui-widget ui-widget-content"
+                      value="#{msg['productType.confirmDelete']}"/>
+        <ui:include src="details.xhtml"/>
+    </my:deleteDialog>
+
+</ui:composition>

@@ -3,6 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/webflow
         http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+<!--
 
 	<input name="tab" value="flowScope.tab" required="false" />
 
@@ -11,5 +12,21 @@
 	<global-transitions>
 		<transition on="exit" to="end" />
 	</global-transitions>
-
+-->
+	<global-transitions>
+		<transition on="list" to="list">
+		</transition>
+		<transition on="new" to="edit">
+			<set name="flowScope.entity" value="makerService.createNewInstance()"/>
+		</transition>
+		<transition on="save" to="list">
+			<evaluate expression="makerService.save(entity)"/>
+		</transition>
+		<transition on="edit" to="edit">
+			<set name="flowScope.entity" value="makerService.entityFromRequest()"/>
+		</transition>
+		<transition on="delete" to="list">
+			<evaluate expression="makerService.delete(makerService)"/>
+		</transition>
+	</global-transitions>
 </flow>

@@ -4,11 +4,11 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui">
 
-            <my:editToolbarForEditor editorBean="#{priceEditor}">
+            <my:editToolbarForEditor editorBean="#{priceServiceImpl}">
                 <p:toolbarGroup>
-                    <p:button rendered="#{not priceEditor.selected['new']}" icon="fa fa-copy"
+                    <p:button rendered="#{not priceServiceImpl.selected['new']}" icon="fa fa-copy"
                               value="Дублировать"
-                              href="edit.xhtml?clone=#{priceEditor.selected.id}"/>
+                              href="edit.xhtml?clone=#{priceServiceImpl.selected.id}"/>
                     <p:commandButton value="Удалить" icon="fa fa-ban" onclick="PF('deleteDialog').show()"
                                      process="@this"/>
                 </p:toolbarGroup>

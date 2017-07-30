@@ -17,7 +17,7 @@
                         style="width: 100%"
                         required="true"
                         requiredMessage="Наименование продукта обязательно для заполнения"
-                        converter="#{productTypeEditor}"
+                        converter="#{productTypeServiceImpl}"
                         var="e"
                         forceSelection="false"
                         itemLabel="#{e.name}"

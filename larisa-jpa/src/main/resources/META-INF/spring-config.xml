@@ -5,18 +5,27 @@
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
 
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
-    <context:component-scan base-package="larisa.service"/>
     <context:component-scan base-package="larisa.repository"/>
     <jdbc:initialize-database data-source="dataSource" ignore-failures="ALL">
         <jdbc:script location="classpath:/META-INF/init.sql" separator=";" encoding="UTF-8" execution="INIT"/>
         <jdbc:script location="classpath:/META-INF/h2-init.sql" separator=";" encoding="UTF-8" execution="INIT"/>
     </jdbc:initialize-database>
-    <bean id="dataSource"
+    <bean depends-on="h2Server" id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
         <property name="driverClassName" value="org.h2.Driver"/>
         <property name="password" value="1234"/>
         <property name="username" value="admin"/>
         <property name="url" value="jdbc:h2:tcp://localhost:9092/~/larisa"/>
+    </bean>
+    <bean id="h2Server" class="org.h2.tools.Server" factory-method="createTcpServer" init-method="start" destroy-method="stop">
+        <constructor-arg>
+            <array>
+                <value>-tcp</value>
+                <value>-tcpAllowOthers</value>
+                <value>-tcpPort</value>
+                <value>9092</value>
+            </array>
+        </constructor-arg>
     </bean>
     <!--<bean class="org.h2.tools.Server" factory-method="createTcpServer" init-method="start" destroy-method="stop">
         <constructor-arg>

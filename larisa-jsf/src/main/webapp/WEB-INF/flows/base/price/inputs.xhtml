@@ -8,16 +8,16 @@
     <p:panelGrid columns="2" columnClasses="labelClass">
         <p:outputLabel for="id" value="Код:"/>
         <p:inputText disabled="true" id="id"
-                     value="#{priceEditor.selected.id}"/>
+                     value="#{priceServiceImpl.selected.id}"/>
         <p:outputLabel for="productType" value="Наименование:"/>
         <!--@elvariable id="e" type="larisa.entity.ProductType"-->
         <p:autoComplete id="productType"
-                        value="#{priceEditor.selected.productType}"
+                        value="#{priceServiceImpl.selected.productType}"
                         completeMethod="#{productTypeService.findByMaskAndEmptyChilds}"
                         style="width: 100%"
                         required="true"
                         requiredMessage="Наименование продукта обязательно для заполнения"
-                        converter="#{productTypeEditor}"
+                        converter="#{productTypeServiceImpl}"
                         var="e"
                         forceSelection="false"
                         itemLabel="#{e.name}"
@@ -31,7 +31,7 @@
         </p:autoComplete>
         <p:outputLabel for="date" value="Дата:"/>
         <p:calendar id="date"
-                    value="#{priceEditor.selected.dateFrom}"
+                    value="#{priceServiceImpl.selected.dateFrom}"
                     converter="#{localDateConverter}"
                     pattern="dd.MM.yy"
                     size="#{msg.dateSize}"
@@ -40,7 +40,7 @@
                     requiredMessage="Поле 'Дата' обязательно для заполнения"/>
         <p:outputLabel for="dateTo" value="Окончание действия:"/>
         <p:calendar id="dateTo"
-                    value="#{priceEditor.selected.dateTo}"
+                    value="#{priceServiceImpl.selected.dateTo}"
                     converter="#{localDateConverter}"
                     pattern="dd.MM.yy"
                     size="#{msg.dateSize}"
@@ -48,7 +48,7 @@
                     required="false"
                     requiredMessage="Поле 'Окончание действия' обязательно для заполнения"/>
         <p:outputLabel for="price" value="Цена:"/>
-        <p:inputText id="price" value="#{priceEditor.selected.price}" required="true"
+        <p:inputText id="price" value="#{priceServiceImpl.selected.price}" required="true"
                      requiredMessage="Поле 'Цена' обязательно для заполнения">
             <f:convertNumber integerOnly="true"/>
         </p:inputText>

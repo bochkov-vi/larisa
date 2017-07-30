@@ -16,9 +16,6 @@
     </servlet-mapping>-->
 
     <listener>
-        <listener-class>web.H2Starter</listener-class>
-    </listener>
-    <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
     <context-param>
@@ -81,6 +78,7 @@
     </session-config>
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
+        <welcome-file>list</welcome-file>
     </welcome-file-list>
     <!--================================================================-->
 
@@ -130,7 +128,7 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
-        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-name>spring-dispatcher</servlet-name>
     </filter-mapping>
     <!-- <filter-mapping>
          <filter-name>springSecurityFilterChain</filter-name>

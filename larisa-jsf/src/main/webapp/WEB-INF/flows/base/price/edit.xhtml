@@ -11,7 +11,7 @@
             <ui:include src="inputs.xhtml"/>
             <ui:include src="toolbar.xhtml"/>
         </h:form>
-        <my:deleteDialog id="delete" editorBean="#{priceEditor}" header="Удаление отпускной цены">
+        <my:deleteDialog id="delete" editorBean="#{priceServiceImpl}" header="Удаление отпускной цены">
             <h:outputText style="border: none;font-weight: bolder"
                           styleClass="ui-widget ui-widget-content"
                           value="Подтвердите удаление отпускной цены"/>

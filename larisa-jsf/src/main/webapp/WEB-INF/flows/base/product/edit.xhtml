@@ -1,57 +1,15 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:my="http://java.sun.com/jsf/composite/my"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
-                template="../template.xhtml">
+                template="/WEB-INF/layout/data-template.xhtml">
 
     <ui:define name="content">
-        <h:form id="main">
-            <my:editToolbarForEditor editorBean="#{productEditor}">
-                <p:toolbarGroup>
-                    <!--<p:commandButton icon="fa fa-plus" onclick="PF('createSeller').show()"
-                                     process="@this"
-                                     value="Добавить производителя"
-                                     actionListener="#{productTypeEditor.prepareCreate()}"
-                                     update=":createSeller"/>-->
-                    <p:commandButton value="Удалить" icon="fa fa-ban" onclick="PF('deleteDialog').show()"
-                                     process="@this"/>
-                </p:toolbarGroup>
-            </my:editToolbarForEditor>
-
+        <h:form>
+            <ui:include src="toolbar.xhtml"/>
             <ui:include src="inputs.xhtml"/>
-
-            <my:editToolbarForEditor editorBean="#{productEditor}">
-                <p:toolbarGroup>
-                   <!-- <p:commandButton icon="fa fa-plus" onclick="PF('createSeller').show()"
-                                     process="@this"
-                                     value="Добавить производителя"
-                                     actionListener="#{productTypeEditor.prepareCreate()}"
-                                     update=":createSeller"/>-->
-                    <p:commandButton value="Удалить" icon="fa fa-ban" onclick="PF('deleteDialog').show()"
-                                     process="@this"/>
-                </p:toolbarGroup>
-            </my:editToolbarForEditor>
+            <ui:include src="toolbar.xhtml"/>
         </h:form>
-        <!--<p:dialog widgetVar="createSeller">
-            <h:form id="createSeller">
-                <ui:include src="../productType/inputs.xhtml"/>
-                <p:commandButton value="Создать"
-                                 actionListener="#{productTypeEditor.save()}"
-                                 onsuccess="PF('createSeller').hide();"
-                                 update="main:productType messages">
-                    <f:setPropertyActionListener value="#{productTypeEditor.selected}"
-                                                 target="#{productEditor.selected.productType}"/>
-                </p:commandButton>
-                <p:button value="Отмена" onclick="PF('createSeller').hide();"/>
-            </h:form>
-        </p:dialog>
-        <my:deleteDialog id="delete" editorBean="#{productEditor}" header="Удаление вида продукции">
-            <h:outputText style="border: none;font-weight: bolder"
-                          styleClass="ui-widget ui-widget-content"
-                          value="Подтвердите удаление вида продукции"/>
-            <ui:include src="view.xhtml"/>
-        </my:deleteDialog>-->
+        <ui:include src="delete.xhtml"/>
     </ui:define>
 
 </ui:composition>

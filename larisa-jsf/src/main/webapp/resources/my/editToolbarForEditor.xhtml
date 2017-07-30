@@ -7,14 +7,14 @@
 <cc:implementation>
     <p:toolbar>
         <p:toolbarGroup>
-            <p:commandButton rendered="#{not entity['new']}" value="Сохранить" icon="fa fa-fw fa-save"
+            <p:commandButton rendered="#{not entity['new']}" value="#{msg.save}" icon="fa fa-fw fa-save"
                              action="save"
                              ajax="true"/>
-            <p:commandButton rendered="#{entity['new']}" value="Создать" icon="fa fa-fw fa-save"
+            <p:commandButton rendered="#{entity['new']}" value="#{msg.create}" icon="fa fa-fw fa-save"
                              action="save"
                              ajax="true"/>
-            <p:commandButton immediate="true" value="К таблице" action="list" icon="fa fa-fw fa-mail-reply"/>
-            <p:commandButton immediate="true" value="Новый" action="new" icon="fa fa-fw fa-file-o"/>
+            <p:commandButton immediate="true" value="#{msg.cancel}" action="cancel" icon="fa fa-fw fa-mail-reply"/>
+            <p:commandButton immediate="true" value="#{msg['new']}" action="new" icon="fa fa-fw fa-file-o"/>
         </p:toolbarGroup>
         <cc:insertChildren></cc:insertChildren>
     </p:toolbar>

@@ -1,114 +1,56 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core" xmlns:my="http://java.sun.com/jsf/composite/my"
-                template="../template.xhtml">
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="/WEB-INF/layout/data-template.xhtml">
 
     <ui:define name="content">
+        <!--@elvariable id="e" type="larisa.entity.Maker"-->
         <p:toolbar>
             <p:toolbarGroup>
-                <p:button icon="fa fa-document" value="Новый" href="edit.xhtml"/>
+                <p:commandButton icon="fa fa-document" value="#{msg['new']}" action="new"/>
             </p:toolbarGroup>
         </p:toolbar>
 
-        <h:form>
-            <p:panel header="Фильтр" collapsed="#{productData.filterHide}" toggleable="true">
-                <p:panelGrid columns="2" columnClasses="labelClass">
-                    <p:outputLabel for="maker" value="Производитель:"/>
-                    <p:selectOneMenu widgetVar="maker" id="maker" value="#{productData.maker}"
-                                     converter="#{makerEditor}" style="width: 20em">
-                        <f:selectItem itemLabel="---------------------------------"/>
-                        <f:selectItems value="#{makerRepository.findAll()}" itemValue="#{e}" itemLabel="#{e.name}"
-                                       var="e"/>
-                        <p:ajax process="@this" update="@form"/>
-                    </p:selectOneMenu>
-                </p:panelGrid>
-                <p:commandButton value="Очистить" icon="fa fa-clear" process="@this"
-                                 actionListener="#{productData.clear()}" update="@form"/>
-            </p:panel>
-
-
+        <h:form id="tableForm">
             <p:dataTable lazy="true"
                          rows="50"
-                         value="#{productData}"
+                         value="#{data}"
                          var="e"
-                         tableStyle="table-layout: auto;"
-                         paginator="true"
-                         rowsPerPageTemplate="50,100,200"
-
-            >
-                <!--@elvariable id="e" type="larisa.entity.Product"-->
+                         tableStyle="table-layout: auto">
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Код"/>
+                        <h:outputText value="#{msg['maker.id']}"/>
                     </f:facet>
-                    <h:outputLink
-                            value="edit.xhtml?#{productEditor.idParameterName}=#{productEditor.stringFromId(e.id)}">
-                        <h:outputText value="#{e.id}"/>
-                    </h:outputLink>
+                    <h:commandLink ajax="false" action="edit" value="#{e.id}" >
+                        <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
+                    </h:commandLink>
                 </p:column>
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Дата"/>
+                        <h:outputText value="#{msg['maker.name']}"/>
                     </f:facet>
-                    <h:outputLink
-                            value="edit.xhtml?#{productEditor.idParameterName}=#{productEditor.stringFromId(e.id)}">
-                        <h:outputText value="#{e.date.toString(msg.datePattern)}"/>
-                    </h:outputLink>
+                    <p:commandLink ajax="false" value="#{e.name}" action="edit">
+                        <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
+                    </p:commandLink>
                 </p:column>
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Наименование"/>
+                        <h:outputText value="#{msg['maker.product']}"/>
                     </f:facet>
-                    <h:outputLink
-                            value="../productType/edit.xhtml?#{productTypeEditor.idParameterName}=#{e.productType.id}"><h:outputText
-                            value="#{e.productType.name}"/></h:outputLink>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="Производитель"/>
-                    </f:facet>
-                    <h:outputLink
-                            value="../maker/edit.xhtml?#{makerEditor.idParameterName}=#{e.productType.maker.id}">
-                        <h:outputText value="#{e.productType.maker.name}"/></h:outputLink>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="Количество"/>
-                    </f:facet>
-                    <h:outputText value="#{e.volume}">
-                        <f:convertNumber integerOnly="true"/>
-                    </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="Цена"/>
-                    </f:facet>
-                    <h:outputText value="#{e.price}">
-                        <f:convertNumber integerOnly="true" type="currency"/>
-                    </h:outputText>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">
-                        <h:outputText value="Итого"/>
-                    </f:facet>
-                    <h:outputText value="#{e.price * e.volume}">
-                        <f:convertNumber type="currency"/>
-                    </h:outputText>
+                    <p:commandLink ajax="false" value="#{productTypeRepository.countByMaker(e)}">
+                        <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
+                    </p:commandLink>
                 </p:column>
                 <p:column style="width: 2em">
                     <p:commandLink styleClass="fa fa-fw fa-lg fa-close" style="text-decoration: none"
-                                   onclick="PF('deleteDialog').show()" update=":delete:form" partialSubmit="@this"
-                                   actionListener="#{productEditor.prepareDelete(e)}"/>
+                                   onclick="PF('deleteDialog').show()"
+                                   update=":delete:form"
+                                   partialSubmit="@this"
+                                   action="prepare-delete"/>
                 </p:column>
             </p:dataTable>
         </h:form>
-        <my:deleteDialog id="delete" editorBean="#{productEditor}" header="Удаление поступления">
-            <h:outputText style="border: none;font-weight: bolder"
-                          styleClass="ui-widget ui-widget-content"
-                          value="Подтвердите удаление поступления"/>
-            <ui:include src="view.xhtml"/>
-        </my:deleteDialog>
+        <ui:include src="delete.xhtml"/>
     </ui:define>
-
 </ui:composition>

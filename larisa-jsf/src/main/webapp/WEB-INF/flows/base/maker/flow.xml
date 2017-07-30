@@ -2,31 +2,22 @@
 <flow xmlns="http://www.springframework.org/schema/webflow"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd"
-      start-state="list">
-    <var name="editor" class="larisa.jsf.maker.MakerEditor"/>
+      start-state="list"
+      parent="parent-flow">
+    <var name="data" class="larisa.jsf.data.MakerDataModel"/>
     <var name="entity" class="larisa.entity.Maker"/>
-    <var name="uploadHandler" class="larisa.jsf.file.FileUploadHandler"/>
     <view-state id="list" view="list.xhtml">
-
-    </view-state>
-    <view-state id="edit" view="edit.xhtml">
-    </view-state>
-    <global-transitions>
-        <transition on="list" to="list">
-
-        </transition>
-        <transition on="new" to="edit">
-            <set name="flowScope.entity" value="editor.createNewInstance()"/>
-        </transition>
-        <transition on="save" to="list">
-            <evaluate expression="editor.save(entity)"/>
-        </transition>
         <transition on="edit" to="edit">
-            <set name="flowScope.entity" value="#{editor.entityFromRequest()}"/>
         </transition>
-        <transition on="delete" to="list">
-            <evaluate expression="editor.delete(entity)"/>
+    </view-state>
+    <subflow-state id="edit" subflow="base/maker/edit">
+        <input name="entity" type="larisa.entity.Maker"/>
+        <transition on="edit-canceled" to="list"/>
+        <transition on="edit-confirmed" to="list"/>
+    </subflow-state>
+    <global-transitions>
+        <transition on="new" to="edit">
+            <evaluate expression="makerService.createNewInstance()" result="entity"/>
         </transition>
     </global-transitions>
-
 </flow>

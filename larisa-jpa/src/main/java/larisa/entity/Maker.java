@@ -21,7 +21,7 @@ public class Maker extends AbstractEntity<Integer> implements IGetFiles {
     @Column(name = "note")
     String note;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "maker_file", joinColumns = @JoinColumn(name = "id_maker"), inverseJoinColumns = @JoinColumn(name = "id_file"))
     List<File> files;
 

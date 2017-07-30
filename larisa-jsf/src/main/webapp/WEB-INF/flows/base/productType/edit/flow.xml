@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
+    <input name="canEditId" type="java.lang.Boolean" />
+    <input name="entity" type="larisa.entity.ProductType" required="true"/>
+    <on-start>
+        <set name="canEditId" value="false"/>
+    </on-start>
+
+    <view-state id="edit" view="../edit.xhtml">
+        <transition on="save" to="edit-confirmed">
+            <evaluate expression="productTypeService.save(entity)" result="viewScope.entity"/>
+        </transition>
+        <transition on="cancel" to="edit-canceled"/>
+        <transition on="new" to="edit">
+            <evaluate expression="productTypeService.createNewInstance()" result="entity"/>
+        </transition>
+        <transition on="clone" to="edit">
+            <evaluate expression="productTypeService.copy(entity)" result="entity"/>
+
+        </transition>
+    </view-state>
+    <end-state id="edit-canceled">
+
+    </end-state>
+    <end-state id="edit-confirmed">
+
+    </end-state>
+</flow>

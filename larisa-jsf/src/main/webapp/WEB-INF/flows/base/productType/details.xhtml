@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
+    <p:panelGrid columns="2" columnClasses="labelClass">
+        <h:outputLabel for="productType-id" value="#{msg['productType.id']}:"/>
+        <h:outputText id="productType-id" value="#{entity.id}"/>
+        <h:outputLabel for="productType-name" value="#{msg['productType.name']}:"/>
+        <h:outputText id="productType-name" value="#{entity.name}"/>
+        <h:outputLabel for="productType-volume" value="#{msg['productType.volume']}:"/>
+        <h:outputText id="productType-volume" value="#{entity.volumeNote}" style="width: 100%"/>
+        <h:outputLabel for="productType-maker" value="#{msg['productType.maker']}:"/>
+        <h:outputText id="productType-maker" value="#{entity.maker.name}"/>
+        <p:outputLabel for="productType-childs" value="#{msg['childs']}:"/>
+        <h:panelGroup><ul style="padding: 0;margin: 0">
+            <ui:repeat id="productType-childs"
+                       value="#{entity.childs}"
+                       var="e">
+                <li style="list-style: none"><h:outputText value="#{e.name}"/></li>
+            </ui:repeat>
+        </ul></h:panelGroup>
+        <p:outputLabel for="productType-parents" value="#{msg['parents']}:"/>
+        <h:panelGroup><ul style="padding: 0;margin: 0">
+            <ui:repeat id="productType-parents"
+                       value="#{entity.parents}"
+                       var="e">
+                <li style="list-style: none"><h:outputText value="#{e.name}"/></li>
+            </ui:repeat>
+        </ul></h:panelGroup>
+    </p:panelGrid>
+</ui:composition>

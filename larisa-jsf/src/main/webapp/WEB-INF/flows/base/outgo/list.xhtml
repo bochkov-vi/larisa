@@ -37,7 +37,7 @@
                         <h:outputText value="Код"/>
                     </f:facet>
                     <h:outputLink
-                            value="edit.xhtml?#{productEditor.idParameterName}=#{productEditor.stringFromId(e.id)}">
+                            value="edit.xhtml?#{productServiceImpl.idParameterName}=#{productServiceImpl.stringFromId(e.id)}">
                         <h:outputText value="#{e.id}"/>
                     </h:outputLink>
                 </p:column>
@@ -56,7 +56,7 @@
                         <h:outputText value="Наименование"/>
                     </f:facet>
                     <h:outputLink
-                            value="../productType/edit.xhtml?#{productTypeEditor.idParameterName}=#{e.productType.id}"><h:outputText
+                            value="../productType/edit.xhtml?#{productTypeServiceImpl.idParameterName}=#{e.productType.id}"><h:outputText
                             value="#{e.productType.name}"/></h:outputLink>
                 </p:column>
                 <p:column>

@@ -1,80 +1,67 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
->
-    <h:outputScript library="js" name="ui-galleria-panel.js"/>
-
-    <f:event listener="#{circleHierarchicalValidator.validate}" type="postValidate"/>
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
     <p:panelGrid columns="2" columnClasses="labelClass" style="width: 100%">
-        <p:outputLabel rendered="#{productTypeEditor.selected['new']}" for="canEdit" value="Редактировать код:"/>
-        <p:selectBooleanCheckbox rendered="#{productTypeEditor.selected['new']}" id="canEdit" value="#{productTypeEditor.canEditId}">
+        <p:outputLabel rendered="#{entity['new']}" for="canEdit" value="#{msg['productType.editId']}:"/>
+        <p:selectBooleanCheckbox rendered="#{entity['new']}" id="canEdit" value="#{canEditId}">
             <p:ajax update="@parent"/>
         </p:selectBooleanCheckbox>
-        <p:outputLabel for="id" value="Код:"/>
-        <p:inputText disabled="#{not productTypeEditor.canEditId or not productTypeEditor.selected['new']}" id="id"
-                     value="#{productTypeEditor.selected.id}"/>
-        <p:outputLabel for="name" value="Наименование:"/>
-        <p:inputText id="name" value="#{productTypeEditor.selected.name}" style="width: 100%" required="true"
-                     requiredMessage="Наименование продукта обязательно для заполнения"/>
+        <p:outputLabel for="id" value="#{msg['productType.id']}:"/>
+        <p:inputText disabled="#{not canEditId or not entity['new']}" id="id"
+                     value="#{entity.id}"/>
+        <p:outputLabel for="name" value="#{msg['productType.name']}:"/>
+        <p:inputText id="name" value="#{entity.name}" style="width: 100%" required="true"
+                     requiredMessage="#{msg['field']} #{msg['productType.name']} #{msg['isRequired']}"/>
         <p:outputLabel for="volume" value="Объем:"/>
-        <p:inputText id="volume" value="#{productTypeEditor.selected.volumeNote}" style="width: 100%"/>
-        <p:outputLabel for="maker" value="Производитель:"/>
+        <p:inputText id="volume" value="#{entity.volumeNote}" style="width: 100%"/>
+        <p:outputLabel for="maker" value="#{msg['productType.maker']}:"/>
         <p:autoComplete required="false"
-                        id="maker" value="#{productTypeEditor.selected.maker}"
-                        converter="#{makerEditor}"
+                        id="maker" value="#{entity.maker}"
+                        converter="#{makerService}"
                         style="width: 100%"
                         inputStyle="width: 90%"
                         completeMethod="#{makerService.findByMask}"
-                        requiredMessage="Поле 'Производитель' обязательно для заполнения"
+                        requiredMessage="#{msg['field']} #{msg['productType.maker']} #{msg['isRequired']}"
                         var="e"
                         itemValue="#{e}"
                         itemLabel="#{e.name}"
                         dropdown="true">
             <p:ajax event="query" global="false"/>
         </p:autoComplete>
-        <p:outputLabel for="sertificated" value="Срок сертификации:"/>
+        <p:outputLabel for="sertificated" value="#{msg['productType.sertificated']}:"/>
         <p:calendar id="sertificated"
-                    value="#{productTypeEditor.selected.sertificated}"
+                    value="#{entity.sertificated}"
                     converter="#{localDateConverter}"
                     pattern="dd.MM.yy"
                     size="#{msg.dateSize}"
                     maxlength="#{msg.dateSize}"
                     required="false"
-                    requiredMessage="Поле 'Срок сертификации' обязательно для заполнения"/>
-        <p:outputLabel for="childs" value="Детки:"/>
+                    requiredMessage="#{msg['field']} #{msg['productType.sertificated']} #{msg['isRequired']}"/>
+        <p:outputLabel for="childs" value="#{msg.childs}:"/>
         <p:autoComplete id="childs"
-                        binding="#{circleHierarchicalValidator.childsInput}"
-                        value="#{productTypeEditor.selected.childs}"
-                        converter="#{productTypeEditor}"
+                        value="#{entity.childs}"
+                        converter="#{productTypeServiceImpl}"
                         completeMethod="#{productTypeService.findByMask}"
                         itemLabel="#{e.name}"
                         itemValue="#{e}"
                         var="e"
-                        multiple="true"
+                        multiple="true">
 
-                        >
-            <f:attribute value="#{productTypeEditor.selected}" name="entity"/>
+            <f:attribute value="#{entity}" name="entity"/>
             <p:ajax event="query" global="false"/>
         </p:autoComplete>
-        <p:outputLabel for="parents" value="Предки:"/>
+        <p:outputLabel for="parents" value="#{msg.parents}:"/>
         <p:autoComplete id="parents"
-                        binding="#{circleHierarchicalValidator.parentsInput}"
-                        value="#{productTypeEditor.selected.parents}"
-                        converter="#{productTypeEditor}"
+                        value="#{entity.parents}"
+                        converter="#{productTypeServiceImpl}"
                         completeMethod="#{productTypeService.findByMask}"
                         itemLabel="#{e.name}"
                         itemValue="#{e}"
                         var="e"
-                        multiple="true"
-                       >
-            <f:attribute value="#{productTypeEditor.selected}" name="entity"/>
+                        multiple="true">
+            <f:attribute value="#{entity}" name="entity"/>
             <p:ajax event="query" global="false"/>
         </p:autoComplete>
     </p:panelGrid>
-
-
-    <!--<p:contentFlow value="#{productTypeEditor.selected.files}" var="f">
-        <p:graphicImage  value="/spring/file/#{f.id}" styleClass="content"/>
-    </p:contentFlow>-->
 </ui:composition>

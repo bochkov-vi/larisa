@@ -32,7 +32,7 @@ public class ProductType extends AbstractAuditableEntity<Integer> implements IGe
 
     @Temporal(TemporalType.DATE)
     @Convert(converter = JodaLocalDateConverter.class)
-    @Column(name = "sertificated", nullable = false)
+    @Column(name = "sertificated", nullable = true)
     @ColumnPosition(4)
     LocalDate sertificated;
 
@@ -41,15 +41,15 @@ public class ProductType extends AbstractAuditableEntity<Integer> implements IGe
     @JoinColumn(name = "id_maker")
     Maker maker;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "product_type_file", joinColumns = @JoinColumn(name = "id_product_type"), inverseJoinColumns = @JoinColumn(name = "id_file"))
     List<File> files;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "product_type_p", joinColumns = @JoinColumn(name = "id_product_type", referencedColumnName = "id_product_type"), inverseJoinColumns = @JoinColumn(name = "id_product_type_parent", referencedColumnName = "id_product_type"))
     List<ProductType> childs;
 
-    @ManyToMany(mappedBy = "childs")
+    @ManyToMany(mappedBy = "childs",fetch = FetchType.EAGER)
     List<ProductType> parents;
 
 

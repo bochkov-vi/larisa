@@ -1,60 +1,15 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:my="http://java.sun.com/jsf/composite/my"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
-                template="../template.xhtml">
+                template="/WEB-INF/layout/data-template.xhtml">
 
     <ui:define name="content">
-        <h:form id="main">
+        <h:form>
             <ui:include src="toolbar.xhtml"/>
-
             <ui:include src="inputs.xhtml"/>
-            <p:fileUpload multiple="true" auto="true" fileUploadListener="#{productTypeEditor.handleFileUpload}"
-                          update="gallerea" cancelLabel="Отмена" uploadLabel="Выгрузить" label="Файлы">
-
-            </p:fileUpload>
-            <ui:repeat value="#{productTypeEditor.selected.files}" var="file">
-                <p:graphicImage value="/spring/file/#{file.id}/0x0"
-                                alt="#{file.name}"
-                                title="#{file.name}"/>
-            </ui:repeat>
-            <p:galleria id="gallerea" value="#{productTypeEditor.selected.files}"
-                        var="file"
-                        panelHeight="300"
-                        panelWidth="500"
-                        frameHeight="80"
-                        frameWidth="120"
-                        transitionInterval="5000"
-                        style="overflow: hidden"
-                        rendered="#{not empty productTypeEditor.selected.files}">
-                <p:graphicImage
-                        value="/spring/file/#{file.id}/500x300"
-                        alt="#{file.name}"
-                        title="#{file.name}"/>
-            </p:galleria>
-
             <ui:include src="toolbar.xhtml"/>
         </h:form>
-        <p:dialog widgetVar="createMaker">
-            <h:form id="createMaker">
-                <ui:include src="../maker/inputs.xhtml"/>
-                <p:commandButton value="Создать"
-                                 actionListener="#{makerEditor.save()}"
-                                 onsuccess="PF('createMaker').hide();"
-                                 update="main:maker messages">
-                    <f:setPropertyActionListener value="#{makerEditor.selected}"
-                                                 target="#{productTypeEditor.selected.maker}"/>
-                </p:commandButton>
-                <p:button value="Отмена" onclick="PF('createMaker').hide();"/>
-            </h:form>
-        </p:dialog>
-        <my:deleteDialog id="delete" editorBean="#{productTypeEditor}" header="Удаление вида продукции">
-            <h:outputText style="border: none;font-weight: bolder"
-                          styleClass="ui-widget ui-widget-content"
-                          value="Подтвердите удаление вида продукции"/>
-            <ui:include src="view.xhtml"/>
-        </my:deleteDialog>
+        <ui:include src="delete.xhtml"/>
     </ui:define>
 
 </ui:composition>
