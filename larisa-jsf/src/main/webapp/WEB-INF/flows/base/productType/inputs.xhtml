@@ -2,6 +2,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <!--@elvariable id="e" type="larisa.entity.ProductType"-->
     <p:panelGrid columns="2" columnClasses="labelClass" style="width: 100%">
         <p:outputLabel rendered="#{entity['new']}" for="canEdit" value="#{msg['productType.editId']}:"/>
         <p:selectBooleanCheckbox rendered="#{entity['new']}" id="canEdit" value="#{canEditId}">
@@ -38,10 +39,10 @@
                     maxlength="#{msg.dateSize}"
                     required="false"
                     requiredMessage="#{msg['field']} #{msg['productType.sertificated']} #{msg['isRequired']}"/>
-        <p:outputLabel for="childs" value="#{msg.childs}:"/>
+        <p:outputLabel for="childs" value="#{msg['childs']}:"/>
         <p:autoComplete id="childs"
                         value="#{entity.childs}"
-                        converter="#{productTypeServiceImpl}"
+                        converter="#{productTypeService}"
                         completeMethod="#{productTypeService.findByMask}"
                         itemLabel="#{e.name}"
                         itemValue="#{e}"
@@ -51,10 +52,10 @@
             <f:attribute value="#{entity}" name="entity"/>
             <p:ajax event="query" global="false"/>
         </p:autoComplete>
-        <p:outputLabel for="parents" value="#{msg.parents}:"/>
+        <p:outputLabel for="parents" value="#{msg['parents']}:"/>
         <p:autoComplete id="parents"
                         value="#{entity.parents}"
-                        converter="#{productTypeServiceImpl}"
+                        converter="#{productTypeService}"
                         completeMethod="#{productTypeService.findByMask}"
                         itemLabel="#{e.name}"
                         itemValue="#{e}"

@@ -46,6 +46,11 @@
 
     </build>
     <dependencies>
+       <!-- <dependency>
+            <groupId>org.springframework.springfaces</groupId>
+            <artifactId>springfaces</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>-->
         <dependency>
             <groupId>com.bochkov</groupId>
             <artifactId>jsf-utils</artifactId>

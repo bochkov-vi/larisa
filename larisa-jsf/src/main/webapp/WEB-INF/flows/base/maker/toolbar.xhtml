@@ -6,7 +6,7 @@
     <my:editToolbarForEditor>
         <p:toolbarGroup>
             <p:commandButton rendered="#{not entity['new']}" icon="fa fa-copy"
-                             value="#{msg.clone}"
+                             value="#{msg['clone']}"
                              action="clone"/>
             <p:commandButton rendered="#{not entity['new']}" value="#{msg.delete}" icon="fa fa-ban" onclick="PF('deleteDialog').show()"
                              process="@this"/>

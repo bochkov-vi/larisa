@@ -1,5 +1,7 @@
 package larisa.entity;
 
+import org.entity3.IGetNamed;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -8,7 +10,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "maker")
-public class Maker extends AbstractEntity<Integer> implements IGetFiles {
+public class Maker extends AbstractEntity<Integer> implements IGetFiles, IGetNamed {
     @Id
     @Column(name = "id_maker")
     @GeneratedValue(generator = "maker")
@@ -28,6 +30,13 @@ public class Maker extends AbstractEntity<Integer> implements IGetFiles {
     @Override
     public Integer getId() {
         return id;
+    }
+
+    public Maker(String name) {
+        this.name = name;
+    }
+
+    public Maker() {
     }
 
     public void setId(Integer id) {

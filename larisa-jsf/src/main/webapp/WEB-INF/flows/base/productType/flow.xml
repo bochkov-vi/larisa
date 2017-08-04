@@ -12,6 +12,11 @@
         <transition on="to-maker" to="maker-edit">
 
         </transition>
+        <transition on="prepare-delete" >
+        </transition>
+        <transition on="delete" to="list">
+            <evaluate expression="productTypeService.delete(entity)"/>
+        </transition>
     </view-state>
     <subflow-state id="maker-edit" subflow="base/maker/edit">
         <input name="entity" value="entity.maker"/>

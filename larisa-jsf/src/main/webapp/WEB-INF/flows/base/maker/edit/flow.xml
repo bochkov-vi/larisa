@@ -6,15 +6,14 @@
     <view-state id="edit" view="../edit.xhtml">
         <transition on="save" to="edit-confirmed">
             <evaluate expression="makerService.save(entity)" result="entity"/>
+            <evaluate expression="!messageContext.hasErrorMessages()"/>
         </transition>
         <transition on="cancel" to="edit-canceled"/>
         <transition on="new" to="edit">
             <evaluate expression="makerService.createNewInstance()" result="entity"/>
         </transition>
         <transition on="clone" to="edit">
-            <evaluate expression="makerService.createNewInstance()" result="requestScope.clone"/>
-            <evaluate expression="T(org.springframework.beans.BeanUtils).copyProperties(entity,clone,'id')"/>
-            <evaluate expression="clone" result="entity"/>
+            <evaluate expression="makerService.clone(entity)" result="entity"/>
         </transition>
     </view-state>
     <end-state id="edit-canceled">

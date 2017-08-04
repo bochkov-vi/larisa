@@ -62,6 +62,5 @@
 
     <!-- Message Source -->
     <bean class="org.springframework.context.support.ReloadableResourceBundleMessageSource" id="msg"
-          p:basenames="WEB-INF/locale/messages,WEB-INF/locale/application" p:fallbackToSystemLocale="false"
-          p:cacheSeconds="${cacheSeconds}"/>
+                p:basenames="WEB-INF/locale/messages,WEB-INF/locale/application" p:fallbackToSystemLocale="false"/>
 </beans>

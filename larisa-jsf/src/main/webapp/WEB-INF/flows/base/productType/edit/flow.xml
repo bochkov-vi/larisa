@@ -11,13 +11,14 @@
     <view-state id="edit" view="../edit.xhtml">
         <transition on="save" to="edit-confirmed">
             <evaluate expression="productTypeService.save(entity)" result="viewScope.entity"/>
+            <evaluate expression="!messageContext.hasErrorMessages()"/>
         </transition>
         <transition on="cancel" to="edit-canceled"/>
         <transition on="new" to="edit">
             <evaluate expression="productTypeService.createNewInstance()" result="entity"/>
         </transition>
         <transition on="clone" to="edit">
-            <evaluate expression="productTypeService.copy(entity)" result="entity"/>
+            <evaluate expression="productTypeService.clone(entity)" result="entity"/>
 
         </transition>
     </view-state>

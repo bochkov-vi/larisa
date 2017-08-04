@@ -6,6 +6,7 @@
     <view-state id="edit" view="../edit.xhtml">
         <transition on="save" to="edit-confirmed">
             <evaluate expression="makerService.save(entity)" result="entity"/>
+            <evaluate expression="!messageContext.hasErrorMessages()"/>
         </transition>
         <transition on="cancel" to="edit-canceled"/>
         <transition on="new" to="edit">

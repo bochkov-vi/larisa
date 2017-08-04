@@ -9,6 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>larisa-jpa</artifactId>
+    <properties>
+        <h2.port>9092</h2.port>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>com.bochkov</groupId>
@@ -39,6 +42,12 @@
         </dependency>
     </dependencies>
     <build>
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <artifactId>eclipselink-staticweave-maven-plugin</artifactId>

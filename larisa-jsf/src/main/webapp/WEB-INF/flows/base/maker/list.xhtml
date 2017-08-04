@@ -22,7 +22,7 @@
                     <f:facet name="header">
                         <h:outputText value="#{msg['maker.id']}"/>
                     </f:facet>
-                    <h:commandLink ajax="false" action="edit" value="#{e.id}" >
+                    <h:commandLink ajax="false" action="edit" value="#{e.id}">
                         <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
                     </h:commandLink>
                 </p:column>
@@ -47,7 +47,9 @@
                                    onclick="PF('deleteDialog').show()"
                                    update=":delete:form"
                                    partialSubmit="@this"
-                                   action="prepare-delete"/>
+                                   action="prepare-delete">
+                        <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
+                    </p:commandLink>
                 </p:column>
             </p:dataTable>
         </h:form>

@@ -32,7 +32,7 @@ public class ProductType extends AbstractAuditableEntity<Integer> implements IGe
 
     @Temporal(TemporalType.DATE)
     @Convert(converter = JodaLocalDateConverter.class)
-    @Column(name = "sertificated", nullable = true)
+    @Column(name = "sertificated")
     @ColumnPosition(4)
     LocalDate sertificated;
 

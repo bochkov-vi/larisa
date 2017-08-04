@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
  */
 @Service("makerService")
 public class MakerServiceImpl extends DefaultServiceImpl<Maker, Integer> implements MakerService {
-       public MakerServiceImpl() {
+
+    public MakerServiceImpl() {
         super("id", "name");
     }
 

@@ -5,6 +5,7 @@ import larisa.DefaultEntityRepository;
 import larisa.entity.AbstractEntity;
 import larisa.jsf.service.DefaultService;
 import org.entity3.repository.CustomRepository;
+import org.entity3.repository.UniqueNamedRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -48,9 +49,21 @@ public abstract class DefaultServiceImpl<T extends AbstractEntity<ID>, ID extend
     }
 
     @Override
-    public T copy(@NotNull T original) {
+    public T clone(@NotNull T original) {
         T copy = super.createNewInstance();
         BeanUtils.copyProperties(original, copy, "id", "createdDate");
         return copy;
+    }
+
+    @Override
+    public T findByName(String name) {
+        UniqueNamedRepository repository = (UniqueNamedRepository) getRepository();
+        return (T) repository.findByName(name);
+    }
+
+    @Override
+    public List<T> findByNameStartingWith(String name) {
+        UniqueNamedRepository repository = (UniqueNamedRepository) getRepository();
+        return  repository.findByNameStartingWith(name);
     }
 }

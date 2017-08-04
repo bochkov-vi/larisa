@@ -135,14 +135,16 @@
                     <p:commandLink styleClass="fa fa-fw fa-lg fa-close" style="text-decoration: none"
                                    title="#{msg['delete']}"
                                    onclick="PF('deleteDialog').show()" update=":delete:form" partialSubmit="@this"
-                                   actionListener="#{productTypeServiceImpl.prepareDelete(e)}"/>
+                                   action="prepare-delete">
+                        <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
+                    </p:commandLink>
                 </p:column>
-                <p:column style="width: 2em">
+                <!--<p:column style="width: 2em">
                     <h:outputLink rendered="#{empty e.childs and not empty e.maker}"
                                   title="#{msg['productType.comein']}"
                                   styleClass="fa fa-fw fa-lg fa-cart-plus" style="text-decoration: none"
                                   value="../product/edit.xhtml?#{productTypeServiceImpl.idParameterName}=#{e.id}"/>
-                </p:column>
+                </p:column>-->
             </p:dataTable>
         </h:form>
         <ui:include src="delete.xhtml"/>
