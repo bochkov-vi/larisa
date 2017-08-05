@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="larisa-jpa" />
+        <module name="larisa-jsf" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="coordinate-converters" target="1.8" />
+      <module name="entity-utils" target="1.8" />
+      <module name="jsf-utils" target="1.8" />
+      <module name="larisa" target="1.8" />
+      <module name="larisa-cosmetics" target="1.8" />
+      <module name="larisa-jpa" target="1.8" />
+      <module name="larisa-jpa (1)" target="1.8" />
+      <module name="larisa-jsf" target="1.8" />
+      <module name="larisa-jsf (1)" target="1.8" />
+      <module name="larisa-sb" target="1.8" />
+      <module name="larisa-spring-webflow-jsf" target="1.8" />
+      <module name="shop-jpa" target="1.8" />
+      <module name="utils" target="1.8" />
+      <module name="utils-3" target="1.8" />
+      <module name="wicket-shop" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
