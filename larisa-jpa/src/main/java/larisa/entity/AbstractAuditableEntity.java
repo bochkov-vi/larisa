@@ -16,7 +16,7 @@ import java.io.Serializable;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class AbstractAuditableEntity<ID extends Serializable> extends AbstractEntity<ID> implements Auditable<Account, ID> {
+public abstract class AbstractAuditableEntity<ID extends Serializable> extends DefaultEntity<ID> implements Auditable<Account, ID> {
 
     @ManyToOne
     @JoinColumn(name = "editor", nullable = false)

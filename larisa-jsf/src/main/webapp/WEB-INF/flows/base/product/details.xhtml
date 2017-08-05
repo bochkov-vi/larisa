@@ -1,12 +1,21 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
-    <p:panelGrid columns="2" columnClasses="labelClass" styleClass="borderNone">
-        <h:outputLabel for="maker-id" value="#{msg['maker.id']}:"/>
-        <h:outputText id="maker-id" value="#{entity.id}"/>
-        <h:outputLabel for="maker-name" value="#{msg['maker.name']}:"/>
-        <h:outputText id="maker-name" value="#{entity.name}"/>
-        <h:outputLabel for="maker-note" value="#{msg['maker.note']}:"/>
-        <h:outputText id="maker-note" value="#{entity.note}"/>
+    <!--@elvariable id="entity" type="larisa.entity.Product"-->
+    <p:panelGrid columns="2" columnClasses="labelClass">
+        <h:outputLabel for="id" value="#{msg['product.id']}:"/>
+        <h:outputText id="id" value="#{entity.id}"/>
+        <h:outputLabel for="date" value="#{msg['product.date']}:"/>
+        <h:outputText id="date" value="#{entity.date.toString(msg['datePattern'])}"/>
+        <h:outputLabel for="name" value="#{msg['product.productType']}:"/>
+        <h:outputText id="name" value="#{entity.productType.name} #{entity.productType.maker.name}"/>
+        <h:outputLabel for="volume" value="#{msg['product.volume']}:"/>
+        <h:outputText id="volume" value="#{entity.volume}"/>
+        <h:outputLabel for="price" value="#{msg['product.price']}:"/>
+        <h:outputText id="price" value="#{entity.price}"/>
+        <h:outputLabel for="maker" value="#{msg['product.maker']}:"/>
+        <h:outputText id="maker" value="#{entity.productType.maker.name}"/>
+        <h:outputLabel for="expirationDate" value="#{msg['product.expirationDate']}:"/>
+        <h:outputText id="expirationDate" value="#{entity.expirationDate.toString(msg['datePattern'])}"/>
     </p:panelGrid>
 </ui:composition>

@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "account")
-public class Account extends AbstractEntity<String> {
+public class Account extends DefaultEntity<String> {
     @Id
     @Column(name = "login")
     String id;

@@ -1,46 +1,34 @@
 package larisa.jsf.service.impl;
 
-import jsf.util3.service.impl.AbstractJsfEntityService;
+import jsf.util3.service.impl.JsfEntityServiceImpl;
 import larisa.DefaultEntityRepository;
-import larisa.entity.AbstractEntity;
+import larisa.entity.DefaultEntity;
 import larisa.jsf.service.DefaultService;
 import org.entity3.repository.CustomRepository;
-import org.entity3.repository.UniqueNamedRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.data.repository.NoRepositoryBean;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by home on 25.02.17.
  */
 @NoRepositoryBean
 @Configurable
-public abstract class DefaultServiceImpl<T extends AbstractEntity<ID>, ID extends Serializable> extends AbstractJsfEntityService<T, ID> implements DefaultService<T, ID> {
+public abstract class DefaultServiceImpl<T extends DefaultEntity<ID>, ID extends Serializable> extends JsfEntityServiceImpl<T, ID> implements DefaultService<T, ID> {
     @Autowired
     DefaultEntityRepository<T, ID> repository;
 
     public DefaultServiceImpl() {
     }
 
-    public DefaultServiceImpl(Class<T> entityClass) {
-        super(entityClass);
-    }
-
     public DefaultServiceImpl(String... maskedProperty) {
         super(maskedProperty);
     }
 
-    public DefaultServiceImpl(Class<T> entityClass, String... maskedProperty) {
-        super(entityClass, maskedProperty);
-    }
-
-    public DefaultServiceImpl(Class<T> entityClass, List<String> maskedPopertyList) {
-        super(entityClass, maskedPopertyList);
+    public DefaultServiceImpl(String idParameterName, Iterable<String> maskedProperty) {
+        super(idParameterName, maskedProperty);
     }
 
     @Override
@@ -48,22 +36,7 @@ public abstract class DefaultServiceImpl<T extends AbstractEntity<ID>, ID extend
         return repository;
     }
 
-    @Override
-    public T clone(@NotNull T original) {
-        T copy = super.createNewInstance();
-        BeanUtils.copyProperties(original, copy, "id", "createdDate");
-        return copy;
-    }
 
-    @Override
-    public T findByName(String name) {
-        UniqueNamedRepository repository = (UniqueNamedRepository) getRepository();
-        return (T) repository.findByName(name);
-    }
 
-    @Override
-    public List<T> findByNameStartingWith(String name) {
-        UniqueNamedRepository repository = (UniqueNamedRepository) getRepository();
-        return  repository.findByNameStartingWith(name);
-    }
+
 }

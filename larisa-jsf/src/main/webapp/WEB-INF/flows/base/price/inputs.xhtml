@@ -1,23 +1,21 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core">
-    <h:outputScript library="js" name="ui-galleria-panel.js"/>
-
-
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <!--@elvariable id="entity" type="larisa.entity.Price"-->
     <p:panelGrid columns="2" columnClasses="labelClass">
-        <p:outputLabel for="id" value="Код:"/>
+        <p:outputLabel for="id" value="#{msg['price.id']}:"/>
         <p:inputText disabled="true" id="id"
-                     value="#{priceServiceImpl.selected.id}"/>
-        <p:outputLabel for="productType" value="Наименование:"/>
+                     value="#{entity.id}"/>
+        <p:outputLabel for="productType" value="#{msg['price.productType']}:"/>
         <!--@elvariable id="e" type="larisa.entity.ProductType"-->
         <p:autoComplete id="productType"
-                        value="#{priceServiceImpl.selected.productType}"
+                        value="#{entity.productType}"
                         completeMethod="#{productTypeService.findByMaskAndEmptyChilds}"
                         style="width: 100%"
                         required="true"
-                        requiredMessage="Наименование продукта обязательно для заполнения"
-                        converter="#{productTypeServiceImpl}"
+                        requiredMessage="#{msg['field']} #{msg['price.productType']} #{msg['isRequired']}"
+                        converter="#{productTypeService}"
                         var="e"
                         forceSelection="false"
                         itemLabel="#{e.name}"
@@ -29,33 +27,29 @@
             <p:column>#{e.name}</p:column>
             <p:column>#{e.maker.name}</p:column>
         </p:autoComplete>
-        <p:outputLabel for="date" value="Дата:"/>
+        <p:outputLabel for="date" value="#{msg['price.date']}:"/>
         <p:calendar id="date"
-                    value="#{priceServiceImpl.selected.dateFrom}"
+                    value="#{entity.dateFrom}"
                     converter="#{localDateConverter}"
-                    pattern="dd.MM.yy"
-                    size="#{msg.dateSize}"
-                    maxlength="#{msg.dateSize}"
+                    pattern="#{msg['datePattern']}"
+                    size="#{msg['dateSize']}"
+                    maxlength="#{msg['dateSize']}"
                     required="true"
-                    requiredMessage="Поле 'Дата' обязательно для заполнения"/>
-        <p:outputLabel for="dateTo" value="Окончание действия:"/>
+                    requiredMessage="#{msg['field']} '#{msg['price.date']}' #{msg['isRequired']}"/>
+        <p:outputLabel for="dateTo" value="#{msg['price.dateTo']}:"/>
         <p:calendar id="dateTo"
-                    value="#{priceServiceImpl.selected.dateTo}"
+                    value="#{entity.dateTo}"
                     converter="#{localDateConverter}"
-                    pattern="dd.MM.yy"
-                    size="#{msg.dateSize}"
-                    maxlength="#{msg.dateSize}"
+                    pattern="#{msg['datePattern']}"
+                    size="#{msg['dateSize']}"
+                    maxlength="#{msg['dateSize']}"
                     required="false"
-                    requiredMessage="Поле 'Окончание действия' обязательно для заполнения"/>
-        <p:outputLabel for="price" value="Цена:"/>
-        <p:inputText id="price" value="#{priceServiceImpl.selected.price}" required="true"
-                     requiredMessage="Поле 'Цена' обязательно для заполнения">
+                    requiredMessage="#{msg['field']} '#{msg['price.dateTo']}' #{msg['isRequired']}"/>
+        <p:outputLabel for="price" value="#{msg['price.price']}:"/>
+        <p:inputText id="price" value="#{entity.price}" required="true"
+                     requiredMessage="Поле '#{msg['price.price']}' обязательно для заполнения">
             <f:convertNumber integerOnly="true"/>
         </p:inputText>
 
     </p:panelGrid>
-
-    <!--<p:contentFlow value="#{priceEditor.selected.files}" var="f">
-        <p:graphicImage  value="/spring/file/#{f.id}" styleClass="content"/>
-    </p:contentFlow>-->
 </ui:composition>

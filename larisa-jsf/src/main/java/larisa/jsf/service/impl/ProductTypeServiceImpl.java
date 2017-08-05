@@ -1,5 +1,6 @@
 package larisa.jsf.service.impl;
 
+import jsf.util3.service.impl.JsfHierarchicalEntityServiceImpl;
 import larisa.entity.ProductType;
 import larisa.jsf.service.ProductTypeService;
 import larisa.repository.ProductTypeRepository;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
  * Created by home on 25.02.17.
  */
 @Service("productTypeService")
-public class ProductTypeServiceImpl extends DefaultServiceImpl<ProductType, Integer> implements ProductTypeService {
+public class ProductTypeServiceImpl extends JsfHierarchicalEntityServiceImpl<ProductType, Integer> implements ProductTypeService {
     @Autowired
     ProductTypeRepository repository;
 
@@ -22,4 +23,5 @@ public class ProductTypeServiceImpl extends DefaultServiceImpl<ProductType, Inte
     public ProductTypeRepository getRepository() {
         return repository;
     }
+
 }

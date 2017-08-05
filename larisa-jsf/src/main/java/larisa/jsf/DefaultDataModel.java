@@ -2,7 +2,7 @@ package larisa.jsf;
 
 import jsf.util3.DataManagedBean;
 import larisa.DefaultEntityRepository;
-import larisa.entity.AbstractEntity;
+import larisa.entity.DefaultEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.data.jpa.domain.Specification;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 
 @Configurable
-public class DefaultDataModel<T extends AbstractEntity<ID>, ID extends Serializable> extends DataManagedBean<T> {
+public class DefaultDataModel<T extends DefaultEntity<ID>, ID extends Serializable> extends DataManagedBean<T> {
 
     boolean filterHide = true;
 

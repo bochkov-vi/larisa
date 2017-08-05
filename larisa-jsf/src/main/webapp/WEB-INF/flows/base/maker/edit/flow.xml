@@ -20,6 +20,6 @@
 
     </end-state>
     <end-state id="edit-confirmed">
-
+        <output name="entity" value="entity"/>
     </end-state>
 </flow>

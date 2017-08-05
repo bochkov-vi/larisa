@@ -10,7 +10,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "customer")
-public class Customer extends AbstractEntity<Integer> implements IGetFiles {
+public class Customer extends DefaultEntity<Integer> implements IGetFiles {
     @Id
     @GeneratedValue
     @Column(name = "id_customer")

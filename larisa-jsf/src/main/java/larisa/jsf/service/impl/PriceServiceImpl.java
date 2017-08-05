@@ -4,7 +4,6 @@ import larisa.entity.Price;
 import larisa.entity.ProductType;
 import larisa.jsf.service.PriceService;
 import larisa.repository.PriceRepository;
-import org.entity3.service.impl.EntityServiceImpl;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -20,7 +19,7 @@ import javax.persistence.criteria.Subquery;
  * Created by home on 25.02.17.
  */
 @Service("priceService")
-public class PriceServiceImpl extends EntityServiceImpl<Price, Integer> implements PriceService {
+public class PriceServiceImpl extends DefaultServiceImpl<Price, Integer> implements PriceService {
     @Autowired
     PriceRepository repository;
 
@@ -74,9 +73,7 @@ public class PriceServiceImpl extends EntityServiceImpl<Price, Integer> implemen
             getRepository().save(prev);
         }
         if (next != null) {
-            next.setDateTo(next.getDateFrom());
-        } else {
-            next.setDateTo(null);
+            price.setDateTo(next.getDateFrom());
         }
         return super.save(price);
     }

@@ -4,21 +4,26 @@
       xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd"
       start-state="list"
       parent="parent-flow">
-    <var name="data" class="larisa.jsf.data.ProductData"/>
-    <input name="entity" type="larisa.entity.Product"/>
+    <var name="data" class="larisa.jsf.data.PriceData"/>
+    <input name="entity" type="larisa.entity.Price"/>
     <input name="productType" type="larisa.entity.ProductType"/>
+    <input name="maker" type="larisa.entity.Maker"/>
     <view-state id="list" view="list.xhtml">
         <transition on="edit" to="edit"/>
         <transition on="edit-productType" to="productType">
             <evaluate expression="entity.productType" result="productType"/>
         </transition>
+        <transition on="edit-maker" to="maker">
+            <evaluate expression="entity.productType.maker" result="maker"/>
+        </transition>
+        <transition on="prepare-delete"/>
         <transition on="delete" to="list">
-            <evaluate expression="productService.delete(entity)"/>
+            <evaluate expression="priceService.delete(entity)"/>
         </transition>
     </view-state>
 
-    <subflow-state id="edit" subflow="base/product/edit">
-        <input name="entity" type="larisa.entity.Product"/>
+    <subflow-state id="edit" subflow="base/price/edit">
+        <input name="entity" type="larisa.entity.Price"/>
         <transition on="edit-canceled" to="list"/>
         <transition on="edit-confirmed" to="list"/>
     </subflow-state>
@@ -30,10 +35,17 @@
         </transition>
         <transition on="edit-canceled" to="list"/>
     </subflow-state>
+    <subflow-state id="maker" subflow="base/maker/edit">
+        <input name="entity" value="maker"/>
+        <transition on="edit-confirmed" to="edit">
+            <evaluate expression="entity.productType.maker = currentEvent.attributes.entity"/>
+        </transition>
+        <transition on="edit-canceled" to="list"/>
+    </subflow-state>
 
     <global-transitions>
         <transition on="new" to="edit">
-            <evaluate expression="productService.createNewInstance()" result="entity"/>
+            <evaluate expression="priceService.createNewInstance()" result="entity"/>
         </transition>
     </global-transitions>
 

@@ -8,7 +8,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "token")
-public class Token extends AbstractEntity<String> {
+public class Token extends DefaultEntity<String> {
     @Id
     @Column(name = "series", nullable = false)
     private String id;

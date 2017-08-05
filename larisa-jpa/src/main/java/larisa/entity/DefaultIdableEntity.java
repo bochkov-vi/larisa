@@ -8,17 +8,17 @@ import java.io.Serializable;
 /**
  * Created by home on 10.03.17.
  */
-public abstract class AbstractIdableEntity<ID extends Serializable> implements IIdable<ID> ,Serializable{
+public abstract class DefaultIdableEntity<ID extends Serializable> implements IIdable<ID> ,Serializable{
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof AbstractIdableEntity)) {
+        if (!(o instanceof DefaultIdableEntity)) {
             return false;
         }
-        AbstractIdableEntity<?> that = (AbstractIdableEntity<?>) o;
+        DefaultIdableEntity<?> that = (DefaultIdableEntity<?>) o;
         return Objects.equal(getId(), that.getId());
     }
 

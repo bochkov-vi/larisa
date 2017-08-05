@@ -1,104 +1,102 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core" xmlns:my="http://java.sun.com/jsf/composite/my"
-                template="../template.xhtml">
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="/WEB-INF/layout/data-template.xhtml">
 
     <ui:define name="content">
-        <p:toolbar>
-            <p:toolbarGroup>
-                <p:button icon="fa fa-document" value="Новый" href="edit.xhtml"/>
-            </p:toolbarGroup>
-        </p:toolbar>
 
         <h:form>
-            <p:panel header="Фильтр" collapsed="#{priceData.filterHide}" toggleable="true">
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton icon="fa fa-document" value="#{msg['new']}" ajax="false" action="new"/>
+                </p:toolbarGroup>
+            </p:toolbar>
+        </h:form>
+
+        <h:form>
+            <p:panel header="Фильтр" collapsed="#{data.filterHide}" toggleable="true">
+                <!--@elvariable id="e" type="larisa.entity.ProductType"-->
                 <p:panelGrid columns="2" columnClasses="labelClass">
                     <p:outputLabel for="maker" value="Производитель:"/>
-                    <p:selectOneMenu widgetVar="maker" id="maker" value="#{priceData.maker}"
-                                     converter="#{makerEditor}" style="width: 20em">
-                        <f:selectItem itemLabel="---------------------------------"/>
-                        <f:selectItems value="#{makerRepository.findAll()}" itemValue="#{e}" itemLabel="#{e.name}"
-                                       var="e"/>
-                        <p:ajax process="@this" update="@form"/>
-                    </p:selectOneMenu>
+                    <p:autoComplete id="maker" value="#{data.maker}"
+                                    converter="#{makerService}"
+                                    style="width: 20em"
+                                    completeMethod="#{makerService.findByMask}"
+                                    var="e"
+                                    itemValue="#{e}"
+                                    itemLabel="#{e.name}"
+                                    dropdown="true"
+                                    forceSelection="true">
+                        <p:ajax event="query" global="false"/>
+                        <p:ajax event="itemSelect" process="@this" update="@form"/>
+                    </p:autoComplete>
                 </p:panelGrid>
                 <p:commandButton value="Очистить" icon="fa fa-clear" process="@this"
-                                 actionListener="#{priceData.clear()}" update="@form"/>
+                                 actionListener="#{data.clear()}" update="@form"/>
             </p:panel>
-
-
+            <!--@elvariable id="e" type="larisa.entity.Price"-->
             <p:dataTable lazy="true"
                          rows="50"
-                         value="#{priceData}"
+                         value="#{data}"
                          var="e"
                          tableStyle="table-layout: auto;">
                 <!--@elvariable id="e" type="larisa.entity.Price"-->
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Код"/>
+                        <h:outputText value="#{msg['price.id']}"/>
                     </f:facet>
-                    <h:outputLink
-                            value="edit.xhtml?#{productServiceImpl.idParameterName}=#{productServiceImpl.stringFromId(e.id)}">
-                        <h:outputText value="#{e.id}"/>
-                    </h:outputLink>
+                    <h:commandLink value="#{e.id}">
+                        <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
+                    </h:commandLink>
                 </p:column>
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Дата"/>
+                        <h:outputText value="#{msg['price.date']}"/>
                     </f:facet>
-                    <h:outputLink
-                            value="edit.xhtml?#{priceServiceImpl.idParameterName}=#{priceServiceImpl.stringFromId(e.id)}">
-                        <h:outputText value="#{e.dateFrom.toString(msg.datePattern)}"/>
-                    </h:outputLink>
+                    <h:outputText value="#{e.dateFrom.toString(msg['datePattern'])}"/>
                 </p:column>
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Окончание действия"/>
+                        <h:outputText value="#{msg['price.dateTo']}"/>
                     </f:facet>
-                    <h:outputLink
-                            value="edit.xhtml?#{priceServiceImpl.idParameterName}=#{priceServiceImpl.stringFromId(e.id)}">
-                        <h:outputText value="#{e.dateTo.toString(msg.datePattern)}"/>
-                    </h:outputLink>
+                    <h:outputText value="#{e.dateTo.toString(msg['datePattern'])}"/>
                 </p:column>
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Наименование"/>
+                        <h:outputText value="#{msg['price.productType']}"/>
                     </f:facet>
-                    <h:outputLink
-                            value="../productType/edit.xhtml?#{productTypeServiceImpl.idParameterName}=#{e.productType.id}"><h:outputText
-                            value="#{e.productType.name}"/></h:outputLink>
+                    <h:commandLink value="#{e.productType.name}" action="edit-productType">
+                        <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
+                    </h:commandLink>
                 </p:column>
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Производитель"/>
+                        <h:outputText value="#{msg['price.maker']}"/>
                     </f:facet>
-                    <h:outputLink
-                            value="../maker/edit.xhtml?#{makerEditor.idParameterName}=#{e.productType.maker.id}">
-                        <h:outputText value="#{e.productType.maker.name}"/></h:outputLink>
+                    <h:commandLink value="#{e.productType.maker}" action="edit-maker">
+                        <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
+                    </h:commandLink>
                 </p:column>
-
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Цена"/>
+                        <h:outputText value="#{msg['price.price']}"/>
                     </f:facet>
                     <h:outputText value="#{e.price}">
                         <f:convertNumber integerOnly="true" type="currency"/>
                     </h:outputText>
                 </p:column>
                 <p:column style="width: 2em">
-                    <p:commandLink styleClass="fa fa-fw fa-lg fa-close" style="text-decoration: none"
-                                   onclick="PF('deleteDialog').show()" update=":delete:form" partialSubmit="@this"
-                                   actionListener="#{priceServiceImpl.prepareDelete(e)}"/>
+                    <p:commandLink styleClass="fa fa-fw fa-lg fa-close"
+                                   style="text-decoration: none"
+                                   onclick="PF('deleteDialog').show()"
+                                   update=":delete:form"
+                                   action="prepare-delete">
+                        <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
+                    </p:commandLink>
                 </p:column>
             </p:dataTable>
         </h:form>
-        <my:deleteDialog id="delete" editorBean="#{priceServiceImpl}" header="Удаление отпускной цены">
-            <h:outputText style="border: none;font-weight: bolder"
-                          styleClass="ui-widget ui-widget-content"
-                          value="Подтвердите удаление отпускной цены"/>
-            <ui:include src="view.xhtml"/>
-        </my:deleteDialog>
+        <ui:include src="delete.xhtml"/>
     </ui:define>
-
 </ui:composition>

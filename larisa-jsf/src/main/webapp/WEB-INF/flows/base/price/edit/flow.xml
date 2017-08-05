@@ -2,16 +2,16 @@
 <flow xmlns="http://www.springframework.org/schema/webflow"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
-    <input name="entity" type="larisa.entity.Product" required="true"/>
+    <input name="entity" type="larisa.entity.Price" required="true"/>
     <input name="productType" type="larisa.entity.ProductType"/>
     <view-state id="edit" view="../edit.xhtml">
         <transition on="save" to="edit-confirmed">
-            <evaluate expression="productService.save(entity)" result="entity"/>
+            <evaluate expression="priceService.save(entity)" result="entity"/>
             <evaluate expression="!messageContext.hasErrorMessages()"/>
         </transition>
         <transition on="cancel" to="edit-canceled"/>
         <transition on="new" to="edit">
-            <evaluate expression="productService.createNewInstance()" result="entity"/>
+            <evaluate expression="priceService.createNewInstance()" result="entity"/>
         </transition>
         <transition on="new-productType" to="productType">
             <evaluate expression="productTypeService.createNewInstance()" result="productType"/>
@@ -20,7 +20,7 @@
             <evaluate expression="entity.productType" result="productType"/>
         </transition>
         <transition on="clone" to="edit">
-            <evaluate expression="productService.clone(entity)" result="entity"/>
+            <evaluate expression="priceService.clone(entity)" result="entity"/>
         </transition>
 
     </view-state>
