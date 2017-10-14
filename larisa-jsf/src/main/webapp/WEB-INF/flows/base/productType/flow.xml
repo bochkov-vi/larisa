@@ -19,12 +19,12 @@
         </transition>
     </view-state>
     <subflow-state id="maker-edit" subflow="base/maker/edit">
-        <input name="entity" value="entity.maker"/>
+        <input name="entity" value="entity.maker" required="true" type="larisa.entity.Maker"/>
         <transition on="edit-canceled" to="list"/>
         <transition on="edit-confirmed" to="list"/>
     </subflow-state>
     <subflow-state id="edit" subflow="base/productType/edit">
-        <input name="entity" type="larisa.entity.ProductType"/>
+        <input name="entity" required="true" type="larisa.entity.ProductType"/>
         <transition on="edit-canceled" to="list"/>
         <transition on="edit-confirmed" to="list"/>
     </subflow-state>

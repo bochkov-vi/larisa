@@ -2,8 +2,10 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core" xmlns:my="http://java.sun.com/jsf/composite/my"
-                template="../template.xhtml">
-
+                template="../../../layout/base-template.xhtml">
+    <ui:define name="header">
+        <h:outputText value="#{msg['outgo.title']}"/>
+    </ui:define>
     <ui:define name="content">
         <p:toolbar>
             <p:toolbarGroup>
