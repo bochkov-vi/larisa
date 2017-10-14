@@ -31,6 +31,9 @@ public class Outgo extends AbstractAuditableEntity<Integer> {
     @ColumnPosition(3)
     ProductType productType;
 
+
+
+
     @Override
     public Integer getId() {
         return id;

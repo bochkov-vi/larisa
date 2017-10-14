@@ -3,21 +3,21 @@
                 xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core">
     <h:outputScript library="js" name="ui-galleria-panel.js"/>
-
+    <!--@elvariable id="entity" type="larisa.entity.Outgo"-->
 
     <p:panelGrid columns="2" columnClasses="labelClass">
-        <p:outputLabel for="id" value="Код:"/>
+        <p:outputLabel for="id" value="#{msg['outgo.id']}:"/>
         <p:inputText disabled="true" id="id"
-                     value="#{outgoEditor.selected.id}"/>
-        <p:outputLabel for="productType" value="Наименование:"/>
+                     value="#{entity.id}"/>
+        <p:outputLabel for="productType" value="#{msg['outgo.productType']}:"/>
         <!--@elvariable id="e" type="larisa.entity.ProductType"-->
         <p:autoComplete id="productType"
-                        value="#{outgoEditor.selected.productType}"
+                        value="#{entity.productType}"
                         completeMethod="#{productTypeService.findByMaskAndEmptyChilds}"
                         style="width: 100%"
                         required="true"
                         requiredMessage="Наименование продукта обязательно для заполнения"
-                        converter="#{productTypeServiceImpl}"
+                        converter="#{productTypeService}"
                         var="e"
                         forceSelection="false"
                         itemLabel="#{e.name}"
@@ -29,24 +29,24 @@
             <p:column>#{e.name}</p:column>
             <p:column>#{e.maker.name}</p:column>
         </p:autoComplete>
-        <p:outputLabel for="date" value="Дата:"/>
+        <p:outputLabel for="date" value="#{msg['outgo.date']}:"/>
         <p:calendar id="date"
-                    value="#{outgoEditor.selected.date}"
+                    value="#{entity.date}"
                     converter="#{localDateConverter}"
                     pattern="dd.MM.yy"
-                    size="#{msg.dateSize}"
-                    maxlength="#{msg.dateSize}"
+                    size="#{msg['dateSize']}"
+                    maxlength="#{msg['dateSize']}"
                     required="true"
-                    requiredMessage="Поле 'Дата' обязательно для заполнения"/>
-        <p:outputLabel for="outgo" value="Цена:"/>
-        <p:inputText id="outgo" value="#{outgoEditor.selected.outgo}" required="true"
-                     requiredMessage="Поле 'Цена' обязательно для заполнения">
+                    requiredMessage="#{msg['field']} '#{msg['outgo.productType']}' #{msg['isRequired']}"/>
+        <p:outputLabel for="outgo" value="#{msg['outgo.volume']}:"/>
+        <p:inputText id="outgo" value="#{entity.volume}" required="true"
+                     requiredMessage="Поле '#{msg['outgo.volume']}' обязательно для заполнения">
             <f:convertNumber integerOnly="true"/>
         </p:inputText>
 
     </p:panelGrid>
 
-    <!--<p:contentFlow value="#{outgoEditor.selected.files}" var="f">
+    <!--<p:contentFlow value="#{entity.files}" var="f">
         <p:graphicImage  value="/spring/file/#{f.id}" styleClass="content"/>
     </p:contentFlow>-->
 </ui:composition>

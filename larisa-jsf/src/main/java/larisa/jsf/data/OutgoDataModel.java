@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @Service
 @Scope("session")
-public class OutgoData extends DefaultDataModel<Outgo, Integer> {
+public class OutgoDataModel extends DefaultDataModel<Outgo, Integer> {
 
     Maker maker;
 

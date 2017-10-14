@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/larisa.iml" filepath="$PROJECT_DIR$/larisa.iml" />
       <module fileurl="file://$PROJECT_DIR$/larisa-jpa/larisa-jpa.iml" filepath="$PROJECT_DIR$/larisa-jpa/larisa-jpa.iml" />
       <module fileurl="file://$PROJECT_DIR$/larisa-jsf/larisa-jsf.iml" filepath="$PROJECT_DIR$/larisa-jsf/larisa-jsf.iml" />
-      <module fileurl="file://$PROJECT_DIR$/larisa-jsf/larisa-jsf.iml" filepath="$PROJECT_DIR$/larisa-jsf/larisa-jsf.iml" />
     </modules>
   </component>
 </project>

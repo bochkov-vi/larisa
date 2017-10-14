@@ -1,22 +1,15 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:my="http://java.sun.com/jsf/composite/my"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:p="http://primefaces.org/ui"
-                template="../template.xhtml">
+                template="/WEB-INF/layout/base-template.xhtml">
 
     <ui:define name="content">
-        <h:form id="main">
+        <h:form>
             <ui:include src="toolbar.xhtml"/>
             <ui:include src="inputs.xhtml"/>
             <ui:include src="toolbar.xhtml"/>
         </h:form>
-        <my:deleteDialog id="delete" editorBean="#{outgoEditor}" header="Удаление списания">
-            <h:outputText style="border: none;font-weight: bolder"
-                          styleClass="ui-widget ui-widget-content"
-                          value="Подтвердите удаление списания"/>
-            <ui:include src="view.xhtml"/>
-        </my:deleteDialog>
+        <ui:include src="delete.xhtml"/>
     </ui:define>
 
 </ui:composition>

@@ -9,11 +9,12 @@
                 vertical-align: middle;
                 font-size: 2em;
             }
-            .labelColumn a{
+
+            .labelColumn a {
                 text-decoration: none;
             }
 
-            .iconColumn a{
+            .iconColumn a {
                 text-decoration: none;
             }
         </style>
@@ -21,28 +22,28 @@
             <h:panelGrid columns="2" columnClasses="iconColumn,labelColumn" cellspacing="5">
                 <h:outputLink value="base/product" styleClass="fa fa-2x fa-cubes">
                 </h:outputLink>
-                <h:outputLink value="base/product" >
+                <h:outputLink value="base/product">
                     <h:outputText value="#{msg['product.title']}"/>
                 </h:outputLink>
                 <h:outputLink value="base/productType" styleClass="fa fa-2x fa-archive">
-                    <span />
+                    <span/>
                 </h:outputLink>
                 <h:outputLink value="base/productType">
                     <h:outputText value="#{msg['productType.title']}"/>
                 </h:outputLink>
                 <h:outputLink value="base/price" styleClass="fa fa-2x fa-money">
                 </h:outputLink>
-                <h:outputLink value="base/price" >
+                <h:outputLink value="base/price">
                     <h:outputText value="#{msg['price.title']}"/>
                 </h:outputLink>
                 <h:outputLink value="base/maker" styleClass="fa-gear fa fa-2x">
                 </h:outputLink>
-                <h:outputLink value="base/maker" >
+                <h:outputLink value="base/maker">
                     <h:outputText value="#{msg['maker.title']}"/>
                 </h:outputLink>
                 <h:outputLink value="base/outgo" styleClass="fa-trash fa fa-2x">
                 </h:outputLink>
-                <h:outputLink value="base/outgo" >
+                <h:outputLink value="base/outgo">
                     <h:outputText value="#{msg['outgo.title']}"/>
                 </h:outputLink>
 

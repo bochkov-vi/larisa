@@ -9,16 +9,16 @@
     <ui:define name="content">
         <p:toolbar>
             <p:toolbarGroup>
-                <p:button icon="fa fa-document" value="Новый" href="edit.xhtml"/>
+                <p:commandButton icon="fa fa-document" value="#{msg['new']}" action="new"/>
             </p:toolbarGroup>
         </p:toolbar>
 
         <h:form>
-            <p:panel header="Фильтр" collapsed="#{outgoData.filterHide}" toggleable="true">
+            <p:panel header="Фильтр" collapsed="#{outgoDataModel.filterHide}" toggleable="true">
                 <p:panelGrid columns="2" columnClasses="labelClass">
-                    <p:outputLabel for="maker" value="Производитель:"/>
-                    <p:selectOneMenu widgetVar="maker" id="maker" value="#{outgoData.maker}"
-                                     converter="#{makerEditor}" style="width: 20em">
+                    <p:outputLabel for="maker" value="#{e.date.toString(msg['productType.maker'])}:"/>
+                    <p:selectOneMenu widgetVar="maker" id="maker" value="#{outgoDataModel.maker}"
+                                     converter="#{makerService}" style="width: 20em">
                         <f:selectItem itemLabel="---------------------------------"/>
                         <f:selectItems value="#{makerRepository.findAll()}" itemValue="#{e}" itemLabel="#{e.name}"
                                        var="e"/>
@@ -26,17 +26,17 @@
                     </p:selectOneMenu>
                 </p:panelGrid>
                 <p:commandButton value="Очистить" icon="fa fa-clear" process="@this"
-                                 actionListener="#{outgoData.clear()}" update="@form"/>
+                                 actionListener="#{outgoDataModel.clear()}" update="@form"/>
             </p:panel>
             <p:dataTable lazy="true"
                          rows="50"
-                         value="#{outgoData}"
+                         value="#{outgoDataModel}"
                          var="e"
                          tableStyle="table-layout: auto;">
                 <!--@elvariable id="e" type="larisa.entity.Outgo"-->
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Код"/>
+                        <h:outputText value="#{e.date.toString(msg['outgo.id'])}"/>
                     </f:facet>
                     <h:outputLink
                             value="edit.xhtml?#{productServiceImpl.idParameterName}=#{productServiceImpl.stringFromId(e.id)}">
@@ -45,17 +45,17 @@
                 </p:column>
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Дата"/>
+                        <h:outputText value="#{msg['outgo.date']}"/>
                     </f:facet>
                     <h:outputLink
-                            value="edit.xhtml?#{outgoEditor.idParameterName}=#{outgoEditor.stringFromId(e.id)}">
-                        <h:outputText value="#{e.date.toString(msg.datePattern)}"/>
+                            value="edit.xhtml?#{outgoService.idParameterName}=#{outgoService.stringFromId(e.id)}">
+                        <h:outputText value="#{e.date.toString(msg['datePattern'])}"/>
                     </h:outputLink>
                 </p:column>
 
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Наименование"/>
+                        <h:outputText value="#{msg['outgo.productType']}"/>
                     </f:facet>
                     <h:outputLink
                             value="../productType/edit.xhtml?#{productTypeServiceImpl.idParameterName}=#{e.productType.id}"><h:outputText
@@ -63,32 +63,34 @@
                 </p:column>
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Производитель"/>
+                        <h:outputText value="#{msg['productType.maker']}"/>
                     </f:facet>
                     <h:outputLink
-                            value="../maker/edit.xhtml?#{makerEditor.idParameterName}=#{e.productType.maker.id}">
+                            value="../maker/edit.xhtml?#{makerService.idParameterName}=#{e.productType.maker.id}">
                         <h:outputText value="#{e.productType.maker.name}"/></h:outputLink>
                 </p:column>
 
                 <p:column>
                     <f:facet name="header">
-                        <h:outputText value="Цена"/>
+                        <h:outputText value="#{msg['outgo.volume']}"/>
                     </f:facet>
-                    <h:outputText value="#{e.}">
+                    <h:outputText value="#{e.volume}">
                         <f:convertNumber integerOnly="true" type="currency"/>
                     </h:outputText>
                 </p:column>
                 <p:column style="width: 2em">
                     <p:commandLink styleClass="fa fa-fw fa-lg fa-close" style="text-decoration: none"
                                    onclick="PF('deleteDialog').show()" update=":delete:form" partialSubmit="@this"
-                                   actionListener="#{outgoEditor.prepareDelete(e)}"/>
+                                   action="prepare-delete">
+                        <f:setPropertyActionListener value="e" target="entity"/>
+                    </p:commandLink>
                 </p:column>
             </p:dataTable>
         </h:form>
-        <my:deleteDialog id="delete" editorBean="#{outgoEditor}" header="Удаление отпускной цены">
+        <my:deleteDialog id="delete" header="#{msg['outgo.deleting']}">
             <h:outputText style="border: none;font-weight: bolder"
                           styleClass="ui-widget ui-widget-content"
-                          value="Подтвердите удаление отпускной цены"/>
+                          value="#{msg['outgo.confirmDelete']}"/>
             <ui:include src="view.xhtml"/>
         </my:deleteDialog>
     </ui:define>
