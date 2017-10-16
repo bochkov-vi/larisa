@@ -15,6 +15,9 @@
         <transition on="clone" to="edit">
             <evaluate expression="outgoService.clone(entity)" result="entity"/>
         </transition>
+        <transition on="delete" to="edit-confirmed">
+            <evaluate expression="outgoService.delete(entity)"/>
+        </transition>
     </view-state>
     <end-state id="edit-canceled">
 

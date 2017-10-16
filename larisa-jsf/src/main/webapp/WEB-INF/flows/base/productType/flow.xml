@@ -6,13 +6,20 @@
       parent="parent-flow">
     <var name="data" class="larisa.jsf.data.ProductTypeData"/>
     <var name="entity" class="larisa.entity.ProductType"/>
+    <input name="price" type="larisa.entity.Price"/>
     <view-state id="list" view="list.xhtml">
         <transition on="edit" to="edit">
         </transition>
-        <transition on="to-maker" to="maker-edit">
+        <transition on="maker-edit" to="maker-edit">
 
         </transition>
-        <transition on="prepare-delete" >
+        <transition on="price-edit" to="price-edit">
+
+        </transition>
+        <transition on="price-new" to="price-new">
+
+        </transition>
+        <transition on="prepare-delete">
         </transition>
         <transition on="delete" to="list">
             <evaluate expression="productTypeService.delete(entity)"/>
@@ -20,6 +27,16 @@
     </view-state>
     <subflow-state id="maker-edit" subflow="base/maker/edit">
         <input name="entity" value="entity.maker" required="true" type="larisa.entity.Maker"/>
+        <transition on="edit-canceled" to="list"/>
+        <transition on="edit-confirmed" to="list"/>
+    </subflow-state>
+    <subflow-state id="price-edit" subflow="base/price/edit">
+        <input name="entity" value="priceService.findOne(entity)" required="true" type="larisa.entity.Price"/>
+        <transition on="edit-canceled" to="list"/>
+        <transition on="edit-confirmed" to="list"/>
+    </subflow-state>
+    <subflow-state id="price-new" subflow="base/price/edit">
+        <input name="entity" value="priceService.createNewInstance(entity)" required="true" type="larisa.entity.Price"/>
         <transition on="edit-canceled" to="list"/>
         <transition on="edit-confirmed" to="list"/>
     </subflow-state>

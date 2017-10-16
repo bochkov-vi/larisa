@@ -14,7 +14,7 @@ import java.util.Map;
  * Created by home on 24.02.17.
  */
 
-public class PriceData extends DefaultDataModel<Price, Integer> {
+public class PriceDataModel extends DefaultDataModel<Price, Integer> {
 
     Maker maker;
 

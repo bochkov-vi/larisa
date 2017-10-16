@@ -1,20 +1,24 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
+                xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core"
                 template="main-template.xhtml">
+    <ui:define name="title">
+        <ui:insert name="header">Заголовок</ui:insert>
+    </ui:define>
     <ui:define name="body">
+
         <p:panel style="margin-right: 0%;margin-left: 0%">
+            <f:facet name="header">
+                <ui:insert name="header">Заголовок</ui:insert>
+            </f:facet>
 
             <p:toolbar>
 
                 <p:toolbarGroup>
                     <style>
-                        .ui-icon {
-                            width: auto !important;
-                            border-radius: inherit !important;
-                        }
+
                     </style>
-                    <p:button  href="/spring/base" icon="fa fa-home"/>
+                    <p:button href="/spring/base" icon="fa fa-home"/>
                     <p:button href="/spring/base/product" icon="fa fa-cubes" value="#{msg['product.title']}"/>
                     <p:button href="/spring/base/productType" icon="fa fa-archive" value="#{msg['productType.title']}"/>
                     <p:button href="/spring/base/price" icon="fa fa-money" value="#{msg['price.title']}"/>

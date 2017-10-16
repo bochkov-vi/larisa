@@ -2,9 +2,9 @@ package larisa.entity;
 
 import org.entity3.column.ColumnPosition;
 import org.entity3.converter.JodaLocalDateConverter;
+import org.joda.time.LocalDate;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 /**
  * Created by home on 23.02.17.
@@ -22,9 +22,13 @@ public class Outgo extends AbstractAuditableEntity<Integer> {
     @Column(name = "date", nullable = false)
     LocalDate date;
 
-    @Column(name = "volume", precision = 4, scale = 2)
+    @Column(name = "volume", precision = 4, scale = 2,nullable = false)
     @ColumnPosition(4)
-    Double volume;
+    Integer volume;
+
+    @Column(name = "price", precision = 4, scale = 2)
+    @ColumnPosition(4)
+    Double price;
 
     @ManyToOne
     @JoinColumn(name = "id_product_type")
@@ -47,11 +51,11 @@ public class Outgo extends AbstractAuditableEntity<Integer> {
         this.date = date;
     }
 
-    public Double getVolume() {
+    public Integer getVolume() {
         return volume;
     }
 
-    public void setVolume(Double volume) {
+    public void setVolume(Integer volume) {
         this.volume = volume;
     }
 
@@ -65,5 +69,13 @@ public class Outgo extends AbstractAuditableEntity<Integer> {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }

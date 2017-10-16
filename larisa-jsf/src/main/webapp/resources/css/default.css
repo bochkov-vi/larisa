@@ -19,3 +19,8 @@
 .ui-autocomplete-multiple-container{
     width: auto !important;
 }*/
+.ui-button-icon-left {
+    width: auto !important;
+    height: inherit !important;
+    border-radius: inherit !important;
+}

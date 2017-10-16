@@ -37,13 +37,19 @@
                     size="#{msg['dateSize']}"
                     maxlength="#{msg['dateSize']}"
                     required="true"
-                    requiredMessage="#{msg['field']} '#{msg['outgo.productType']}' #{msg['isRequired']}"/>
-        <p:outputLabel for="outgo" value="#{msg['outgo.volume']}:"/>
-        <p:inputText id="outgo" value="#{entity.volume}" required="true"
-                     requiredMessage="Поле '#{msg['outgo.volume']}' обязательно для заполнения">
+                    requiredMessage="#{msg['field']} '#{msg['outgo.productType']}' #{msg['isRequired']}"
+                    locale="ru"
+                    showButtonPanel="true"/>
+        <p:outputLabel for="volume" value="#{msg['outgo.volume']}:"/>
+        <p:inputText id="volume" value="#{entity.volume}" required="true"
+                     requiredMessage="#{msg['field']} '#{msg['outgo.volume']}' #{msg['isRequired']}">
             <f:convertNumber integerOnly="true"/>
         </p:inputText>
-
+        <p:outputLabel for="price" value="#{msg['outgo.price']}:"/>
+        <p:inputText id="price" value="#{entity.price}" required="false"
+                     requiredMessage="#{msg['field']} '#{msg['outgo.price']}' #{msg['isRequired']}">
+            <f:convertNumber integerOnly="true"/>
+        </p:inputText>
     </p:panelGrid>
 
     <!--<p:contentFlow value="#{entity.files}" var="f">

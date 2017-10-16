@@ -3,7 +3,6 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
     <input name="entity" type="larisa.entity.Price" required="true"/>
-    <input name="productType" type="larisa.entity.ProductType"/>
     <view-state id="edit" view="../edit.xhtml">
         <transition on="save" to="edit-confirmed">
             <evaluate expression="priceService.save(entity)" result="entity"/>
@@ -13,30 +12,17 @@
         <transition on="new" to="edit">
             <evaluate expression="priceService.createNewInstance()" result="entity"/>
         </transition>
-        <transition on="new-productType" to="productType">
-            <evaluate expression="productTypeService.createNewInstance()" result="productType"/>
-        </transition>
-        <transition on="edit-productType" to="productType">
-            <evaluate expression="entity.productType" result="productType"/>
-        </transition>
         <transition on="clone" to="edit">
             <evaluate expression="priceService.clone(entity)" result="entity"/>
         </transition>
-
-    </view-state>
-
-    <subflow-state id="productType" subflow="base/productType/edit">
-        <input name="entity" value="productType"/>
-        <transition on="edit-confirmed" to="edit">
-            <evaluate expression="entity.productType = currentEvent.attributes.entity"/>
+        <transition on="delete" to="edit-confirmed">
+            <evaluate expression="priceService.delete(entity)"/>
         </transition>
-        <transition on="edit-canceled" to="edit"/>
-    </subflow-state>
-
+    </view-state>
     <end-state id="edit-canceled">
 
     </end-state>
     <end-state id="edit-confirmed">
-
+        <output name="entity" value="entity"/>
     </end-state>
 </flow>

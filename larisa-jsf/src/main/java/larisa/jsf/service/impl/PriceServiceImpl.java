@@ -64,6 +64,14 @@ public class PriceServiceImpl extends DefaultServiceImpl<Price, Integer> impleme
                     cb.equal(root.get("dateFrom"), subquery));
         }, null);
     }
+
+    @Override
+    public Price createNewInstance(ProductType productType) {
+        Price price = createNewInstance();
+        price.setProductType(productType);
+        return price;
+    }
+
     @Override
     public Price save(Price price) {
         Price prev = findPrev(price);
@@ -106,4 +114,6 @@ public class PriceServiceImpl extends DefaultServiceImpl<Price, Integer> impleme
         }
         return null;
     }
+
+
 }

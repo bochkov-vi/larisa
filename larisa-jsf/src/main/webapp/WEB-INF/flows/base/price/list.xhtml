@@ -48,7 +48,7 @@
                     <f:facet name="header">
                         <h:outputText value="#{msg['price.id']}"/>
                     </f:facet>
-                    <h:commandLink value="#{e.id}">
+                    <h:commandLink value="#{e.id}" action="edit">
                         <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
                     </h:commandLink>
                 </p:column>

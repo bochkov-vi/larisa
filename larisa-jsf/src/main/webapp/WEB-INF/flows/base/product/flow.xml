@@ -4,37 +4,42 @@
       xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd"
       start-state="list"
       parent="parent-flow">
-    <var name="data" class="larisa.jsf.data.ProductData"/>
-    <input name="entity" type="larisa.entity.Product"/>
-    <input name="productType" type="larisa.entity.ProductType"/>
+    <var name="data" class="larisa.jsf.data.ProductDataModel"/>
+    <var name="entity" class="larisa.entity.Product"/>
     <view-state id="list" view="list.xhtml">
-        <transition on="edit" to="edit"/>
-        <transition on="edit-productType" to="productType">
-            <evaluate expression="entity.productType" result="productType"/>
+        <transition on="edit" to="edit">
         </transition>
-        <transition on="delete" to="list">
-            <evaluate expression="productService.delete(entity)"/>
+        <transition on="prepare-delete">
+        </transition>
+
+        <transition on="edit-productType" to="edit-productType">
+
+        </transition>
+        <transition on="edit-maker" to="edit-maker">
+
         </transition>
     </view-state>
-
     <subflow-state id="edit" subflow="base/product/edit">
         <input name="entity" type="larisa.entity.Product"/>
         <transition on="edit-canceled" to="list"/>
         <transition on="edit-confirmed" to="list"/>
     </subflow-state>
-
-    <subflow-state id="productType" subflow="base/productType/edit">
-        <input name="entity" value="productType"/>
-        <transition on="edit-confirmed" to="edit">
-            <evaluate expression="entity.productType = currentEvent.attributes.entity"/>
-        </transition>
+    <subflow-state id="edit-productType" subflow="base/productType/edit">
+        <input name="entity" value="entity.productType" type="larisa.entity.ProductType" required="true"/>
         <transition on="edit-canceled" to="list"/>
+        <transition on="edit-confirmed" to="list"/>
     </subflow-state>
-
+    <subflow-state id="edit-maker" subflow="base/maker/edit">
+        <input name="entity" value="entity.productType.maker" type="larisa.entity.Maker" required="true"/>
+        <transition on="edit-canceled" to="list"/>
+        <transition on="edit-confirmed" to="list"/>
+    </subflow-state>
     <global-transitions>
         <transition on="new" to="edit">
-            <evaluate expression="productService.createNewInstance()" result="entity"/>
+            <evaluate expression="outgoService.createNewInstance()" result="entity"/>
+        </transition>
+        <transition on="delete">
+            <evaluate expression="outgoService.delete(entity)"/>
         </transition>
     </global-transitions>
-
 </flow>

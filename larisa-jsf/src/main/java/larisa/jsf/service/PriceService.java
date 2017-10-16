@@ -15,4 +15,6 @@ public interface PriceService extends DefaultService<Price, Integer> {
     Price findOne(ProductType productType);
 
     Price findOne(ProductType productType, LocalDate localDate);
+
+    Price createNewInstance(ProductType productType);
 }

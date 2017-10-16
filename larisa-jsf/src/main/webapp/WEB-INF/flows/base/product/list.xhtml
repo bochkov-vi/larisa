@@ -58,7 +58,7 @@
                     <f:facet name="header">
                         <h:outputText value="#{msg['product.productType']}"/>
                     </f:facet>
-                    <h:commandLink value="#{e.productType.name}" action="edit-productType">
+                    <h:commandLink value="#{e.productType}" action="edit-productType">
                         <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
                     </h:commandLink>
                 </p:column>
