@@ -4,8 +4,10 @@ import larisa.entity.Price;
 import larisa.entity.ProductType;
 import larisa.jsf.service.PriceService;
 import larisa.repository.PriceRepository;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +71,13 @@ public class PriceServiceImpl extends DefaultServiceImpl<Price, Integer> impleme
     public Price createNewInstance(ProductType productType) {
         Price price = createNewInstance();
         price.setProductType(productType);
+        return price;
+    }
+
+    @Override
+    public Price createNewInstance() {
+        Price price = super.createNewInstance();
+        price.setDateFrom(new LocalDate(DateTimeZone.forTimeZone(LocaleContextHolder.getTimeZone())));
         return price;
     }
 

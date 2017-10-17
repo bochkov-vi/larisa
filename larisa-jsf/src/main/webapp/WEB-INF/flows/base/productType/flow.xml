@@ -19,6 +19,12 @@
         <transition on="price-new" to="price-new">
 
         </transition>
+        <transition on="outgo-new" to="outgo-new">
+
+        </transition>
+        <transition on="product-new" to="product-new">
+
+        </transition>
         <transition on="prepare-delete">
         </transition>
         <transition on="delete" to="list">
@@ -40,6 +46,28 @@
         <transition on="edit-canceled" to="list"/>
         <transition on="edit-confirmed" to="list"/>
     </subflow-state>
+
+    <subflow-state id="product-new" subflow="base/product/edit">
+        <on-entry>
+            <set name="requestScope.product" value="productService.createNewInstance()" type="larisa.entity.Product"/>
+            <set name="requestScope.product.productType" value="entity" type="larisa.entity.ProductType"/>
+        </on-entry>
+        <input name="entity" value="requestScope.product" required="true" type="larisa.entity.Product"/>
+        <transition on="edit-canceled" to="list"/>
+        <transition on="edit-confirmed" to="list"/>
+    </subflow-state>
+
+    <subflow-state id="outgo-new" subflow="base/outgo/edit">
+        <on-entry>
+            <set name="requestScope.outgo" value="outgoService.createNewInstance()" type="larisa.entity.Outgo"/>
+            <set name="requestScope.outgo.productType" value="entity" type="larisa.entity.ProductType"/>
+        </on-entry>
+        <input name="entity" value="requestScope.outgo" required="true" type="larisa.entity.Outgo"/>
+        <transition on="edit-canceled" to="list"/>
+        <transition on="edit-confirmed" to="list"/>
+    </subflow-state>
+
+
     <subflow-state id="edit" subflow="base/productType/edit">
         <input name="entity" required="true" type="larisa.entity.ProductType"/>
         <transition on="edit-canceled" to="list"/>
@@ -50,4 +78,5 @@
             <evaluate expression="productTypeService.createNewInstance()" result="entity"/>
         </transition>
     </global-transitions>
+    
 </flow>

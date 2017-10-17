@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://java.sun.com/jsf/core"
                 template="/WEB-INF/layout/base-template.xhtml">
     <ui:define name="header">
         <h:outputText value="#{msg['productType.title']}"/>
@@ -45,9 +45,9 @@
                     <f:facet name="header">
                         <h:outputText value="#{msg['productType.id']}"/>
                     </f:facet>
-                           <p:commandLink action="edit" value="#{e.id}">
-                               <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
-                           </p:commandLink>
+                    <p:commandLink action="edit" value="#{e.id}">
+                        <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
+                    </p:commandLink>
                 </p:column>
                 <p:column>
                     <f:facet name="header">
@@ -115,24 +115,46 @@
                 </p:column>
                 <p:column>
                     <f:facet name="header">
+                        <h:outputText value="#{msg['productType.comein']}"/>
+                    </f:facet>
+                    <h:outputText value="#{productRepository.comein(e)}"/>
+                    <p:commandLink action="product-new" style="text-decoration: none;float: right"
+                                   styleClass="fa fa-plus-square">
+                        <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
+                    </p:commandLink>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{msg['productType.outgo']}"/>
+                    </f:facet>
+                    <h:outputText value="#{outgoRepository.outgo(e)}"/>
+                    <p:commandLink action="outgo-new" style="text-decoration: none;float: right" styleClass="fa fa-minus-square">
+                        <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
+                    </p:commandLink>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
                         <h:outputText value="#{msg['productType.exists']}"/>
                     </f:facet>
-                    <h:outputText value="#{productRepository.comein(e) - outgoRepository.outgo(e)}"/>
+                    <p:commandLink action="outgo-new" value="#{productRepository.comein(e)-outgoRepository.outgo(e)}">
+                        <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
+                    </p:commandLink>
                 </p:column>
                 <p:column>
                     <f:facet name="header">
                         <h:outputText value="#{msg['productType.price']}"/>
                     </f:facet>
                     <!--<c:set var="p" value="#{priceService.findOne(e)}"/>-->
-                   <!-- <h:outputLink title="#{msg['productType.makePrice']}" styleClass="fa fa-fw fa-money"
-                                  value="../price/edit.xhtml?#{productTypeServiceImpl.idParameterName}=#{productTypeServiceImpl.stringFromId(e.id)}"/>-->
+                    <!-- <h:outputLink title="#{msg['productType.makePrice']}" styleClass="fa fa-fw fa-money"
+                                   value="../price/edit.xhtml?#{productTypeServiceImpl.idParameterName}=#{productTypeServiceImpl.stringFromId(e.id)}"/>-->
                     <p:commandLink rendered="#{not empty priceService.findOne(e)}" action="price-edit">
                         <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
                         <h:outputText value="#{priceService.findOne(e).price}">
                             <f:convertNumber type="currency"/>
                         </h:outputText>
                     </p:commandLink>
-                    <p:commandLink rendered="#{ empty priceService.findOne(e)}" styleClass="fa fa-fw fa-money" action="price-new">
+                    <p:commandLink rendered="#{ empty priceService.findOne(e)}" styleClass="fa fa-fw fa-money"
+                                   action="price-new">
                         <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
                     </p:commandLink>
                     <!--<h:outputLink rendered="#{not empty price}"
