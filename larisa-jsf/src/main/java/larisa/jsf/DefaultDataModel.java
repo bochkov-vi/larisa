@@ -3,6 +3,7 @@ package larisa.jsf;
 import jsf.util3.DataManagedBean;
 import larisa.DefaultEntityRepository;
 import larisa.entity.DefaultEntity;
+import larisa.jsf.data.FilterBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.data.jpa.domain.Specification;
@@ -18,8 +19,8 @@ import java.util.Map;
 @Configurable
 public class DefaultDataModel<T extends DefaultEntity<ID>, ID extends Serializable> extends DataManagedBean<T> {
 
-    boolean filterHide = true;
 
+    protected FilterBean filter;
     @Autowired
     transient DefaultEntityRepository<T, ID> repository;
 
@@ -37,14 +38,11 @@ public class DefaultDataModel<T extends DefaultEntity<ID>, ID extends Serializab
         return true;
     }
 
-    public boolean isFilterHide() {
-        if (!isEmptyFilter()) {
-            filterHide = false;
-        }
-        return filterHide;
+    public FilterBean getFilter() {
+        return filter;
     }
 
-    public void setFilterHide(boolean filterHide) {
-        this.filterHide = filterHide;
+    public void setFilter(FilterBean filter) {
+        this.filter = filter;
     }
 }

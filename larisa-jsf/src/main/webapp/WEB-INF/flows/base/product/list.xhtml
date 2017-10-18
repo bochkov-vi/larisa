@@ -16,9 +16,9 @@
         </p:toolbar></h:form>
 
         <h:form>
-            <p:panel header="Фильтр" collapsed="#{data.filterHide}" toggleable="true">
+            <p:panel header="#{msg['filterPanel']}" collapsed="#{data.filterHide}" toggleable="true">
                 <p:panelGrid columns="2" columnClasses="labelClass">
-                    <p:outputLabel for="maker" value="Производитель:"/>
+                    <p:outputLabel for="maker" value="#{msg['product.maker']}:"/>
                     <p:selectOneMenu widgetVar="maker" id="maker" value="#{data.maker}"
                                      converter="#{makerService}" style="width: 20em">
                         <f:selectItem itemLabel="---------------------------------"/>
@@ -27,7 +27,7 @@
                         <p:ajax process="@this" update="@form"/>
                     </p:selectOneMenu>
                 </p:panelGrid>
-                <p:commandButton value="Очистить" icon="fa fa-clear" process="@this"
+                <p:commandButton value="#{msg['clearFilter']}" icon="fa fa-clear" process="@this"
                                  actionListener="#{data.clear()}" update="@form"/>
             </p:panel>
 

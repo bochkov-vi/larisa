@@ -15,10 +15,11 @@
         </p:toolbar>
 
         <h:form>
-            <p:panel header="Фильтр" collapsed="#{data.filterHide}" toggleable="true">
+            <p:panel header="#{msg['filterPanel']}" collapsed="#{filter.hide}" toggleable="true">
                 <p:autoComplete required="false"
-                                id="maker" value="#{data.maker}"
-                                converter="#{productTypeService}"
+                                id="maker"
+                                value="#{filter.maker}"
+                                converter="#{makerService}"
                                 style="width: 100%"
                                 inputStyle="width: 90%"
                                 completeMethod="#{makerService.findByMask}"
@@ -29,8 +30,8 @@
                     <p:ajax event="query" global="false"/>
                     <p:ajax event="itemSelect" process="@this" update="@form"/>
                 </p:autoComplete>
-                <p:commandButton value="Очистить" icon="fa fa-clear" process="@this"
-                                 actionListener="#{productTypeData.clear()}" update="@form"/>
+                <p:commandButton value="#{msg['clear']}" icon="fa fa-clear" process="@this"
+                                 actionListener="#{filter.clear()}" update="@form"/>
             </p:panel>
 
             <p:dataTable lazy="true"

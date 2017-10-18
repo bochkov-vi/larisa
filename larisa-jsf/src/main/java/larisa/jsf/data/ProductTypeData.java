@@ -1,6 +1,5 @@
 package larisa.jsf.data;
 
-import larisa.entity.Maker;
 import larisa.entity.ProductType;
 import larisa.jsf.DefaultDataModel;
 import org.springframework.data.jpa.domain.Specification;
@@ -14,7 +13,6 @@ import java.util.Map;
 
 public class ProductTypeData extends DefaultDataModel<ProductType, Integer> {
 
-    Maker maker;
 
     @Override
     protected Specification<ProductType> getSpecification(Map<String, Object> filters) {
@@ -23,23 +21,10 @@ public class ProductTypeData extends DefaultDataModel<ProductType, Integer> {
 
     Specification<ProductType> getSpecification() {
         Specifications<ProductType> result = Specifications.where((root, criteriaQuery, criteriaBuilder) -> null);
-        if (maker != null) {
-            result = result.and((root, query, cb) -> cb.equal(root.get("maker"), maker));
+        if (filter.getMaker() != null) {
+            result = result.and((root, query, cb) -> cb.equal(root.get("maker"), filter.getMaker()));
         }
         return result;
     }
-
-
-
-    public void clear(){
-        this.maker =null;
-    }
-
-    public void setMaker(Maker maker) {
-        this.maker = maker;
-    }
-
-    public Maker getMaker() {
-        return maker;
-    }
+    
 }
