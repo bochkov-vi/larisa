@@ -2,18 +2,15 @@ package larisa.jsf.data;
 
 import larisa.entity.Outgo;
 import larisa.jsf.DefaultDataModel;
-import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
-import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 /**
  * Created by home on 24.02.17.
  */
-@Service
-@Scope("session")
+
 public class OutgoDataModel extends DefaultDataModel<Outgo, Integer> {
 
 

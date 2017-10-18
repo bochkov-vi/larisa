@@ -88,7 +88,7 @@
                         <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
                     </h:commandLink>
                 </p:column>
-                <p:column>
+                <p:column>outgoDataModel
                     <f:facet name="header">
                         <h:outputText value="#{msg['product.volume']}"/>
                     </f:facet>
@@ -113,9 +113,13 @@
                     </h:outputText>
                 </p:column>
                 <p:column style="width: 2em">
-                    <p:commandLink styleClass="fa fa-fw fa-lg fa-close" style="text-decoration: none"
-                                   onclick="PF('deleteDialog').show()" update=":delete:form" partialSubmit="@this"
-                                   actionListener="#{productServiceImpl.prepareDelete(e)}"/>
+                    <p:commandLink styleClass="fa fa-fw fa-lg fa-close"
+                                   style="text-decoration: none"
+                                   onclick="PF('deleteDialog').show()"
+                                   update=":delete:form"
+                                   action="prepare-delete">
+                        <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
+                    </p:commandLink>
                 </p:column>
             </p:dataTable>
         </h:form>
