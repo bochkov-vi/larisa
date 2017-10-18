@@ -1,15 +1,12 @@
 package larisa.jsf.data;
 
-import larisa.entity.Maker;
 import larisa.entity.Outgo;
-import larisa.entity.ProductType;
 import larisa.jsf.DefaultDataModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.Map;
 
 /**
@@ -19,13 +16,6 @@ import java.util.Map;
 @Scope("session")
 public class OutgoDataModel extends DefaultDataModel<Outgo, Integer> {
 
-    Maker maker;
-
-    ProductType productType;
-
-    LocalDate dateFrom;
-
-    LocalDate dateTo;
 
 
     @Override
@@ -35,74 +25,20 @@ public class OutgoDataModel extends DefaultDataModel<Outgo, Integer> {
 
     Specification<Outgo> getSpecification() {
         Specifications<Outgo> result = Specifications.where((root, criteriaQuery, criteriaBuilder) -> null);
-        if (maker != null) {
-            result = result.and((root, query, cb) -> cb.equal(root.get("productType").get("maker"), maker));
+        if (filter.maker != null) {
+            result = result.and((root, query, cb) -> cb.equal(root.get("productType").get("maker"), filter.maker));
         }
-        if (productType != null) {
-            result = result.and((root, query, cb) -> cb.equal(root.get("productType"), productType));
+        if (filter.productType != null) {
+            result = result.and((root, query, cb) -> cb.equal(root.get("productType"), filter.productType));
         }
-        if (getDateFrom() != null) {
-            result = result.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("date"), getDateFrom()));
+        if (filter.getDateFrom() != null) {
+            result = result.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("date"), filter.getDateFrom()));
         }
-        if (getDateTo() != null) {
-            result = result.and((root, query, cb) -> cb.lessThanOrEqualTo(root.get("date"), getDateTo()));
+        if (filter.getDateTo() != null) {
+            result = result.and((root, query, cb) -> cb.lessThanOrEqualTo(root.get("date"), filter.getDateTo()));
         }
         return result;
     }
 
-   /* public Maker getMaker() {
-        MakerEditor makerEditor = ContextHolder.context.getBean(MakerEditor.class);
-        if (makerEditor.entityFromRequest() != null) {
-            this.maker = makerEditor.entityFromRequest();
 
-        }
-        return maker;
-    }*/
-
-    public void setMaker(Maker maker) {
-        this.maker = maker;
-    }
-
-    public void clear() {
-        this.maker = null;
-        this.productType = null;
-        dateFrom = null;
-        dateTo = null;
-    }
-
-   /* public ProductType getProductType() {
-        ProductTypeEditor productTypeEditor = ContextHolder.context.getBean(ProductTypeEditor.class);
-        if (productTypeEditor.entityFromRequest() != null) {
-            this.productType = productTypeEditor.entityFromRequest();
-        }
-        return this.productType;
-    }*/
-
-    public void setProductType(ProductType productType) {
-        this.productType = productType;
-    }
-
-    public LocalDate getDateFrom() {
-        return dateFrom;
-    }
-
-    public void setDateFrom(LocalDate dateFrom) {
-        this.dateFrom = dateFrom;
-    }
-
-    public LocalDate getDateTo() {
-        return dateTo;
-    }
-
-    public void setDateTo(LocalDate dateTo) {
-        this.dateTo = dateTo;
-    }
-
-    public Maker getMaker() {
-        return maker;
-    }
-
-    public ProductType getProductType() {
-        return productType;
-    }
 }

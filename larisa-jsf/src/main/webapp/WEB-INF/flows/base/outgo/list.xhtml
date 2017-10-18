@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core" xmlns:my="http://java.sun.com/jsf/composite/my"
+                xmlns:f="http://java.sun.com/jsf/core"
                 template="../../../layout/base-template.xhtml">
     <ui:define name="header">
         <h:outputText value="#{msg['outgo.title']}"/>
@@ -14,19 +14,36 @@
         </p:toolbar>
 
         <h:form>
-            <p:panel header="Фильтр" collapsed="#{outgoDataModel.filterHide}" toggleable="true">
-                <p:panelGrid columns="2" columnClasses="labelClass">
-                    <p:outputLabel for="maker" value="#{e.date.toString(msg['productType.maker'])}:"/>
-                    <p:selectOneMenu widgetVar="maker" id="maker" value="#{outgoDataModel.maker}"
-                                     converter="#{makerService}" style="width: 20em">
-                        <f:selectItem itemLabel="---------------------------------"/>
-                        <f:selectItems value="#{makerRepository.findAll()}" itemValue="#{e}" itemLabel="#{e.name}"
-                                       var="e"/>
-                        <p:ajax process="@this" update="@form"/>
-                    </p:selectOneMenu>
+            <p:panel header="#{msg['filterPanel']}" collapsed="#{filter.hide}" toggleable="true">
+                <p:ajax event="toggle"/>
+                <p:panelGrid style="border: none">
+                    <p:row style="border: none">
+                        <p:column style="border: none">
+                            <p:autoComplete required="false"
+                                            id="maker"
+                                            value="#{filter.maker}"
+                                            converter="#{makerService}"
+                                            completeMethod="#{makerService.findByMask}"
+                                            inputStyle="width: 60em"
+                                            var="e"
+                                            itemValue="#{e}"
+                                            itemLabel="#{e.name}"
+                                            dropdown="true">
+                                <p:ajax event="query" global="false"/>
+                                <p:ajax event="itemSelect" process="@this" update="@form"/>
+                            </p:autoComplete>
+                        </p:column>
+                    </p:row>
+                    <p:row style="border: none">
+                        <p:column style="border: none">
+                            <p:commandButton value="#{msg['clearFilter']}" icon="fa fa-close" process="@this"
+                                             actionListener="#{filter.clear()}" update="@form"/>
+
+                            <p:commandButton value="#{msg['doFilter']}" icon="fa fa-filter" process="@this"
+                                             update="@form"/>
+                        </p:column>
+                    </p:row>
                 </p:panelGrid>
-                <p:commandButton value="Очистить" icon="fa fa-clear" process="@this"
-                                 actionListener="#{outgoDataModel.clear()}" update="@form"/>
             </p:panel>
             <p:dataTable lazy="true"
                          rows="50"

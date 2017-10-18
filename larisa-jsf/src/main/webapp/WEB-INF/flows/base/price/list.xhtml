@@ -17,25 +17,37 @@
         </h:form>
 
         <h:form>
-            <p:panel header="Фильтр" collapsed="#{data.filterHide}" toggleable="true">
-                <!--@elvariable id="e" type="larisa.entity.ProductType"-->
-                <p:panelGrid columns="2" columnClasses="labelClass">
-                    <p:outputLabel for="maker" value="Производитель:"/>
-                    <p:autoComplete id="maker" value="#{data.maker}"
-                                    converter="#{makerService}"
-                                    style="width: 20em"
-                                    completeMethod="#{makerService.findByMask}"
-                                    var="e"
-                                    itemValue="#{e}"
-                                    itemLabel="#{e.name}"
-                                    dropdown="true"
-                                    forceSelection="true">
-                        <p:ajax event="query" global="false"/>
-                        <p:ajax event="itemSelect" process="@this" update="@form"/>
-                    </p:autoComplete>
+            <p:panel header="#{msg['filterPanel']}" collapsed="#{filter.hide}" toggleable="true">
+                <p:ajax event="toggle"/>
+                <p:panelGrid style="border: none">
+                    <p:row style="border: none">
+                        <p:column style="border: none">
+                            <p:autoComplete required="false"
+                                            id="maker"
+                                            value="#{filter.maker}"
+                                            converter="#{makerService}"
+                                            completeMethod="#{makerService.findByMask}"
+                                            inputStyle="width: 60em"
+                                            var="e"
+                                            itemValue="#{e}"
+                                            itemLabel="#{e.name}"
+                                            dropdown="true"
+                                            forceSelection="true">
+                                <p:ajax event="query" global="false"/>
+                                <p:ajax event="itemSelect" process="@this" update="@form"/>
+                            </p:autoComplete>
+                        </p:column>
+                    </p:row>
+                    <p:row style="border: none">
+                        <p:column style="border: none">
+                            <p:commandButton value="#{msg['clearFilter']}" icon="fa fa-close" process="@this"
+                                             actionListener="#{filter.clear()}" update="@form"/>
+
+                            <p:commandButton value="#{msg['doFilter']}" icon="fa fa-filter" process="@this"
+                                             update="@form"/>
+                        </p:column>
+                    </p:row>
                 </p:panelGrid>
-                <p:commandButton value="Очистить" icon="fa fa-clear" process="@this"
-                                 actionListener="#{data.clear()}" update="@form"/>
             </p:panel>
             <!--@elvariable id="e" type="larisa.entity.Price"-->
             <p:dataTable lazy="true"

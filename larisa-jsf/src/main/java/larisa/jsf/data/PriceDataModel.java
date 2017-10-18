@@ -1,13 +1,10 @@
 package larisa.jsf.data;
 
-import larisa.entity.Maker;
 import larisa.entity.Price;
-import larisa.entity.ProductType;
 import larisa.jsf.DefaultDataModel;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 
-import java.time.LocalDate;
 import java.util.Map;
 
 /**
@@ -16,13 +13,7 @@ import java.util.Map;
 
 public class PriceDataModel extends DefaultDataModel<Price, Integer> {
 
-    Maker maker;
 
-    ProductType productType;
-
-    LocalDate dateFrom;
-
-    LocalDate dateTo;
 
 
     @Override
@@ -32,61 +23,22 @@ public class PriceDataModel extends DefaultDataModel<Price, Integer> {
 
     Specification<Price> getSpecification() {
         Specifications<Price> result = Specifications.where((root, criteriaQuery, criteriaBuilder) -> null);
-        if (getMaker() != null) {
-            result = result.and((root, query, cb) -> cb.equal(root.get("productType").get("maker"), getMaker()));
+        if (filter.getMaker() != null) {
+            result = result.and((root, query, cb) -> cb.equal(root.get("productType").get("maker"), filter.getMaker()));
         }
-        if (getProductType() != null) {
-            result = result.and((root, query, cb) -> cb.equal(root.get("productType"), getProductType()));
+        if (filter.getProductType() != null) {
+            result = result.and((root, query, cb) -> cb.equal(root.get("productType"),filter. getProductType()));
         }
-        if (getDateFrom() != null) {
-            result = result.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("dateTo"), getDateFrom()));
+        if (filter.getDateFrom() != null) {
+            result = result.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("dateTo"), filter.getDateFrom()));
         }
-        if (getDateTo() != null) {
-            result = result.and((root, query, cb) -> cb.lessThanOrEqualTo(root.get("dateFrom"), getDateTo()));
+        if (filter.getDateTo() != null) {
+            result = result.and((root, query, cb) -> cb.lessThanOrEqualTo(root.get("dateFrom"),filter. getDateTo()));
         }
         return result;
     }
 
 
 
-    public void setMaker(Maker maker) {
-        this.maker = maker;
-    }
 
-    public void clear() {
-        this.maker = null;
-        this.productType = null;
-        dateFrom = null;
-        dateTo = null;
-    }
-
-
-
-    public void setProductType(ProductType productType) {
-        this.productType = productType;
-    }
-
-    public LocalDate getDateFrom() {
-        return dateFrom;
-    }
-
-    public void setDateFrom(LocalDate dateFrom) {
-        this.dateFrom = dateFrom;
-    }
-
-    public LocalDate getDateTo() {
-        return dateTo;
-    }
-
-    public void setDateTo(LocalDate dateTo) {
-        this.dateTo = dateTo;
-    }
-
-    public Maker getMaker() {
-        return maker;
-    }
-
-    public ProductType getProductType() {
-        return productType;
-    }
 }

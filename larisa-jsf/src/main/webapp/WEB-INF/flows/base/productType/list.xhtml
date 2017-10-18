@@ -16,22 +16,35 @@
 
         <h:form>
             <p:panel header="#{msg['filterPanel']}" collapsed="#{filter.hide}" toggleable="true">
-                <p:autoComplete required="false"
-                                id="maker"
-                                value="#{filter.maker}"
-                                converter="#{makerService}"
-                                style="width: 100%"
-                                inputStyle="width: 90%"
-                                completeMethod="#{makerService.findByMask}"
-                                var="e"
-                                itemValue="#{e}"
-                                itemLabel="#{e.name}"
-                                dropdown="true">
-                    <p:ajax event="query" global="false"/>
-                    <p:ajax event="itemSelect" process="@this" update="@form"/>
-                </p:autoComplete>
-                <p:commandButton value="#{msg['clear']}" icon="fa fa-clear" process="@this"
-                                 actionListener="#{filter.clear()}" update="@form"/>
+                <p:ajax event="toggle"/>
+                <p:panelGrid style="border: none">
+                    <p:row style="border: none">
+                        <p:column style="border: none">
+                            <p:autoComplete required="false"
+                                            id="maker"
+                                            value="#{filter.maker}"
+                                            converter="#{makerService}"
+                                            completeMethod="#{makerService.findByMask}"
+                                            inputStyle="width: 60em"
+                                            var="e"
+                                            itemValue="#{e}"
+                                            itemLabel="#{e.name}"
+                                            dropdown="true">
+                                <p:ajax event="query" global="false"/>
+                                <p:ajax event="itemSelect" process="@this" update="@form"/>
+                            </p:autoComplete>
+                        </p:column>
+                    </p:row>
+                    <p:row style="border: none">
+                        <p:column style="border: none">
+                            <p:commandButton value="#{msg['clearFilter']}" icon="fa fa-close" process="@this"
+                                             actionListener="#{filter.clear()}" update="@form"/>
+
+                            <p:commandButton value="#{msg['doFilter']}" icon="fa fa-filter" process="@this"
+                                             update="@form"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
             </p:panel>
 
             <p:dataTable lazy="true"
@@ -129,7 +142,8 @@
                         <h:outputText value="#{msg['productType.outgo']}"/>
                     </f:facet>
                     <h:outputText value="#{outgoRepository.outgo(e)}"/>
-                    <p:commandLink action="outgo-new" style="text-decoration: none;float: right" styleClass="fa fa-minus-square">
+                    <p:commandLink action="outgo-new" style="text-decoration: none;float: right"
+                                   styleClass="fa fa-minus-square">
                         <f:setPropertyActionListener value="#{e}" target="#{entity}"/>
                     </p:commandLink>
                 </p:column>
