@@ -237,3 +237,28 @@ CREATE TABLE IF NOT EXISTS TOKEN
   CREATED_DATE TIMESTAMP,
   CONSTRAINT FK_TOKEN_LOGIN FOREIGN KEY (LOGIN) REFERENCES ACCOUNT (LOGIN)
 );
+
+UPDATE SEQUENCE
+SET SEQ_COUNT = COALESCE((SELECT MAX(id_file)
+                          FROM file), 100)
+WHERE SEQ_NAME = 'file';
+UPDATE SEQUENCE
+SET SEQ_COUNT = COALESCE((SELECT MAX(id_inventory)
+                          FROM inventory), 100)
+WHERE SEQ_NAME = 'inventory';
+UPDATE SEQUENCE
+SET SEQ_COUNT = COALESCE((SELECT MAX(id_maker)
+                          FROM maker), 100)
+WHERE SEQ_NAME = 'maker';
+UPDATE SEQUENCE
+SET SEQ_COUNT = COALESCE((SELECT MAX(id_price)
+                          FROM price), 100)
+WHERE SEQ_NAME = 'price';
+UPDATE SEQUENCE
+SET SEQ_COUNT = COALESCE((SELECT MAX(id_product)
+                          FROM product), 100)
+WHERE SEQ_NAME = 'product';
+UPDATE SEQUENCE
+SET SEQ_COUNT = COALESCE((SELECT MAX(id_product_type)
+                          FROM product_type), 100)
+WHERE SEQ_NAME = 'product_type';

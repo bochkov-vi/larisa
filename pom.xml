@@ -10,6 +10,7 @@
     <modules>
         <module>larisa-jpa</module>
         <module>larisa-jsf</module>
+        <module>larisa-security</module>
     </modules>
     <packaging>pom</packaging>
 

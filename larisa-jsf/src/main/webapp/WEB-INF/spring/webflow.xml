@@ -10,6 +10,7 @@
     <!-- Executes flows: the central entry point into the Spring Web Flow system -->
     <flow-executor id="flowExecutor">
         <flow-execution-listeners>
+           <!-- <listener ref="securityFlowExecutionListener"/>-->
             <listener ref="facesContextListener"/>
         </flow-execution-listeners>
     </flow-executor>
@@ -26,7 +27,7 @@
     <!-- A listener to create and release a FacesContext -->
     <beans:bean id="facesContextListener" class="org.springframework.faces.webflow.FlowFacesContextLifecycleListener"/>
 
-
+    <beans:bean id="securityFlowExecutionListener" class="org.springframework.webflow.security.SecurityFlowExecutionListener" />
 
 </beans:beans>
 

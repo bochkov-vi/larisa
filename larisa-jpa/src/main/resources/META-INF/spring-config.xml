@@ -20,7 +20,8 @@
     </bean>
 
     <bean scope="singleton" id="h2Server" class="org.h2.tools.Server" factory-method="createTcpServer"
-          init-method="start" destroy-method="stop">
+          init-method="start"
+          destroy-method="stop">
         <constructor-arg>
             <array>
                 <value>-tcp</value>
@@ -30,23 +31,7 @@
             </array>
         </constructor-arg>
     </bean>
-    <!--<bean class="org.h2.tools.Server" factory-method="createTcpServer" init-method="start" destroy-method="stop">
-        <constructor-arg>
-            <array>
-                <value>-tcp</value>
-                <value>-tcpAllowOthers</value>
-                <value>-tcpPort</value>
-                <value>9092</value>
-            </array>
-        </constructor-arg>
-    </bean>-->
-    <!-- <bean id="dataSource"
-           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
-         <property name="password" value="1234"/>
-         <property name="username" value="larisa"/>
-         <property name="url" value="jdbc:mysql://localhost/larisa"/>
-     </bean>-->
+
     <jpa:repositories base-package="larisa.repository"
                       base-class="org.entity3.repository.BidirectionalCustomRepository"
                       entity-manager-factory-ref="entityManagerFactory"

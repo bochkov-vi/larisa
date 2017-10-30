@@ -12,17 +12,44 @@
     <name>larisa-jsf</name>
     <properties>
         <webxml>src/main/webapp/WEB-INF/web-production.xml</webxml>
-        <spring.security.version>4.2.3.RELEASE</spring.security.version>
         <spring.webflow.version>2.4.5.RELEASE</spring.webflow.version>
         <cacheSeconds>-1</cacheSeconds>
     </properties>
     <profiles>
         <profile>
-            <id>development</id>
+            <id>development-web</id>
             <properties>
                 <webxml>src/main/webapp/WEB-INF/web-development.xml</webxml>
                 <cacheSeconds>0</cacheSeconds>
             </properties>
+        </profile>
+        <profile>
+            <id>web-larisa.security</id>
+            <build>
+                <resources>
+                    <resource>
+                        <filtering>true</filtering>
+                        <directory>src/main/security-resources</directory>
+                    </resource>
+                </resources>
+            </build>
+
+        </profile>
+        <profile>
+            <id>development-resources</id>
+            <build>
+                <resources>
+                    <resource>
+                        <filtering>true</filtering>
+                        <directory>src/main/resources</directory>
+                    </resource>
+                    <resource>
+                        <filtering>true</filtering>
+                        <directory>src/main/development-resources</directory>
+                    </resource>
+                </resources>
+
+            </build>
         </profile>
     </profiles>
     <build>
@@ -67,21 +94,7 @@
             <version>1.0.8</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-            <version>${spring.security.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>${spring.security.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-            <version>${spring.security.version}</version>
-        </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-expression</artifactId>
@@ -133,11 +146,6 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>larisa-jpa</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.bochkov</groupId>
-            <artifactId>jsf-utils</artifactId>
-            <version>3.0</version>
         </dependency>
         <dependency>
             <groupId>commons-fileupload</groupId>

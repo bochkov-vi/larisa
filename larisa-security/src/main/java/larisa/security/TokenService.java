@@ -1,4 +1,4 @@
-package security;
+package larisa.security;
 
 import larisa.entity.Token;
 import larisa.repository.AccountRepository;

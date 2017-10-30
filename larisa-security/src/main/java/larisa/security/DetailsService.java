@@ -1,4 +1,4 @@
-package security;
+package larisa.security;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Collections2;
@@ -25,6 +25,7 @@ import java.util.Collection;
 @Service
 public class DetailsService implements UserDetailsService {
     public static String ADMIN = "admin";
+
     @Autowired
     AccountRepository repository;
 

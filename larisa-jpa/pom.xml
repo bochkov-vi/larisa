@@ -41,7 +41,9 @@
             <version>1.4.196</version>
         </dependency>
     </dependencies>
+  
     <build>
+
         <resources>
             <resource>
                 <filtering>true</filtering>

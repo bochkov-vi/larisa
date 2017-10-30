@@ -15,6 +15,7 @@
         <transition on="edit-productType" to="edit-productType">
 
         </transition>
+
         <transition on="edit-maker" to="edit-maker">
 
         </transition>
@@ -36,10 +37,10 @@
     </subflow-state>
     <global-transitions>
         <transition on="new" to="edit">
-            <evaluate expression="outgoService.createNewInstance()" result="entity"/>
+            <evaluate expression="productService.createNewInstance()" result="entity"/>
         </transition>
         <transition on="delete">
-            <evaluate expression="outgoService.delete(entity)"/>
+            <evaluate expression="productService.delete(entity)"/>
         </transition>
     </global-transitions>
 </flow>

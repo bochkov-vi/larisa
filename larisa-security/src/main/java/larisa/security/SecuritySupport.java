@@ -1,4 +1,4 @@
-package security;
+package larisa.security;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -77,6 +77,7 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
+        <welcome-file>index</welcome-file>
         <welcome-file>index.html</welcome-file>
         <welcome-file>list</welcome-file>
     </welcome-file-list>
@@ -112,11 +113,11 @@
             <param-value>/tmp/fileUpload</param-value>
         </init-param>
     </filter>
-    <!-- Spring security -->
-    <!--<filter>
+    <!-- Spring larisa.security -->
+    <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-    </filter>-->
+    </filter>
     <!--================================================================-->
     <filter-mapping>
         <filter-name>CharacterEncodingFilter</filter-name>
@@ -128,17 +129,13 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
-        <servlet-name>spring-dispatcher</servlet-name>
+        <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
-    <!-- <filter-mapping>
-         <filter-name>springSecurityFilterChain</filter-name>
-         <url-pattern>/*</url-pattern>
-     </filter-mapping>-->
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
-    <mime-mapping>
-        <extension>eot</extension>
-        <mime-type>application/vnd.ms-fontobject</mime-type>
-    </mime-mapping>
     <mime-mapping>
         <extension>ttf</extension>
         <mime-type>application/font-sfnt</mime-type>
