@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="larisa-jpa" />
         <module name="larisa-jsf" />
+        <module name="larisa-security" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -21,6 +22,7 @@
       <module name="larisa-jsf" target="1.8" />
       <module name="larisa-jsf (1)" target="1.8" />
       <module name="larisa-sb" target="1.8" />
+      <module name="larisa-security" target="1.8" />
       <module name="larisa-spring-webflow-jsf" target="1.8" />
       <module name="shop-jpa" target="1.8" />
       <module name="utils" target="1.8" />

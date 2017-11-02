@@ -73,6 +73,7 @@
         <transition on="edit-canceled" to="list"/>
         <transition on="edit-confirmed" to="list"/>
     </subflow-state>
+
     <global-transitions>
         <transition on="new" to="edit">
             <evaluate expression="productTypeService.createNewInstance()" result="entity"/>

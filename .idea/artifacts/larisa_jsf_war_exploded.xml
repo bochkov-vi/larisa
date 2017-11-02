@@ -7,9 +7,9 @@
           <element id="module-output" name="larisa-jsf" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: com.bochkov:jsf-utils:3.0" />
-          <element id="library" level="project" name="Maven: com.bochkov:coordinate-converters:3.0" />
-          <element id="library" level="project" name="Maven: com.bochkov:entity-utils:3.0" />
+          <element id="library" level="project" name="Maven: com.bochkov:jsf-utils:3.1" />
+          <element id="library" level="project" name="Maven: com.bochkov:coordinate-converters:3.1" />
+          <element id="library" level="project" name="Maven: com.bochkov:entity-utils:3.1" />
           <element id="library" level="project" name="Maven: com.google.guava:guava:21.0" />
           <element id="library" level="project" name="Maven: joda-time:joda-time:2.9.7" />
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.3.9.RELEASE" />
@@ -51,12 +51,8 @@
           <element id="library" level="project" name="Maven: org.primefaces.themes:ui-lightness:1.0.8" />
           <element id="library" level="project" name="Maven: org.primefaces.themes:vader:1.0.8" />
           <element id="library" level="project" name="Maven: org.primefaces.themes:home:1.0.8" />
-          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:4.2.3.RELEASE" />
-          <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-core:4.3.9.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:4.2.3.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:4.2.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.3.9.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:4.3.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:4.3.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.3.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.webflow:spring-webflow:2.4.5.RELEASE" />
