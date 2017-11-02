@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="larisa-jsf:war">
-    <output-path>$PROJECT_DIR$/larisa-jsf/target</output-path>
-    <root id="archive" name="larisa.war">
-      <element id="artifact" artifact-name="larisa-jsf:war exploded" />
-    </root>
-  </artifact>
-</component>
