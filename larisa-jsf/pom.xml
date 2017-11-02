@@ -71,7 +71,7 @@
                                 <phase>install</phase>
                                 <configuration>
                                     <fromFile>${project.build.directory}/${project.build.finalName}.war</fromFile>
-                                    <url>scpexe://xxx.xxx.xxx.xxx/jetty/jettybase/webapps</url>
+                                    <url>scpexe://62.109.0.45/jetty/jettybase/webapps</url>
                                 </configuration>
                             </execution>
                         </executions>
