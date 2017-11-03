@@ -1,3 +1,9 @@
 .idea/
 *.iml
 target/
+Будет удалено larisa-jpa/src/test/resources/
+Будет удалено larisa-jsf/src/main/java/larisa/service/
+Будет удалено larisa-jsf/src/main/java/larisa/web/
+Будет удалено larisa-jsf/src/main/security-resources/
+Будет удалено larisa-jsf/src/main/webapp/resources/fileRepository/
+Будет удалено larisa-security/src/test/
