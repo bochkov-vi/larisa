@@ -8,7 +8,6 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/faces http://www.springframework.org/schema/faces/spring-faces.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-
     <!--
         DispatcherServlet Context: defines this servlet's request-processing infrastructure
     -->
@@ -62,7 +61,7 @@
 
     <!-- Message Source -->
     <bean class="org.springframework.context.support.ReloadableResourceBundleMessageSource" id="msg"
-                p:basenames="WEB-INF/locale/messages,WEB-INF/locale/application"
+          p:basenames="WEB-INF/locale/messages,WEB-INF/locale/application"
           p:cacheMillis="0"
           p:fallbackToSystemLocale="false"/>
 </beans>

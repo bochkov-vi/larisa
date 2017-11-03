@@ -11,32 +11,26 @@
     <packaging>war</packaging>
     <name>larisa-jsf</name>
     <properties>
-        <webxml>src/main/webapp/WEB-INF/web-production.xml</webxml>
         <spring.webflow.version>2.4.5.RELEASE</spring.webflow.version>
         <cacheSeconds>-1</cacheSeconds>
     </properties>
     <profiles>
+
         <profile>
-            <id>development-web</id>
+            <id>security</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.bochkov</groupId>
+                    <artifactId>larisa-security</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>development</id>
             <properties>
-                <webxml>src/main/webapp/WEB-INF/web-development.xml</webxml>
                 <cacheSeconds>0</cacheSeconds>
             </properties>
-        </profile>
-        <profile>
-            <id>web-larisa.security</id>
-            <build>
-                <resources>
-                    <resource>
-                        <filtering>true</filtering>
-                        <directory>src/main/security-resources</directory>
-                    </resource>
-                </resources>
-            </build>
-
-        </profile>
-        <profile>
-            <id>development-resources</id>
             <build>
                 <resources>
                     <resource>
@@ -71,7 +65,7 @@
                                 <phase>install</phase>
                                 <configuration>
                                     <fromFile>${project.build.directory}/${project.build.finalName}.war</fromFile>
-                                    <url>scpexe://62.109.0.45/jetty/jettybase/webapps</url>
+                                    <url>scpexe://62.109.0.45/opt/web/base/webapps</url>
                                 </configuration>
                             </execution>
                         </executions>
@@ -86,7 +80,6 @@
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
-                    <webXml>${webxml}</webXml>
                     <webResources>
                         <resource>
                             <filtering>true</filtering>
@@ -108,11 +101,11 @@
         </extensions>
     </build>
     <dependencies>
-       <!-- <dependency>
-            <groupId>org.springframework.springfaces</groupId>
-            <artifactId>springfaces</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>-->
+        <!-- <dependency>
+             <groupId>org.springframework.springfaces</groupId>
+             <artifactId>springfaces</artifactId>
+             <version>0.0.1-SNAPSHOT</version>
+         </dependency>-->
         <dependency>
             <groupId>com.bochkov</groupId>
             <artifactId>jsf-utils</artifactId>
