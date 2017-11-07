@@ -17,15 +17,14 @@
               security="none"/>
     <sec:http pattern="/resources/**"
               security="none"/>
-    <sec:http auto-config="true" use-expressions="true">
+    <sec:http use-expressions="true">
         <sec:csrf disabled="true"/>
         <sec:form-login login-page="/login.xhtml"
                         login-processing-url="/login"
                         password-parameter="password"
                         username-parameter="user"
-                        default-target-url="/base/index"
-        />
-        <!-- <logout logout-url="/logout.xhtml"></logout> -->
+                        default-target-url="/base/index"/>
+        <sec:logout logout-url="/logout" invalidate-session="true"/>
         <sec:intercept-url access="permitAll"
                            pattern="/login.xhtml"/>
         <sec:intercept-url access="hasAnyRole('ADMIN','MANAGER')"
@@ -47,10 +46,7 @@
           class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
         <property name="userDetailsService" ref="detailsService"/>
     </bean>
-    <bean id="anonymousAuthenticationProvider"
-          class="org.springframework.security.authentication.AnonymousAuthenticationProvider">
-        <constructor-arg name="key" value="spr"/>
-    </bean>
+
 
     <bean id="rememberMeFilter" class=
             "org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
@@ -69,4 +65,20 @@
         <constructor-arg name="key" value="spr"/>
     </bean>
 
+    <bean id="anonymousAuthenticationFilter"
+          class="org.springframework.security.web.authentication.AnonymousAuthenticationFilter">
+        <constructor-arg name="key" value="uid"/>
+        <constructor-arg name="principal" value="amonymous"/>
+        <constructor-arg name="authorities">
+            <list>
+                <bean class="org.springframework.security.core.authority.SimpleGrantedAuthority">
+                    <constructor-arg value="ROLE_GUEST"/>
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
+    <bean id="anonymousAuthenticationProvider"
+          class="org.springframework.security.authentication.AnonymousAuthenticationProvider">
+        <constructor-arg value="uid"/>
+    </bean>
 </beans>
