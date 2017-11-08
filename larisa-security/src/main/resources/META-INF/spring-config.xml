@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:sec="http://www.springframework.org/schema/larisa.security"
+       xmlns:sec="http://www.springframework.org/schema/security"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-		http://www.springframework.org/schema/larisa.security
-		http://www.springframework.org/schema/larisa.security/spring-larisa.security.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
     <context:component-scan base-package="larisa.security"/>
 
     <sec:http pattern="/css/**"
-              larisa.security="none"/>
+              security="none"/>
     <sec:http pattern="/images/**"
-              larisa.security="none"/>
+              security="none"/>
     <sec:http pattern="/js/**"
-              larisa.security="none"/>
+              security="none"/>
     <sec:http pattern="/resources/**"
-              larisa.security="none"/>
+              security="none"/>
     <sec:http auto-config="true" use-expressions="true">
         <sec:csrf disabled="true"/>
         <sec:form-login login-page="/login.xhtml"
@@ -35,7 +35,7 @@
     </sec:http>
 
     <bean id="authenticationManager"
-          class="org.springframework.larisa.security.authentication.ProviderManager">
+          class="org.springframework.security.authentication.ProviderManager">
         <constructor-arg>
             <list>
                 <ref local="daoAuthenticationProvider"/>
@@ -44,28 +44,28 @@
         </constructor-arg>
     </bean>
     <bean id="daoAuthenticationProvider"
-          class="org.springframework.larisa.security.authentication.dao.DaoAuthenticationProvider">
+          class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
         <property name="userDetailsService" ref="detailsService"/>
     </bean>
     <bean id="anonymousAuthenticationProvider"
-          class="org.springframework.larisa.security.authentication.AnonymousAuthenticationProvider">
+          class="org.springframework.security.authentication.AnonymousAuthenticationProvider">
         <constructor-arg name="key" value="spr"/>
     </bean>
 
     <bean id="rememberMeFilter" class=
-            "org.springframework.larisa.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
+            "org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
         <constructor-arg name="rememberMeServices" ref="rememberMeServices"/>
         <constructor-arg name="authenticationManager" ref="authenticationManager"/>
     </bean>
 
     <bean id="rememberMeServices" class=
-            "org.springframework.larisa.security.web.authentication.rememberme.TokenBasedRememberMeServices">
+            "org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
         <constructor-arg name="userDetailsService" ref="detailsService"/>
         <constructor-arg name="key" value="spr"/>
     </bean>
 
     <bean id="rememberMeAuthenticationProvider" class=
-            "org.springframework.larisa.security.authentication.RememberMeAuthenticationProvider">
+            "org.springframework.security.authentication.RememberMeAuthenticationProvider">
         <constructor-arg name="key" value="spr"/>
     </bean>
 
