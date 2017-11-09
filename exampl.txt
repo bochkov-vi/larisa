@@ -1,0 +1,101 @@
+ String key = "userProfile";
+
+    @Autowired
+    transient UserProfileRepository userProfileRepository;
+
+    @Autowired
+    transient UserRepository userRepository;
+
+    @Override
+    public UserProfile initilizeOrFind() {
+        RequestContext context = org.springframework.webflow.execution.RequestContextHolder.getRequestContext();
+        ServletExternalContext externalContext = (ServletExternalContext) context.getExternalContext();
+        HttpServletResponse response = (HttpServletResponse) externalContext.getNativeResponse();
+        HttpServletRequest request = (HttpServletRequest) externalContext.getNativeRequest();
+        return doInit(response, request, context);
+    }
+
+    public UserProfile doInit(HttpServletResponse response, HttpServletRequest request, RequestContext context) {
+        UserProfile sessionUserProfile = getUserProfile(request);
+        UserProfile ownedUserProfile = null;
+        User user = null;
+        if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication.getPrincipal() instanceof CustomUserDetails) {
+                CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+                user = customUserDetails.getUser();
+                ownedUserProfile = user.getUserProfile();
+            }
+        }
+
+        if (ownedUserProfile != null) {
+            sessionUserProfile = ownedUserProfile;
+        } else {
+            if (sessionUserProfile == null) {
+                sessionUserProfile = createNewInstance();
+            }
+            if (user != null) {
+                user.setUserProfile(sessionUserProfile);
+                sessionUserProfile.setUser(user);
+                userRepository.save(user);
+                userProfileRepository.save(sessionUserProfile);
+            }
+        }
+        if (sessionUserProfile != null) {
+            installUserProfile((HttpServletResponse) response, sessionUserProfile);
+        } else {
+            throw new RuntimeException();
+        }
+        return sessionUserProfile;
+    }
+
+    void installUserProfile(HttpServletResponse response, UserProfile userProfile) {
+        Cookie cookie = new Cookie(key, userProfile.getId().toString());
+        cookie.setMaxAge(31536000);
+        response.addCookie(cookie);
+    }
+
+    UserProfile getUserProfile(HttpServletRequest request) {
+        UserProfile userProfile = null;
+        userProfile = (UserProfile) request.getSession().getAttribute(key);
+        if (userProfile == null) {
+            Integer id = getProfileId(request);
+            if (id != null) {
+                userProfile = userProfileRepository.findOne(id);
+            }
+            request.getSession().setAttribute(key, userProfile);
+        }
+        return userProfile;
+    }
+
+    Integer getProfileId(HttpServletRequest request) {
+        Integer id = null;
+        Cookie cookie = findCookie(request);
+        if (cookie != null) {
+            return new Integer(cookie.getValue());
+        }
+        return id;
+    }
+
+    Cookie findCookie(HttpServletRequest request) {
+        if (request.getCookies() != null) {
+            for (Cookie c : request.getCookies()) {
+                if (key.equals(c.getName())) {
+                    return c;
+                }
+            }
+        }
+        return null;
+    }
+
+    Cookie createCookie(Integer idProfile) {
+        return new Cookie(key, idProfile.toString());
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
