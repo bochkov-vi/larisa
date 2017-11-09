@@ -1,32 +1,70 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
-               >
-    <p:panelGrid columns="2" columnClasses="labelClass" style="width: 100%">
-        <p:outputLabel for="id" value="Код:"/>
-        <p:inputText id="id" value="#{entity.id}"/>
-        <p:outputLabel for="name" value="Наименование:"/>
-        <p:inputText id="name" value="#{entity.name}" required="true"
-                     style="width: 100%"
-                     requiredMessage="#{msg.field} #{msg['maker.name']} #{msg.isRequired}"/>
+                xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html">
+    <!--@elvariable id="entity" type="larisa.entity.Account"-->
+    <p:panelGrid columnClasses="labelClass" style="width: 100%">
+        <p:row>
+            <p:column>
+                <p:outputLabel for="id" value="${msg['account.id']}:"/>
+            </p:column>
+            <p:column>
+                <p:inputText id="id" value="#{entity.id}"/>
+            </p:column>
+        </p:row>
+        <p:row>
+            <p:column>
+                <p:outputLabel for="password" value="${msg['account.password']}:"/>
+            </p:column>
+            <p:column>
+                <p:password id="password" value="#{entity.password}"
+                            required="true"
+                            style="width: 100%"
+                            requiredMessage="#{msg['field']} #{msg['account.password']} #{msg['isRequired']}"/>
+            </p:column>
+        </p:row>
+        <p:row>
+            <p:column>
+                <p:outputLabel for="roles" value="${msg['account.roles']}:"/>
+            </p:column>
+            <p:column>
+                <p:selectManyCheckbox
+                        id="roles"
+                        value="#{entity.roles}"
+                        required="true"
+                        style="width: 100%"
+                        requiredMessage="#{msg['field']} #{msg['account.roles']} #{msg['isRequired']}">
+                    <f:selectItems value="#{service.avaibleRoles}"/>
+                </p:selectManyCheckbox>
+            </p:column>
+        </p:row>
+
+        <p:row>
+            <p:column>
+                <p:outputLabel for="customer" value="${msg['account.customer']}:"/>
+            </p:column>
+            <p:column>
+                <!--@elvariable id="c" type="larisa.entity.Customer"-->
+                <p:autoComplete id="customer" value="#{entity.customer}"
+                                converter="#{customerService}"
+                                var="c"
+                                itemLabel="#{c.email}"
+                                itemValue="#{c}"
+                                completeMethod="#{customerService.findByMask}"
+                                inputStyle="width: 100%"
+                style="width: 100%">
+                    <p:column>
+                        <h:outputText value="#{c.name}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{c.family}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{c.email}"/>
+                    </p:column>
+                    <p:ajax event="query" global="false"/>
+                </p:autoComplete>
+            </p:column>
+        </p:row>
     </p:panelGrid>
-
-    <p:fileUpload multiple="true" auto="true" fileUploadListener="#{uploadHandler.handleFileUpload}"
-                  update="gallerea"  cancelLabel="#{msg.cancel}" uploadLabel="Выгрузить" label="Выбрать">
-
-    </p:fileUpload>
-    <p:galleria id="gallerea" value="#{entity.files}"
-                var="file"
-                panelHeight="300"
-                panelWidth="500"
-                frameHeight="80"
-                frameWidth="120"
-                transitionInterval="5000"
-                style="overflow: hidden"
-                rendered="#{not empty entity.files}">
-        <p:graphicImage
-                value="/spring/file/#{file.id}/500x300"
-                alt="#{file.name}"
-                title="#{file.name}"/>
-    </p:galleria>
 </ui:composition>

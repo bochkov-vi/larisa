@@ -2,11 +2,15 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
     <p:panelGrid columns="2" columnClasses="labelClass" styleClass="borderNone">
-        <h:outputLabel for="maker-id" value="#{msg['maker.id']}:"/>
-        <h:outputText id="maker-id" value="#{entity.id}"/>
-        <h:outputLabel for="maker-name" value="#{msg['maker.name']}:"/>
-        <h:outputText id="maker-name" value="#{entity.name}"/>
-        <h:outputLabel for="maker-note" value="#{msg['maker.note']}:"/>
-        <h:outputText id="maker-note" value="#{entity.note}"/>
+        <h:outputLabel for="account-id" value="#{msg['account.id']}:"/>
+        <h:outputText id="account-id" value="#{entity.id}"/>
+        <h:outputLabel for="account-password" value="#{msg['account.password']}:"/>
+        <h:outputText id="account-password" value="#{entity.password}"/>
+        <h:outputLabel value="#{msg['account.roles']}:"/>
+        <ui:repeat value="#{entity.roles}" var="r">
+            <h:outputText value="#{r}"/>
+        </ui:repeat>
+        <h:outputLabel value="#{msg['account.customer']}:"/>
+        <h:outputText  value="#{entity.customer}"/>
     </p:panelGrid>
 </ui:composition>

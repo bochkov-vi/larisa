@@ -6,6 +6,7 @@
     <var name="data" class="larisa.jsf.data.AccountDataModel"/>
     <var name="entity" class="larisa.entity.Account"/>
     <var name="service" class="larisa.jsf.service.impl.AccountServiceImpl"/>
+    <var name="customerService" class="larisa.jsf.service.impl.CustomerServiceImpl"/>
     <view-state id="list" view="list.xhtml">
         <transition on="edit" to="edit">
         </transition>

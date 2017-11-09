@@ -27,7 +27,7 @@
         <ui:insert name="body"/>
         <f:facet name="footer">
             <h:panelGroup style="text-align: right;display:table;margin-left: auto">
-                <my:logoutForm signoutAction="logout" signoutLabel="#{securitySupport.remoteUser}"/>
+                <my:logoutForm signoutAction="logout" signoutLabel="#{currentUser.name}"/>
             </h:panelGroup>
         </f:facet>
     </p:panel>

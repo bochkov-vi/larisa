@@ -1,6 +1,7 @@
 package larisa.jsf.service.impl;
 
 import larisa.entity.Account;
+import larisa.entity.Role;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,5 +12,9 @@ public class AccountServiceImpl extends DefaultServiceImpl<Account, String> {
 
     public AccountServiceImpl() {
         super("id");
+    }
+
+    public Role[] getAvaibleRoles() {
+        return Role.values();
     }
 }
