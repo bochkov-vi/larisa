@@ -3,8 +3,8 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
     <!--@elvariable id="e" type="larisa.entity.ProductType"-->
-    <p:panelGrid columns="2" columnClasses="labelClass">
-       <!-- <p:row>
+    <p:panelGrid columnClasses="labelClass">
+        <p:row>
             <p:column>
                 <p:outputLabel rendered="#{entity['new']}" for="canEdit" value="#{msg['productType.editId']}:"/>
             </p:column>
@@ -13,7 +13,7 @@
                     <p:ajax update="@parent"/>
                 </p:selectBooleanCheckbox>
             </p:column>
-        </p:row>-->
+        </p:row>
         <p:row>
             <p:column>
                 <p:outputLabel for="id" value="#{msg['productType.id']}:"/>

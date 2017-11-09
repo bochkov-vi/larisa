@@ -1,5 +1,8 @@
 package larisa.entity;
 
+import org.entity3.converter.JodaLocalDateConverter;
+import org.joda.time.LocalDate;
+
 import javax.persistence.*;
 
 /**
@@ -13,6 +16,11 @@ public class CustomerOrder extends DefaultEntity<Integer> {
     @GeneratedValue
     private Integer id;
 
+    @Temporal(TemporalType.DATE)
+    @Convert(converter = JodaLocalDateConverter.class)
+    @Column(name = "date", nullable = false)
+    private LocalDate date;
+
     @ManyToOne
     @JoinColumn(name = "id_customer", nullable = false)
     private Customer customer;
@@ -20,6 +28,10 @@ public class CustomerOrder extends DefaultEntity<Integer> {
     @Override
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Customer getCustomer() {
@@ -30,7 +42,11 @@ public class CustomerOrder extends DefaultEntity<Integer> {
         this.customer = customer;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }

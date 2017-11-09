@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Configurable
 public abstract class DefaultServiceImpl<T extends DefaultEntity<ID>, ID extends Serializable> extends JsfEntityServiceImpl<T, ID> implements DefaultService<T, ID> {
     @Autowired
-    DefaultEntityRepository<T, ID> repository;
+    transient DefaultEntityRepository<T, ID> repository;
 
     public DefaultServiceImpl() {
     }
@@ -35,8 +35,6 @@ public abstract class DefaultServiceImpl<T extends DefaultEntity<ID>, ID extends
     public CustomRepository<T, ID> getRepository() {
         return repository;
     }
-
-
 
 
 }

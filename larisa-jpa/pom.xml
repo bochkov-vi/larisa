@@ -11,7 +11,22 @@
     <artifactId>larisa-jpa</artifactId>
     <properties>
         <h2.port>9092</h2.port>
+        <eclipselink.logging.level.sql>OFF</eclipselink.logging.level.sql>
+        <eclipselink.logging.parameters>false</eclipselink.logging.parameters>
+        <eclipselink.jdbc.bind-parameters>true</eclipselink.jdbc.bind-parameters>
+        <eclipselink.ddl-generation>none</eclipselink.ddl-generation>
     </properties>
+    <profiles>
+        <profile>
+            <id>debug-jpa</id>
+            <properties>
+                <eclipselink.logging.level.sql>FINE</eclipselink.logging.level.sql>
+                <eclipselink.logging.parameters>true</eclipselink.logging.parameters>
+                <eclipselink.jdbc.bind-parameters>false</eclipselink.jdbc.bind-parameters>
+                <eclipselink.ddl-generation>create-tables</eclipselink.ddl-generation>
+            </properties>
+        </profile>
+    </profiles>
     <dependencies>
         <dependency>
             <groupId>com.bochkov</groupId>

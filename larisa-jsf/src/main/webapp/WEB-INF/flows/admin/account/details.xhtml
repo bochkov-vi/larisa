@@ -1,0 +1,12 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
+    <p:panelGrid columns="2" columnClasses="labelClass" styleClass="borderNone">
+        <h:outputLabel for="maker-id" value="#{msg['maker.id']}:"/>
+        <h:outputText id="maker-id" value="#{entity.id}"/>
+        <h:outputLabel for="maker-name" value="#{msg['maker.name']}:"/>
+        <h:outputText id="maker-name" value="#{entity.name}"/>
+        <h:outputLabel for="maker-note" value="#{msg['maker.note']}:"/>
+        <h:outputText id="maker-note" value="#{entity.note}"/>
+    </p:panelGrid>
+</ui:composition>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
+    <input name="entity" type="larisa.entity.Account" required="true"/>
+    <view-state id="edit" view="../edit.xhtml">
+        <transition on="save" to="edit-confirmed">
+            <evaluate expression="service.save(entity)" result="entity"/>
+            <evaluate expression="!messageContext.hasErrorMessages()"/>
+        </transition>
+        <transition on="cancel" to="edit-canceled"/>
+        <transition on="new" to="edit">
+            <evaluate expression="service.createNewInstance()" result="entity"/>
+        </transition>
+        <transition on="clone" to="edit">
+            <evaluate expression="service.clone(entity)" result="entity"/>
+        </transition>
+    </view-state>
+    <end-state id="edit-canceled">
+
+    </end-state>
+    <end-state id="edit-confirmed">
+        <output name="entity" value="entity"/>
+    </end-state>
+</flow>

@@ -13,19 +13,23 @@
     <properties>
         <spring.webflow.version>2.4.5.RELEASE</spring.webflow.version>
         <cacheSeconds>-1</cacheSeconds>
+        <log4j.logger.org.springframework.security>WARN</log4j.logger.org.springframework.security>
+        <log4j.logger.org.springframework.webflow>WARN</log4j.logger.org.springframework.webflow>
     </properties>
     <profiles>
-
         <profile>
-            <id>security</id>
-            <dependencies>
-                <dependency>
-                    <groupId>com.bochkov</groupId>
-                    <artifactId>larisa-security</artifactId>
-                    <version>${project.version}</version>
-                </dependency>
-            </dependencies>
+            <id>log-security</id>
+            <properties>
+                <log4j.logger.org.springframework.security>TRACE</log4j.logger.org.springframework.security>
+            </properties>
         </profile>
+        <profile>
+            <id>log-webflow</id>
+            <properties>
+                <log4j.logger.org.springframework.webflow>TRACE</log4j.logger.org.springframework.webflow>
+            </properties>
+        </profile>
+
         <profile>
             <id>development</id>
             <properties>
@@ -37,10 +41,10 @@
                         <filtering>true</filtering>
                         <directory>src/main/resources</directory>
                     </resource>
-                    <resource>
+                    <!--<resource>
                         <filtering>true</filtering>
                         <directory>src/main/development-resources</directory>
-                    </resource>
+                    </resource>-->
                     <resource>
                         <directory>src/main/webapp/WEB-INF/locale</directory>
                     </resource>
@@ -48,6 +52,7 @@
 
             </build>
         </profile>
+
         <profile>
             <id>deploy-to-server</id>
             <build>
@@ -108,6 +113,11 @@
          </dependency>-->
         <dependency>
             <groupId>com.bochkov</groupId>
+            <artifactId>larisa-security</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bochkov</groupId>
             <artifactId>jsf-utils</artifactId>
             <version>3.1</version>
         </dependency>
@@ -116,11 +126,11 @@
             <artifactId>jackson-core</artifactId>
             <version>2.8.9</version>
         </dependency>
-        <dependency>
+       <!-- <dependency>
             <groupId>org.primefaces.extensions</groupId>
             <artifactId>all-themes</artifactId>
             <version>1.0.8</version>
-        </dependency>
+        </dependency>-->
 
 
         <dependency>

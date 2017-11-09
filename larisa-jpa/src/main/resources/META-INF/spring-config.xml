@@ -44,11 +44,10 @@
         <property name="jpaPropertyMap">
             <map>
                 <entry key="eclipselink.weaving" value="static"/>
-                <entry key="eclipselink.logging.level.sql" value="FINE"/>
-                <entry key="eclipselink.logging.parameters" value="true"/>
-                <entry key="eclipselink.jdbc.bind-parameters" value="false"/>
-                <!--<entry key="eclipselink.ddl-generation" value="create-tables"/>-->
-                <entry key="eclipselink.ddl-generation" value="create-or-extend-tables"/>
+                <entry key="eclipselink.logging.level.sql" value="${eclipselink.logging.level.sql}"/>
+                <entry key="eclipselink.logging.parameters" value="${eclipselink.logging.parameters}"/>
+                <entry key="eclipselink.jdbc.bind-parameters" value="${eclipselink.jdbc.bind-parameters}"/>
+                <entry key="eclipselink.ddl-generation" value="${eclipselink.ddl-generation}"/>
             </map>
         </property>
         <!--<property name="loadTimeWeaver">
