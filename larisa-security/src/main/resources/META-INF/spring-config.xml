@@ -24,7 +24,7 @@
                         login-processing-url="/login"
                         password-parameter="password"
                         username-parameter="user"
-                        default-target-url="/base/index"/>
+                        default-target-url="/"/>
         <sec:logout logout-url="/logout" invalidate-session="true"/>
         <sec:intercept-url access="permitAll"
                            pattern="/login.xhtml"/>

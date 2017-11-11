@@ -72,10 +72,53 @@
                                 <goals>
                                     <goal>upload-single</goal>
                                 </goals>
-                                <phase>install</phase>
+                                <phase>deploy</phase>
                                 <configuration>
                                     <fromFile>${project.build.directory}/${project.build.finalName}.war</fromFile>
-                                    <url>scpexe://62.109.0.45/opt/web/base/webapps</url>
+                                    <url>scpexe://bochkov@94.250.248.236:/opt/web/mybase/webapps</url>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>execute-restart-remote-jetty</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>sshexec</goal>
+                                </goals>
+                                <configuration>
+                                    <serverId>krim-kosmetika.ru</serverId>
+                                    <url>scp://root@94.250.248.236</url>
+                                    <commands>
+                                        <command>service jetty restart</command>
+                                    </commands>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>download-db</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>wagon-maven-plugin</artifactId>
+                        <version>1.0</version>
+                        <executions>
+                            <execution>
+                                <id>download-test-data</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>download</goal>
+                                </goals>
+                                <configuration>
+                                    <serverId>krim-kosmetika.ru</serverId>
+                                    <url>scp://root@94.250.248.236</url>
+                                    <fromDir>/opt/jetty/temp</fromDir>
+                                    <includes>larisa.mv.db</includes>
+                                    <toDir>~/download/</toDir>
                                 </configuration>
                             </execution>
                         </executions>
@@ -112,6 +155,11 @@
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ssh-external</artifactId>
+                <version>3.0.0</version>
+            </extension>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
                 <version>3.0.0</version>
             </extension>
         </extensions>
