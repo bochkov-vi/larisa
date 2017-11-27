@@ -4,28 +4,10 @@
                 template="../layout/main-template.xhtml">
 
     <ui:define name="body">
-        <style>
-            .labelColumn {
-                vertical-align: middle;
-                font-size: 2em;
-            }
-
-            .labelColumn a {
-                text-decoration: none;
-            }
-
-            .iconColumn a {
-                text-decoration: none;
-            }
-
-            .cell tbody tr td {
-                vertical-align: top;
-            }
-        </style>
         <h:panelGrid styleClass="cell" columns="3" cellspacing="15" cellpadding="15" style="margin: auto">
-            <ui:include src="admin.xhtml"/>
-            <ui:include src="base.xhtml"/>
-            <ui:include src="shop.xhtml"/>
+            <ui:include src="admin/admin-fragment.xhtml"/>
+            <ui:include src="base/base-fragment.xhtml"/>
+            <ui:include src="shop/shop-fragment.xhtml"/>
         </h:panelGrid>
     </ui:define>
 

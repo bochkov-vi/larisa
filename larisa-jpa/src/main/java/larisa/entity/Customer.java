@@ -51,7 +51,7 @@ public class Customer extends DefaultEntity<Integer> implements IGetFiles {
     @CollectionTable(name = "customer_email")
     List<String> emails;
 
-    @ManyToMany
+    @OneToMany
     @JoinTable(name = "customer_file", joinColumns = @JoinColumn(name = "id_customer"), inverseJoinColumns = @JoinColumn(name = "id_file"))
     List<File> files;
 

@@ -60,7 +60,15 @@
 
         <profile>
             <id>deploy-to-server</id>
+
+
             <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
                 <plugins>
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
@@ -72,10 +80,10 @@
                                 <goals>
                                     <goal>upload-single</goal>
                                 </goals>
-                                <phase>deploy</phase>
+                                <phase>install</phase>
                                 <configuration>
                                     <fromFile>${project.build.directory}/${project.build.finalName}.war</fromFile>
-                                    <url>scpexe://bochkov@94.250.248.236:/opt/web/mybase/webapps</url>
+                                    <url>scpexe://bochkov@94.250.248.236:/opt/web/shop/webapps</url>
                                 </configuration>
                             </execution>
                             <execution>
@@ -109,16 +117,15 @@
                         <executions>
                             <execution>
                                 <id>download-test-data</id>
-                                <phase>validate</phase>
                                 <goals>
                                     <goal>download</goal>
                                 </goals>
                                 <configuration>
                                     <serverId>krim-kosmetika.ru</serverId>
                                     <url>scp://root@94.250.248.236</url>
-                                    <fromDir>/opt/jetty/temp</fromDir>
-                                    <includes>larisa.mv.db</includes>
-                                    <toDir>~/download/</toDir>
+                                    <fromDir>/opt/web/shop/tmp</fromDir>
+                                    <includes>${database.name}</includes>
+                                    <toDir>/home/bochkov/download/</toDir>
                                 </configuration>
                             </execution>
                         </executions>

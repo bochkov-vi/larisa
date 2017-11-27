@@ -1,4 +1,4 @@
-package spring.controller;
+package larisa.controller;
 
 import larisa.entity.File;
 import larisa.repository.FileRepository;

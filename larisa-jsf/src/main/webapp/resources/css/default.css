@@ -6,6 +6,10 @@
 .leftAlign{
     text-align: left;
 }
+
+.topAlign{
+    vertical-align: top;
+}
 .borderNone tbody tr td{
     border: 0 !important;
 }

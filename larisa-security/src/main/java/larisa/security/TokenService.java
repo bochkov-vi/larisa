@@ -52,6 +52,9 @@ public class TokenService implements PersistentTokenRepository {
     }
 
     PersistentRememberMeToken token(Token entity) {
-        return new PersistentRememberMeToken(entity.getAccount().getId(), entity.getId(), entity.getTokenValue(), entity.getDate());
+        if (entity != null) {
+            return new PersistentRememberMeToken(entity.getAccount().getId(), entity.getId(), entity.getTokenValue(), entity.getDate());
+        }
+        return null;
     }
 }

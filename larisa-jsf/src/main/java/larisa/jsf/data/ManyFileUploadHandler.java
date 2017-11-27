@@ -23,17 +23,17 @@ import java.util.List;
  * Created by home on 27.02.17.
  */
 @Configurable
-public class FileUploadHandler<T extends IGetFiles> implements Serializable {
+public class ManyFileUploadHandler<T extends IGetFiles> implements Serializable {
 
     @Autowired
     transient FileRepository fileRepository;
 
     T target;
 
-    public FileUploadHandler() {
+    public ManyFileUploadHandler() {
     }
 
-    public FileUploadHandler(T target) {
+    public ManyFileUploadHandler(T target) {
         this.target = target;
     }
 

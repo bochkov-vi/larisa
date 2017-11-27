@@ -31,6 +31,12 @@
                 <eclipselink.ddl-generation>create-tables</eclipselink.ddl-generation>
             </properties>
         </profile>
+        <profile>
+            <id>deploy-to-server</id>
+            <properties>
+                <database.name>/opt/web/shop/shop-database</database.name>
+            </properties>
+        </profile>
     </profiles>
     <dependencies>
         <dependency>
@@ -61,7 +67,7 @@
             <version>1.4.196</version>
         </dependency>
     </dependencies>
-  
+
     <build>
 
         <resources>

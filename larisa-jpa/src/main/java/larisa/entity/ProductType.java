@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "product_type")
-public class ProductType extends AbstractAuditableEntity<Integer> implements IGetNamed, IHierarchical<Integer, ProductType>, IGetFiles {
+public class ProductType extends AbstractAuditableEntity<Integer> implements IGetNamed, IHierarchical<Integer, ProductType>, IGetFile {
     @Id
     @GeneratedValue(generator = "product_type")
     @TableGenerator(name = "product_type", initialValue = 100, allocationSize = 1)
@@ -41,15 +41,15 @@ public class ProductType extends AbstractAuditableEntity<Integer> implements IGe
     @JoinColumn(name = "id_maker")
     Maker maker;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinTable(name = "product_type_file", joinColumns = @JoinColumn(name = "id_product_type"), inverseJoinColumns = @JoinColumn(name = "id_file"))
-    List<File> files;
+    File file;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "product_type_p", joinColumns = @JoinColumn(name = "id_product_type", referencedColumnName = "id_product_type"), inverseJoinColumns = @JoinColumn(name = "id_product_type_parent", referencedColumnName = "id_product_type"))
     List<ProductType> childs;
 
-    @ManyToMany(mappedBy = "childs",fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "childs", fetch = FetchType.EAGER)
     List<ProductType> parents;
 
 
@@ -79,12 +79,13 @@ public class ProductType extends AbstractAuditableEntity<Integer> implements IGe
         this.volumeNote = volumeNote;
     }
 
-    public List<File> getFiles() {
-        return files;
+    @Override
+    public File getFile() {
+        return file;
     }
 
-    public void setFiles(List<File> files) {
-        this.files = files;
+    public void setFile(File file) {
+        this.file = file;
     }
 
     @Override

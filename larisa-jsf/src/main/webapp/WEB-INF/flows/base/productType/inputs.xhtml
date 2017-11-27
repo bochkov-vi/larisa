@@ -59,6 +59,25 @@
                     <p:ajax event="query" global="false"/>
                 </p:autoComplete>
             </p:column>
+            <p:column>
+                <p:commandLink style="text-decoration: none"
+                               ajax="false"
+                               styleClass="fa fa-fw fa-plus-square-o"
+                               process="@this"
+                               action="maker-new"
+                               immediate="true">
+                </p:commandLink>
+            </p:column>
+            <p:column>
+                <p:commandLink style="text-decoration: none"
+                               ajax="false"
+                               disabled="#{empty entity.maker}"
+                               styleClass="fa fa-fw fa-pencil-square-o"
+                               process="@this"
+                               action="maker-edit"
+                               immediate="true">
+                </p:commandLink>
+            </p:column>
         </p:row>
         <p:row>
             <p:column>

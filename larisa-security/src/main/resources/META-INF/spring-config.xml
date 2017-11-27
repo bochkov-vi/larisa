@@ -24,11 +24,12 @@
                         login-processing-url="/login"
                         password-parameter="password"
                         username-parameter="user"
-                        default-target-url="/"/>
-        <sec:logout logout-url="/logout" invalidate-session="true"/>
+                        default-target-url="/"
+                        authentication-success-handler-ref="mySimpleUrlAuthenticationSuccessHandler"/>
+        <sec:logout logout-url="/logout" invalidate-session="true" logout-success-url="/spring/shop"/>
         <sec:intercept-url access="permitAll"
                            pattern="/login.xhtml"/>
-        <sec:intercept-url access="hasAnyRole('ADMIN','MANAGER')"
+        <sec:intercept-url access="hasAnyRole('MANAGER')"
                            pattern="/spring/base/**"/>
         <sec:intercept-url access="hasAnyRole('ADMIN')"
                            pattern="/spring/admin/**"/>

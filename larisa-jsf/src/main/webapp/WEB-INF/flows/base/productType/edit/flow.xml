@@ -2,8 +2,10 @@
 <flow xmlns="http://www.springframework.org/schema/webflow"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
+    <var name="uploader" class="larisa.jsf.data.SingleFileUploadHandler"/>
     <input name="canEditId" type="java.lang.Boolean"/>
     <input name="entity" type="larisa.entity.ProductType" required="true"/>
+
     <on-start>
         <set name="canEditId" value="false"/>
     </on-start>
@@ -21,9 +23,32 @@
         </transition>
         <transition on="clone" to="edit">
             <evaluate expression="productTypeService.clone(entity)" result="entity"/>
+        </transition>
+        <transition on="maker-new" to="maker-new">
 
         </transition>
+        <transition on="maker-edit" to="maker-edit">
+
+        </transition>
+        <transition on="prepare-fileupload">
+            <evaluate expression="entity" result="uploader.target"/>
+        </transition>
     </view-state>
+
+    <subflow-state id="maker-edit" subflow="base/maker/edit">
+        <input name="entity" required="true" value="entity.maker" type="larisa.entity.Maker"/>
+        <transition on="edit-confirmed" to="edit">
+            <evaluate expression="currentEvent.attributes.entity" result="entity.maker"/>
+        </transition>
+        <transition on="edit-canceled" to="edit"></transition>
+    </subflow-state>
+    <subflow-state id="maker-new" subflow="base/maker/edit">
+        <input name="entity" required="true" value="makerService.createNewInstance()" type="larisa.entity.Maker"/>
+        <transition on="edit-confirmed" to="edit">
+            <evaluate expression="currentEvent.attributes.entity" result="entity.maker"/>
+        </transition>
+        <transition on="edit-canceled" to="edit"></transition>
+    </subflow-state>
     <end-state id="edit-canceled">
 
     </end-state>

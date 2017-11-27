@@ -24,10 +24,10 @@ public class Account extends DefaultEntity<String> {
     @Convert(converter = JodaLocalDateConverter.class)
     LocalDate expirationDate;
 
-    @Enumerated
-    @Column(name = "role")
     @ElementCollection
-    @CollectionTable(name = "account_role")
+    @CollectionTable(name = "account_role", joinColumns = @JoinColumn(name = "login", referencedColumnName = "login"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
     List<Role> roles;
 
     @OneToOne

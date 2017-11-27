@@ -8,7 +8,7 @@
       xmlns:my="http://java.sun.com/jsf/composite/my">
 <h:head>
     <title>
-        <ui:insert name="title"><h:outputText value="Крымская косметика"/></ui:insert>
+        <ui:insert name="title"><h:outputText value="#{msg['title']}"/></ui:insert>
     </title>
     <h:outputStylesheet library="css" name="default.css"/>
     <h:outputScript library="js" name="primefaces_ru.js"/>
@@ -26,8 +26,13 @@
     <p:panel>
         <ui:insert name="body"/>
         <f:facet name="footer">
-            <h:panelGroup style="text-align: right;display:table;margin-left: auto">
-                <my:logoutForm signoutAction="logout" signoutLabel="#{currentUser.name}"/>
+            <h:panelGroup rendered="#{p:ifAnyGranted('ROLE_ADMIN,ROLE_MANAGER,ROLE_CUSTOMER')}"
+                          style="text-align: right;display:table;margin-left: auto">
+                <my:logoutForm signoutAction="logout" signoutLabel="#{p:userPrincipal().name}"/>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{p:ifNoneGranted('ROLE_ADMIN,ROLE_MANAGER,ROLE_CUSTOMER')}"
+                          style="text-align: right;display:table;margin-left: auto">
+                <p:button value="#{msg['signin']}" icon="fa fa-sign-in" href="/login.xhtml"/>
             </h:panelGroup>
         </f:facet>
     </p:panel>

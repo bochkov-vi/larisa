@@ -1,5 +1,6 @@
 package test;
 
+import larisa.repository.AccountRepository;
 import larisa.repository.MakerRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,9 +14,13 @@ public class TestJpa {
     @Autowired
     MakerRepository makerRepository;
 
+    @Autowired
+    AccountRepository accountRepository;
+
+
     @Test
     public void testFindAll(){
-        makerRepository.findAll();
+        accountRepository.findAll();
     }
 
 
