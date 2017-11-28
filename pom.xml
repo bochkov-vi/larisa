@@ -19,6 +19,7 @@
         <spring.version>4.3.9.RELEASE</spring.version>
         <eclipselink.version>2.6.5</eclipselink.version>
         <database.name>~/larisa</database.name>
+        <remote.server>94.250.252.209</remote.server>
     </properties>
 
     <dependencyManagement>
@@ -94,6 +95,18 @@
                 </configuration>
             </plugin>
         </plugins>
-
+        <extensions>
+            <!-- Enabling the use of SSH -->
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh-external</artifactId>
+                <version>3.0.0</version>
+            </extension>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>3.0.0</version>
+            </extension>
+        </extensions>
     </build>
 </project>

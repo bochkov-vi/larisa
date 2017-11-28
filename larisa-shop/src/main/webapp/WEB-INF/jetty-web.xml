@@ -2,8 +2,6 @@
 <!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">
 
 <Configure class="org.eclipse.jetty.webapp.WebAppContext">
-    <Set class="org.eclipse.jetty.util.resource.Resource"
-         name="defaultUseCaches">false
-    </Set>
-    <Set name="contextPath">admin</Set>
+    <Set class="org.eclipse.jetty.util.resource.Resource" name="defaultUseCaches">false</Set>
+    <Set name="contextPath">/</Set>
 </Configure>

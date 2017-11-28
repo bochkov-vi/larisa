@@ -1,6 +1,5 @@
-package com.bochkov.shop.page;
-
 import com.bochkov.WicketApplication;
+import com.bochkov.shop.page.HomePage;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Before;
 import org.junit.Test;

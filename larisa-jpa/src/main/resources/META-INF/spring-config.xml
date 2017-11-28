@@ -19,9 +19,11 @@
         <property name="url" value="jdbc:h2:tcp://localhost:${h2.port}/${database.name}"/>
     </bean>
 
-    <bean scope="singleton" id="h2Server" class="org.h2.tools.Server" factory-method="createTcpServer"
+    <bean scope="singleton" id="h2Server"
+          class="larisa.H2Starter"
           init-method="start"
-          destroy-method="stop">
+          destroy-method="stop"
+    >
         <constructor-arg>
             <array>
                 <value>-tcp</value>

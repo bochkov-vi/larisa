@@ -60,8 +60,6 @@
 
         <profile>
             <id>deploy-to-server</id>
-
-
             <build>
                 <resources>
                     <resource>
@@ -83,7 +81,7 @@
                                 <phase>install</phase>
                                 <configuration>
                                     <fromFile>${project.build.directory}/${project.build.finalName}.war</fromFile>
-                                    <url>scpexe://bochkov@94.250.248.236:/opt/web/shop/webapps</url>
+                                    <url>scpexe://bochkov@${remote.server}:/opt/jetty-base/shop/webapps</url>
                                 </configuration>
                             </execution>
                             <execution>
@@ -94,7 +92,7 @@
                                 </goals>
                                 <configuration>
                                     <serverId>krim-kosmetika.ru</serverId>
-                                    <url>scp://root@94.250.248.236</url>
+                                    <url>scp://root@${remote.server}</url>
                                     <commands>
                                         <command>service jetty restart</command>
                                     </commands>
@@ -123,7 +121,7 @@
                                 <configuration>
                                     <serverId>krim-kosmetika.ru</serverId>
                                     <url>scp://root@94.250.248.236</url>
-                                    <fromDir>/opt/web/shop/tmp</fromDir>
+                                    <fromDir>/opt/jetty-base/shop/tmp</fromDir>
                                     <includes>${database.name}</includes>
                                     <toDir>/home/bochkov/download/</toDir>
                                 </configuration>
@@ -157,19 +155,6 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
-        <extensions>
-            <!-- Enabling the use of SSH -->
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ssh-external</artifactId>
-                <version>3.0.0</version>
-            </extension>
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ssh</artifactId>
-                <version>3.0.0</version>
-            </extension>
-        </extensions>
     </build>
     <dependencies>
         <!-- <dependency>

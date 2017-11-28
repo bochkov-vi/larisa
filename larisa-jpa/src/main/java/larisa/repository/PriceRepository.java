@@ -2,6 +2,9 @@ package larisa.repository;
 
 import larisa.DefaultEntityRepository;
 import larisa.entity.Price;
+import larisa.entity.ProductType;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,5 +12,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface PriceRepository extends DefaultEntityRepository<Price, Integer> {
-
+    @Query("SELECT o FROM Price o WHERE o.productType=:productType AND o.dateTo IS NULL")
+    Price findLast(@Param("productType") ProductType productType);
 }

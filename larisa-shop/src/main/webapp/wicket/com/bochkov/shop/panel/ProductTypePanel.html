@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+    <link href="../../../../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../../../css/shop-homepage.css" rel="stylesheet">
+</head>
+<body>
+<wicket:panel>
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100">
+            <a href="#"><img wicket:id="img" class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+            <div class="card-body">
+                <h4 class="card-title">
+                    <a wicket:id="name" href="#">Item One</a>
+                </h4>
+                <h5>
+                    <span wicket:enclosure="price">
+                        <span wicket:id="price"/>
+                    </span>
+                    <wicket:label key="label.no-data"/>
+                </h5>
+                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam
+                    aspernatur!</p>
+            </div>
+        </div>
+    </div>
+</wicket:panel>
+</body>
+</html>

@@ -1,7 +1,9 @@
 package test;
 
+import larisa.entity.ProductType;
 import larisa.repository.AccountRepository;
 import larisa.repository.MakerRepository;
+import larisa.repository.ProductTypeRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +19,15 @@ public class TestJpa {
     @Autowired
     AccountRepository accountRepository;
 
+    @Autowired
+    ProductTypeRepository productTypeRepository;
+
 
     @Test
     public void testFindAll(){
-        accountRepository.findAll();
+        for (ProductType p : productTypeRepository.findAll()) {
+            System.out.println(p);
+        }
     }
 
 
