@@ -109,7 +109,11 @@
             <artifactId>wicket-util</artifactId>
             <version>${wicket.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.wicketstuff</groupId>
+            <artifactId>wicket-mount</artifactId>
+            <version>${wicket.version}</version>
+        </dependency>
         <!-- LOGGING DEPENDENCIES - LOG4J -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>

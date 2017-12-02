@@ -1,4 +1,4 @@
-package com.bochkov.shop.model;
+package com.bochkov.model;
 
 import larisa.entity.ProductType;
 import larisa.repository.ProductTypeRepository;

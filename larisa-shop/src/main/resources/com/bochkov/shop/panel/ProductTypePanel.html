@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<wicket:head>
+    <script>
+        function adaptHeight() {
+                var highestBox = 0;
+                $('.product-type').each(function(){
+                    if($(this).height() > highestBox) {
+                        highestBox = $(this).height();
+                    }
+                });
+                $('.product-type').height(highestBox);
+                //console.log('h:'+highestBox)
+        }
+
+    </script>
+</wicket:head>
+<body>
+<wicket:panel>
+    <div class="col-sm-4 col-lg-4 col-md-4 ">
+        <div class="thumbnail product-type">
+            <img wicket:id="img" src="http://placehold.it/320x150" alt="">
+            <div class="caption">
+                <h4 wicket:id="price" class="pull-right">$</h4>
+                <h4>
+                    <a wicket:id="name" href="#">ProductType</a>
+                </h4>
+            </div>
+        </div>
+    </div>
+</wicket:panel>
+</body>
+</html>

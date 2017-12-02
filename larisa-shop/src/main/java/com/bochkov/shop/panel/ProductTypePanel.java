@@ -5,6 +5,8 @@ import larisa.entity.ProductType;
 import larisa.repository.PriceRepository;
 import org.apache.wicket.Application;
 import org.apache.wicket.injection.Injector;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.OnLoadHeaderItem;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.GenericPanel;
@@ -39,5 +41,11 @@ public class ProductTypePanel extends GenericPanel<ProductType> {
                 return getModelObject() != null;
             }
         });
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        response.render(OnLoadHeaderItem.forScript("$(document).ready(adaptHeight());"));
     }
 }

@@ -5,5 +5,5 @@
     <Set class="org.eclipse.jetty.util.resource.Resource"
          name="defaultUseCaches">false
     </Set>
-    <Set name="contextPath">admin</Set>
+
 </Configure>

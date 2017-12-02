@@ -1,4 +1,4 @@
-package com.bochkov.shop.page;
+package com.bochkov;
 
 import org.apache.wicket.markup.html.GenericWebPage;
 import org.apache.wicket.model.IModel;

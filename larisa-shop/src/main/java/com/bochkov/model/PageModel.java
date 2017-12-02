@@ -1,4 +1,4 @@
-package com.bochkov.shop.model;
+package com.bochkov.model;
 
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;

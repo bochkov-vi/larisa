@@ -1,6 +1,7 @@
 package com.bochkov.shop.page;
 
-import com.bochkov.shop.model.ProductTypePageModel;
+import com.bochkov.model.ProductTypePageModel;
+import com.bochkov.shop.panel.FooterPanel;
 import com.bochkov.shop.panel.NavigationPanel;
 import com.bochkov.shop.panel.ProductTypePanel;
 import larisa.entity.ProductType;
@@ -30,11 +31,12 @@ public class HomePage extends WebPage {
         super.onInitialize();
         add(new Label("title",new ResourceModel("title")));
         add(new NavigationPanel("navigation"));
-        add(new ListView<ProductType>("product-type-list", new ProductTypePageModel()) {
+        add(new ListView<ProductType>("rows", new ProductTypePageModel()) {
             @Override
             protected void populateItem(ListItem<ProductType> item) {
                 item.add(new ProductTypePanel("product-type",item.getModel()));
             }
         });
+        add(new FooterPanel("footer"));
     }
 }

@@ -84,20 +84,6 @@
                                     <url>scpexe://bochkov@${remote.server}:/opt/jetty-base/shop/webapps</url>
                                 </configuration>
                             </execution>
-                            <execution>
-                                <id>execute-restart-remote-jetty</id>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>sshexec</goal>
-                                </goals>
-                                <configuration>
-                                    <serverId>krim-kosmetika.ru</serverId>
-                                    <url>scp://root@${remote.server}</url>
-                                    <commands>
-                                        <command>service jetty restart</command>
-                                    </commands>
-                                </configuration>
-                            </execution>
                         </executions>
                     </plugin>
                 </plugins>
