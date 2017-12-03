@@ -37,8 +37,7 @@
         <junit.version>4.12</junit.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <wicket.configuration>deployment</wicket.configuration>
-        <!-- allowed values: R7, 1.0, 1.5, 2.0 or none -->
-        <wtp.version>none</wtp.version>
+        <wicket.bootstrap.version>0.10.16</wicket.bootstrap.version>
     </properties>
     <profiles>
         <profile>
@@ -82,6 +81,18 @@
     </profiles>
     <dependencies>
 
+        <dependency>
+            <groupId>de.agilecoders.wicket</groupId>
+            <artifactId>wicket-bootstrap-core</artifactId>
+            <version>${wicket.bootstrap.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>de.agilecoders.wicket</groupId>
+            <artifactId>wicket-bootstrap-extensions</artifactId>
+            <version>${wicket.bootstrap.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.bochkov</groupId>
             <artifactId>larisa-jpa</artifactId>

@@ -19,7 +19,7 @@
               security="none"/>
     <sec:http auto-config="true" use-expressions="true">
         <sec:csrf disabled="true"/>
-        <sec:form-login login-page="/login.xhtml"
+        <sec:form-login login-backPage="/login.xhtml"
                         login-processing-url="/login"
                         password-parameter="password"
                         username-parameter="user"

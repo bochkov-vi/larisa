@@ -20,10 +20,10 @@ public class TestHomePage
 	@Test
 	public void homepageRendersSuccessfully()
 	{
-		//start and render the test page
+		//start and render the test backPage
 		tester.startPage(HomePage.class);
 
-		//assert rendered page class
+		//assert rendered backPage class
 		tester.assertRenderedPage(HomePage.class);
 	}
 }

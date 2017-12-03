@@ -6,21 +6,21 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.io.Serializable;
 
-public abstract class EntityListModel<T extends Persistable<ID>, ID extends Serializable> extends LoadableDetachableModel<T> {
+public abstract class EntityModel<T extends Persistable<ID>, ID extends Serializable> extends LoadableDetachableModel<T> {
     ID id;
 
-    public EntityListModel(ID id) {
+    public EntityModel(ID id) {
         this.id = id;
     }
 
-    public EntityListModel(T object) {
+    public EntityModel(T object) {
         super(object);
         if (object != null) {
             this.id = object.getId();
         }
     }
 
-    public EntityListModel() {
+    public EntityModel() {
     }
 
     @Override
@@ -38,5 +38,5 @@ public abstract class EntityListModel<T extends Persistable<ID>, ID extends Seri
         id = object != null ? object.getId() : null;
     }
 
-    abstract CrudRepository<T, ID> getRepostory();
+    public abstract CrudRepository<T, ID> getRepostory();
 }
