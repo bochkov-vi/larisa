@@ -3,14 +3,13 @@ package larisa.entity;
 import org.entity3.IGetNamed;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Created by home on 23.02.17.
  */
 @Entity
 @Table(name = "maker")
-public class Maker extends DefaultEntity<Integer> implements IGetFiles, IGetNamed {
+public class Maker extends DefaultEntity<Integer> implements IGetFile, IGetNamed {
     @Id
     @Column(name = "id_maker")
     @GeneratedValue(generator = "maker")
@@ -23,9 +22,9 @@ public class Maker extends DefaultEntity<Integer> implements IGetFiles, IGetName
     @Column(name = "note")
     String note;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER,orphanRemoval = true)
     @JoinTable(name = "maker_file", joinColumns = @JoinColumn(name = "id_maker"), inverseJoinColumns = @JoinColumn(name = "id_file"))
-    List<File> files;
+    File file;
 
     @Override
     public Integer getId() {
@@ -59,12 +58,12 @@ public class Maker extends DefaultEntity<Integer> implements IGetFiles, IGetName
         this.note = note;
     }
 
-    public List<File> getFiles() {
-        return files;
+    public File getFile() {
+        return file;
     }
 
-    public void setFiles(List<File> files) {
-        this.files = files;
+    public void setFile(File files) {
+        this.file = files;
     }
 
     @Override

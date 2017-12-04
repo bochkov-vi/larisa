@@ -3,6 +3,7 @@ package com.bochkov.admin.page;
 import com.bochkov.admin.page.maker.MakerTablePage;
 import de.agilecoders.wicket.core.Bootstrap;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.dropdown.MenuBookmarkablePageLink;
+import de.agilecoders.wicket.core.markup.html.bootstrap.common.NotificationPanel;
 import de.agilecoders.wicket.core.markup.html.bootstrap.html.HtmlTag;
 import de.agilecoders.wicket.core.markup.html.bootstrap.html.IeEdgeMetaTag;
 import de.agilecoders.wicket.core.markup.html.bootstrap.html.MetaTag;
@@ -21,6 +22,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
+import org.springframework.data.util.ClassTypeInformation;
+import org.springframework.data.util.TypeInformation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +43,7 @@ abstract public class BasePage<T> extends GenericWebPage<T> {
         super(model);
         init();
     }
-
+    final protected NotificationPanel feedback = new NotificationPanel("feedback");
     /**
      * Construct.
      *
@@ -63,10 +66,11 @@ abstract public class BasePage<T> extends GenericWebPage<T> {
         add(new IeEdgeMetaTag("ie-edge"));
         add(new MetaTag("description", Model.of("description"), Model.of("Apache Wicket & Bootstrap Demo")));
         add(new MetaTag("author", Model.of("author"), Model.of("Michael Haitz <michael.haitz@agile-coders.de>")));
-
         add(newNavbar("navbar"));
         add(newNavigation("navigation"));
         add(new Footer("footer"));
+        feedback.setOutputMarkupId(true);
+        add(feedback);
     }
 
     /**

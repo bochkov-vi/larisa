@@ -1,12 +1,13 @@
 package com.bochkov.model;
 
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.repository.CrudRepository;
 
 import java.io.Serializable;
 
-public abstract class EntityModel<T extends Persistable<ID>, ID extends Serializable> extends LoadableDetachableModel<T> {
+public abstract class EntityModel<T extends Persistable<ID>, ID extends Serializable> extends LoadableDetachableModel<T> implements IModel<T>{
     ID id;
 
     public EntityModel(ID id) {
