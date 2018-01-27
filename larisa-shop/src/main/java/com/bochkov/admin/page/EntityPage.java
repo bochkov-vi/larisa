@@ -2,11 +2,15 @@ package com.bochkov.admin.page;
 
 import com.bochkov.admin.component.button.*;
 import de.agilecoders.wicket.core.markup.html.bootstrap.dialog.Modal;
+import de.agilecoders.wicket.core.markup.html.bootstrap.dialog.ModalCloseButton;
+import de.agilecoders.wicket.core.markup.html.bootstrap.dialog.TextContentModal;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.GenericWebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -19,14 +23,6 @@ import static com.bochkov.ReflectionUtils.getGenericParameterClass;
 
 public abstract class EntityPage<T extends Persistable> extends TitledPage<T> {
 
-    Modal<T> deleteDialog= new Modal<T>("delete-dialog"){
-        @Override
-        protected void onInitialize() {
-            super.onInitialize();
-            setOutputMarkupId(true);
-        }
-    };
-
     protected NavigateAction<T> backNavigateAction = new NavigateAction<T>() {
         @Override
         public void navigate(RequestCycle circle, IModel<T> model) {
@@ -34,6 +30,8 @@ public abstract class EntityPage<T extends Persistable> extends TitledPage<T> {
         }
     };
 
+
+    Modal<String> deleteDialog = createDeleteDialog("delete-dialog");
 
     public EntityPage() {
     }
@@ -50,6 +48,7 @@ public abstract class EntityPage<T extends Persistable> extends TitledPage<T> {
     @Override
     protected void onInitialize() {
         super.onInitialize();
+        add(deleteDialog);
     }
 
     protected T createNewEntity() {
@@ -67,9 +66,9 @@ public abstract class EntityPage<T extends Persistable> extends TitledPage<T> {
     }
 
 
-    public ToolbarPanel createToolbar(String id, Form form, ButtonCreator... buttonCreators) {
-        ToolbarPanel toolbarPanel = new ToolbarPanel(id, buttonCreators);
-        toolbarPanel.add(buttonId -> new CancelButton(buttonId, form) {
+    public ToolbarPanel createToolbar(String toolbarId, Form form, ButtonCreator... buttonCreators) {
+        ToolbarPanel toolbarPanel = new ToolbarPanel(toolbarId, buttonCreators);
+        toolbarPanel.add(id -> new CancelButton(id, form) {
             @Override
             protected void onSubmit(Optional<AjaxRequestTarget> target) {
                 onCancel(target);
@@ -80,16 +79,22 @@ public abstract class EntityPage<T extends Persistable> extends TitledPage<T> {
                 return EntityPage.this.backNavigateAction != null;
             }
         });
-        toolbarPanel.add(buttonId -> new CreateNewButton(id, form) {
+        toolbarPanel.add(id -> new CreateNewButton(id, form) {
             @Override
             protected void onSubmit(Optional<AjaxRequestTarget> target) {
                 onCreateNew();
             }
         });
-        toolbarPanel.add(buttonId -> new DeleteButton(id, form) {
+        toolbarPanel.add(id -> new DeleteButton(id, form) {
             @Override
             protected void onSubmit(Optional<AjaxRequestTarget> target) {
-                target.ifPresent(t->t.appendJavaScript(""));
+                target.ifPresent(t -> deleteDialog.show(t));
+                // target.ifPresent(t -> t.appendJavaScript(String.format("$('#%s').modal('show');", deleteDialog.getMarkupId())));
+            }
+
+            @Override
+            public boolean isEnabled() {
+                return isDeleteEnabled();
             }
         });
         return toolbarPanel;
@@ -129,5 +134,24 @@ public abstract class EntityPage<T extends Persistable> extends TitledPage<T> {
         backNavigateAction.navigate(RequestCycle.get(), getModel());
     }
 
+    IModel getDeletedModel() {
+        return getModel();
+    }
 
+    public boolean isDeleteEnabled() {
+        return getDeletedModel() != null && (Boolean) getDeletedModel().isPresent().getObject();
+    }
+
+    public Modal createDeleteDialog(String id) {
+        Modal modal = new TextContentModal(id,
+                new StringResourceModel("deleteEntityMessage", EntityPage.this.getModel()).wrapOnAssignment(EntityPage.this)) {
+            @Override
+            protected void onInitialize() {
+                super.onInitialize();
+                setOutputMarkupId(true);
+            }
+        }.header(new ResourceModel("confirmEntityDeleteing").wrapOnAssignment(EntityPage.this));
+        modal.addButton(new ModalCloseButton(new ResourceModel("cancel").wrapOnAssignment(getPage())));
+        return modal;
+    }
 }

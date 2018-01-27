@@ -142,4 +142,8 @@ public abstract class EntityEditPage<T extends Persistable<ID>, ID extends Seria
         target.ifPresent(t -> t.add(form, feedback));
     }
 
+    @Override
+    IModel<T> getDeletedModel() {
+        return super.getDeletedModel();
+    }
 }

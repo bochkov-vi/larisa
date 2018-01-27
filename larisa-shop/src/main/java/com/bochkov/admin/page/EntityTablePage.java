@@ -1,6 +1,7 @@
 package com.bochkov.admin.page;
 
-import com.bochkov.admin.component.button.*;
+import com.bochkov.admin.component.button.ButtonCreator;
+import com.bochkov.admin.component.button.ToolbarPanel;
 import com.bochkov.model.EntityDataProvider;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -63,7 +64,7 @@ public abstract class EntityTablePage<T extends Persistable> extends EntityPage<
     protected void onInitialize() {
         super.onInitialize();
         add(toolbarForm);
-        toolbarForm.add(createToolbar("toolbar",toolbarForm));
+        toolbarForm.add(createToolbar("toolbar", toolbarForm));
         add(table = createTable("table"));
         table.setOutputMarkupId(true);
     }
@@ -146,8 +147,8 @@ public abstract class EntityTablePage<T extends Persistable> extends EntityPage<
 
     @Override
     public ToolbarPanel createToolbar(String id, Form form, ButtonCreator... buttonCreators) {
-        ToolbarPanel toolbarPanel = super.createToolbar(id,form, buttonCreators);
-        toolbarPanel.add(buttonId -> new DeleteButton(buttonId, toolbarForm) {
+        ToolbarPanel toolbarPanel = super.createToolbar(id, form, buttonCreators);
+        /*toolbarPanel.add(buttonId -> new DeleteButton(buttonId, toolbarForm) {
             @Override
             protected void onSubmit(Optional<AjaxRequestTarget> target) {
                 if (Optional.ofNullable(selection).isPresent() && selection.map(c -> !c.isEmpty()).getObject()) {
@@ -162,7 +163,17 @@ public abstract class EntityTablePage<T extends Persistable> extends EntityPage<
             public boolean isEnabled() {
                 return Optional.ofNullable(selection).isPresent() && selection.map(c -> !c.isEmpty()).getObject();
             }
-        });
+        });*/
         return toolbarPanel;
+    }
+
+    @Override
+    IModel<Collection<T>> getDeletedModel() {
+        return selection;
+    }
+
+    @Override
+    public boolean isDeleteEnabled() {
+        return super.isDeleteEnabled() && getDeletedModel().map(c -> !c.isEmpty()).getObject();
     }
 }
