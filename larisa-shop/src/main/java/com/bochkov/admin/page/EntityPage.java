@@ -1,22 +1,24 @@
 package com.bochkov.admin.page;
 
 import com.bochkov.admin.component.button.*;
+import de.agilecoders.wicket.core.markup.html.bootstrap.button.ButtonBehavior;
+import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons;
 import de.agilecoders.wicket.core.markup.html.bootstrap.dialog.Modal;
 import de.agilecoders.wicket.core.markup.html.bootstrap.dialog.ModalCloseButton;
 import de.agilecoders.wicket.core.markup.html.bootstrap.dialog.TextContentModal;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.GenericWebPage;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.model.*;
+import org.apache.wicket.model.util.CollectionModel;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import static com.bochkov.ReflectionUtils.getGenericParameterClass;
@@ -88,7 +90,10 @@ public abstract class EntityPage<T extends Persistable> extends TitledPage<T> {
         toolbarPanel.add(id -> new DeleteButton(id, form) {
             @Override
             protected void onSubmit(Optional<AjaxRequestTarget> target) {
-                target.ifPresent(t -> deleteDialog.show(t));
+                target.ifPresent(t -> {
+                    t.add(EntityPage.this.deleteDialog);
+                    deleteDialog.show(t);
+                });
                 // target.ifPresent(t -> t.appendJavaScript(String.format("$('#%s').modal('show');", deleteDialog.getMarkupId())));
             }
 
@@ -111,9 +116,19 @@ public abstract class EntityPage<T extends Persistable> extends TitledPage<T> {
     }
 
 
-    public void onDelete(IModel<T> entityModel) {
+    public void onDelete(Optional<AjaxRequestTarget> target, IModel<T> entityModel) {
+        target.ifPresent(t -> t.add(feedback));
         if (entityModel.isPresent().getObject()) {
-            getRepository().delete(entityModel.getObject());
+            try {
+                if (entityModel instanceof CollectionModel) {
+                    getRepository().delete((Collection) entityModel.getObject());
+                } else {
+                    getRepository().delete(entityModel.getObject());
+                }
+                success(new StringResourceModel(""));
+            } catch (Exception e) {
+                error(e.getLocalizedMessage());
+            }
         }
     }
 
@@ -134,7 +149,7 @@ public abstract class EntityPage<T extends Persistable> extends TitledPage<T> {
         backNavigateAction.navigate(RequestCycle.get(), getModel());
     }
 
-    IModel getDeletedModel() {
+    public IModel getDeletedModel() {
         return getModel();
     }
 
@@ -144,14 +159,23 @@ public abstract class EntityPage<T extends Persistable> extends TitledPage<T> {
 
     public Modal createDeleteDialog(String id) {
         Modal modal = new TextContentModal(id,
-                new StringResourceModel("deleteEntityMessage", EntityPage.this.getModel()).wrapOnAssignment(EntityPage.this)) {
+                new StringResourceModel("deleteEntityMessage", getPage()).setParameters(LambdaModel.of(() -> Optional.ofNullable(getDeletedModel()).map(model -> model.getObject()).orElse(null))))
+                .header(new ResourceModel("confirmEntityDeleteing").wrapOnAssignment(EntityPage.this));
+        modal.setOutputMarkupId(true);
+        modal.addButton(new ModalCloseButton(new ResourceModel("cancel").wrapOnAssignment(getPage())));
+        modal.addButton(new AjaxLink<String>("button", new ResourceModel("delete").wrapOnAssignment(getPage())) {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                onDelete(Optional.of(target), getDeletedModel());
+                target.prependJavaScript(String.format("$('#%s').modal('hide');", modal.getMarkupId()));
+            }
+
             @Override
             protected void onInitialize() {
                 super.onInitialize();
-                setOutputMarkupId(true);
+                setBody(getDefaultModel());
             }
-        }.header(new ResourceModel("confirmEntityDeleteing").wrapOnAssignment(EntityPage.this));
-        modal.addButton(new ModalCloseButton(new ResourceModel("cancel").wrapOnAssignment(getPage())));
+        }.add(new ButtonBehavior(Buttons.Type.Default)));
         return modal;
     }
 }

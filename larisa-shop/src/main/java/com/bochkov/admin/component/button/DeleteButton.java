@@ -8,4 +8,6 @@ public abstract class DeleteButton extends FontAwesomeButton {
         super(id, form);
         setIconType(FontAwesomeIconType.close);
     }
+
+
 }

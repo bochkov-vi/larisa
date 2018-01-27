@@ -143,7 +143,13 @@ public abstract class EntityEditPage<T extends Persistable<ID>, ID extends Seria
     }
 
     @Override
-    IModel<T> getDeletedModel() {
+    public void onDelete(Optional<AjaxRequestTarget> target, IModel<T> entityModel) {
+        super.onDelete(target, entityModel);
+        onCancel(target);
+    }
+
+    @Override
+    public IModel<T> getDeletedModel() {
         return super.getDeletedModel();
     }
 }

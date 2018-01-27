@@ -148,32 +148,22 @@ public abstract class EntityTablePage<T extends Persistable> extends EntityPage<
     @Override
     public ToolbarPanel createToolbar(String id, Form form, ButtonCreator... buttonCreators) {
         ToolbarPanel toolbarPanel = super.createToolbar(id, form, buttonCreators);
-        /*toolbarPanel.add(buttonId -> new DeleteButton(buttonId, toolbarForm) {
-            @Override
-            protected void onSubmit(Optional<AjaxRequestTarget> target) {
-                if (Optional.ofNullable(selection).isPresent() && selection.map(c -> !c.isEmpty()).getObject()) {
-                    for (T entity : selection.getObject()) {
-                        onDelete(Model.of(entity));
-                    }
-                    target.ifPresent(t -> t.add(table));
-                }
-            }
-
-            @Override
-            public boolean isEnabled() {
-                return Optional.ofNullable(selection).isPresent() && selection.map(c -> !c.isEmpty()).getObject();
-            }
-        });*/
         return toolbarPanel;
     }
 
     @Override
-    IModel<Collection<T>> getDeletedModel() {
+    public IModel<Collection<T>> getDeletedModel() {
         return selection;
     }
 
     @Override
     public boolean isDeleteEnabled() {
         return super.isDeleteEnabled() && getDeletedModel().map(c -> !c.isEmpty()).getObject();
+    }
+
+    @Override
+    public void onDelete(Optional<AjaxRequestTarget> target, IModel<T> entityModel) {
+        super.onDelete(target, entityModel);
+        target.ifPresent(t->t.add(table));
     }
 }
