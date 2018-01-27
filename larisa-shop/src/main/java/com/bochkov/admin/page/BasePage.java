@@ -1,29 +1,28 @@
 package com.bochkov.admin.page;
 
 import com.bochkov.admin.page.maker.MakerTablePage;
+import com.bochkov.admin.page.productType.TablePage;
 import de.agilecoders.wicket.core.Bootstrap;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.dropdown.MenuBookmarkablePageLink;
 import de.agilecoders.wicket.core.markup.html.bootstrap.common.NotificationPanel;
 import de.agilecoders.wicket.core.markup.html.bootstrap.html.HtmlTag;
 import de.agilecoders.wicket.core.markup.html.bootstrap.html.IeEdgeMetaTag;
-import de.agilecoders.wicket.core.markup.html.bootstrap.html.MetaTag;
 import de.agilecoders.wicket.core.markup.html.bootstrap.html.MobileViewportMetaTag;
 import de.agilecoders.wicket.core.markup.html.bootstrap.image.GlyphIconType;
 import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.*;
 import de.agilecoders.wicket.core.settings.IBootstrapSettings;
 import de.agilecoders.wicket.core.settings.ITheme;
+import de.agilecoders.wicket.extensions.markup.html.bootstrap.icon.FontAwesomeCssReference;
 import org.apache.wicket.Component;
+import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.GenericWebPage;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
-import org.springframework.data.util.ClassTypeInformation;
-import org.springframework.data.util.TypeInformation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,29 +33,25 @@ import java.util.List;
  * @author miha
  */
 abstract public class BasePage<T> extends GenericWebPage<T> {
+    final protected NotificationPanel feedback = new NotificationPanel("feedback");
+
+    /*protected NavigateAction<T> backNavigateAction;*/
 
     public BasePage() {
-        init();
     }
 
     public BasePage(IModel<T> model) {
         super(model);
-        init();
     }
-    final protected NotificationPanel feedback = new NotificationPanel("feedback");
-    /**
-     * Construct.
-     *
-     * @param parameters current backPage parameters
-     */
-    public BasePage(final PageParameters parameters) {
+
+    public BasePage(PageParameters parameters) {
         super(parameters);
-        init();
-
-
     }
 
-    private void init() {
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
         add(new HtmlTag("html"));
         MobileViewportMetaTag mvt = new MobileViewportMetaTag("viewport");
         mvt.setWidth("device-width");
@@ -64,8 +59,6 @@ abstract public class BasePage<T> extends GenericWebPage<T> {
         add(mvt);
 //        add(new OptimizedMobileViewportNoZoomMetaTag("viewport1"));
         add(new IeEdgeMetaTag("ie-edge"));
-        add(new MetaTag("description", Model.of("description"), Model.of("Apache Wicket & Bootstrap Demo")));
-        add(new MetaTag("author", Model.of("author"), Model.of("Michael Haitz <michael.haitz@agile-coders.de>")));
         add(newNavbar("navbar"));
         add(newNavigation("navigation"));
         add(new Footer("footer"));
@@ -140,6 +133,8 @@ abstract public class BasePage<T> extends GenericWebPage<T> {
             protected List<AbstractLink> newSubMenuButtons(String buttonMarkupId) {
                 final List<AbstractLink> subMenu = new ArrayList<>();
                 subMenu.add(new MenuBookmarkablePageLink<Void>(MakerTablePage.class, new ResourceModel("maker.title")).setIconType(GlyphIconType.refresh));
+                subMenu.add(new MenuBookmarkablePageLink<Void>(com.bochkov.admin.page.productType.TablePage.class, new ResourceModel("productType.title")).setIconType(GlyphIconType.refresh));
+                subMenu.add(new MenuBookmarkablePageLink<Void>(com.bochkov.admin.page.product.TablePage.class, new ResourceModel("product.title")).setIconType(GlyphIconType.refresh));
                 return subMenu;
             }
         }.setIconType(GlyphIconType.thlarge);
@@ -175,7 +170,7 @@ abstract public class BasePage<T> extends GenericWebPage<T> {
     @Override
     public void renderHead(IHeaderResponse response) {
         super.renderHead(response);
-
+        response.render(CssHeaderItem.forReference(FontAwesomeCssReference.instance()));
 //        response.render(CssHeaderItem.forReference(FixBootstrapStylesCssResourceReference.INSTANCE));
 //        response.render(new FilteredHeaderItem(JavaScriptHeaderItem.forReference(ApplicationJavaScript.INSTANCE), "footer-container"));
 //        response.render(RespondJavaScriptReference.headerItem());

@@ -1,8 +1,15 @@
 package com.bochkov.admin.page;
 
+import com.bochkov.admin.component.button.ButtonCreator;
+import com.bochkov.admin.component.button.SaveButton;
+import com.bochkov.admin.component.button.ToolbarPanel;
 import com.bochkov.model.EntityModel;
-import org.apache.wicket.Page;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.repository.CrudRepository;
@@ -10,17 +17,23 @@ import org.springframework.data.util.ClassTypeInformation;
 import org.springframework.data.util.TypeInformation;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Optional;
 
-public abstract class EntityEditPage<T extends Persistable<ID>, ID extends Serializable> extends TitledPage<T> {
+public abstract class EntityEditPage<T extends Persistable<ID>, ID extends Serializable> extends EntityPage<T> {
 
-    protected Page backPage;
 
-    /**
-     * Construct.
-     *
-     * @param parameters current backPage parameters
-     */
+    protected Form<T> form = new Form<>("form");
+
+
+    public EntityEditPage() {
+    }
+
+    public EntityEditPage(IModel<T> model) {
+        super(model);
+    }
+
     public EntityEditPage(PageParameters parameters) {
         super(parameters);
         setModel(new EntityModel<T, ID>() {
@@ -33,26 +46,6 @@ public abstract class EntityEditPage<T extends Persistable<ID>, ID extends Seria
         getModel().setObject(entity);
     }
 
-    public EntityEditPage(Page backPage) {
-        this.backPage = backPage;
-    }
-
-    public EntityEditPage(IModel<T> model, Page backPage) {
-        super(model);
-        this.backPage = backPage;
-    }
-
-    public EntityEditPage(PageParameters parameters, Page backPage) {
-        super(parameters);
-        this.backPage = backPage;
-    }
-
-    public EntityEditPage() {
-    }
-
-    public EntityEditPage(IModel<T> model) {
-        super(model);
-    }
 
     public static <T extends Persistable> PageParameters pageParameters(T entity) {
         return new PageParameters().add(entity.getClass().getSimpleName(), entity.getId());
@@ -79,7 +72,9 @@ public abstract class EntityEditPage<T extends Persistable<ID>, ID extends Seria
     @Override
     protected void onInitialize() {
         super.onInitialize();
-
+        form.setModel(new CompoundPropertyModel<>(getModel()));
+        add(form);
+        form.add(createToolbar("toolbar", form));
     }
 
     protected T extract(PageParameters pageParameters) {
@@ -102,5 +97,49 @@ public abstract class EntityEditPage<T extends Persistable<ID>, ID extends Seria
         return entity;
     }
 
+    @Override
+    public ToolbarPanel createToolbar(String id, Form form, ButtonCreator... buttonCreators) {
+        ToolbarPanel toolbarPanel = super.createToolbar(id, form, buttonCreators);
+        toolbarPanel.add(bid -> new SaveButton(bid, form) {
+            @Override
+            protected void onSubmit(Optional<AjaxRequestTarget> target) {
+                onSave(target);
+            }
+
+            @Override
+            protected void onError(Optional<AjaxRequestTarget> target) {
+                target.ifPresent(t -> t.add(feedback, form));
+            }
+        });
+        return toolbarPanel;
+    }
+
     abstract protected CrudRepository<T, ID> getRepository();
+
+
+    public void onSave(Optional<AjaxRequestTarget> target) {
+        getRepository().save(EntityEditPage.this.getModelObject());
+        success(new StringResourceModel("entitySavedMessage.${new}", this, getModel()).getObject());
+        target.ifPresent(t -> t.add(feedback, form));
+    }
+
+    public void onCancel(Optional<AjaxRequestTarget> target) {
+        Optional.of(backNavigateAction).ifPresent(backNavigateAction -> backNavigateAction.navigate(RequestCycle.get(), getModel()));
+    }
+
+    public void onClone(Optional<AjaxRequestTarget> target) throws InvocationTargetException, IllegalAccessException {
+        T clone = createNewEntity();
+        org.springframework.beans.BeanUtils.copyProperties(clone, getModelObject(), "id", "createdDate", "lastModifiedBy", "createdBy", "lastModifiedDate");
+        setModelObject(createNewEntity());
+    }
+
+    public void onDelete(Optional<AjaxRequestTarget> target) {
+
+    }
+
+    public void onCreateNew(Optional<AjaxRequestTarget> target) {
+        setModelObject(createNewEntity());
+        target.ifPresent(t -> t.add(form, feedback));
+    }
+
 }

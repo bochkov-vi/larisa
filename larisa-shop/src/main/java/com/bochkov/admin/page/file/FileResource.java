@@ -11,9 +11,9 @@ import org.apache.wicket.util.time.Time;
 import javax.servlet.http.HttpServletResponse;
 
 public class FileResource extends AbstractResource {
-    IModel<File> fileModel;
+    IModel<? extends File> fileModel;
 
-    public FileResource(IModel<File> fileModel) {
+    public FileResource(IModel<? extends File> fileModel) {
         this.fileModel = fileModel;
     }
 
@@ -21,8 +21,12 @@ public class FileResource extends AbstractResource {
         return new FileResource(new PropertyModel<>(getFile, "file"));
     }
 
-    public static FileResource of(IModel<? extends IGetFile> getFileModel) {
+    public static FileResource ofProperty(IModel<? extends IGetFile> getFileModel) {
         return new FileResource(new PropertyModel<>(getFileModel, "file"));
+    }
+
+    public static FileResource of(IModel<? extends File> fileModel) {
+        return new FileResource(fileModel);
     }
 
     @Override

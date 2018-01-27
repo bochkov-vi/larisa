@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<body>
+<wicket:panel>
+    <form wicket:id="form">
+        <div class="form-group">
+            <label wicket:for="id">
+                <wicket:message key="maker.id"/>
+                :</label>
+            <div class="controls">
+                <input wicket:id="id" type="text" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label wicket:for="name">
+                <wicket:message key="maker.name"/>
+                :</label>
+            <div class="controls">
+                <input wicket:id="name" type="text" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label wicket:for="note">
+                <wicket:message key="maker.note"/>
+                :</label>
+            <div class="controls">
+                <textarea wicket:id="note" type="text" class="form-control"/>
+            </div>
+        </div>
+        <div wicket:id="file"></div>
+    </form>
+</wicket:panel>
+</body>
+</html>

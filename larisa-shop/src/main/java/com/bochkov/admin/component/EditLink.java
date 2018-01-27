@@ -1,4 +1,4 @@
-package com.bochkov.admin.page.maker;
+package com.bochkov.admin.component;
 
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.BootstrapLink;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons;

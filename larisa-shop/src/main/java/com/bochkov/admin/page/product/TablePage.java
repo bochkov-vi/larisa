@@ -1,12 +1,12 @@
-package com.bochkov.admin.page.maker;
+package com.bochkov.admin.page.product;
 
 import com.bochkov.admin.component.FileImage;
 import com.bochkov.admin.component.LabeledLink;
 import com.bochkov.admin.page.EntityEditPage;
 import com.bochkov.admin.page.EntityTablePage;
 import com.google.common.collect.Lists;
-import larisa.entity.Maker;
-import larisa.repository.MakerRepository;
+import larisa.entity.Product;
+import larisa.repository.ProductRepository;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.repeater.Item;
@@ -20,24 +20,24 @@ import org.wicketstuff.wicket.mount.core.annotation.MountPath;
 import javax.inject.Inject;
 import java.util.Optional;
 
-@MountPath("makers")
-public class MakerTablePage extends EntityTablePage<Maker> {
+@MountPath("products")
+public class TablePage extends EntityTablePage<Product> {
     @Inject
-    MakerRepository repository;
+    ProductRepository repository;
 
     /**
      * Construct.
      *
      * @param parameters current backPage parameters
      */
-    public MakerTablePage(PageParameters parameters) {
+    public TablePage(PageParameters parameters) {
         super(parameters);
     }
 
-    public MakerTablePage() {
+    public TablePage() {
     }
 
-    public MakerTablePage(IModel model) {
+    public TablePage(IModel model) {
         super(model);
     }
 
@@ -45,27 +45,27 @@ public class MakerTablePage extends EntityTablePage<Maker> {
     protected void onInitialize() {
 
         setColumns(Lists.newArrayList(
-                new PropertyColumn(new ResourceModel("maker.id"), "id", "id"),
-                new PropertyColumn<Maker, String>(new ResourceModel("maker.name"), "name", "name") {
+                new PropertyColumn<Product, String>(new ResourceModel("id"), "id", "id"),
+                new PropertyColumn<Product, String>(new ResourceModel("name"), "name", "name") {
                     @Override
-                    public void populateItem(Item<ICellPopulator<Maker>> item, String componentId, IModel<Maker> rowModel) {
-                        LabeledLink link = new LabeledLink<Maker>(componentId, rowModel, getDataModel(rowModel), false) {
+                    public void populateItem(Item<ICellPopulator<Product>> item, String componentId, IModel<Product> rowModel) {
+                        LabeledLink link = new LabeledLink<Product>(componentId, rowModel, getDataModel(rowModel), false) {
                             @Override
                             public void onClick(Optional optional) {
-                                setResponsePage(new MakerEditPage(rowModel).setBackNavigateAction((circle, model) -> RequestCycle.get().setResponsePage(getPage())));
+                                setResponsePage(new EditPage(rowModel).setBackNavigateAction((circle, model) -> RequestCycle.get().setResponsePage(getPage())));
                             }
                         };
                         item.add(link);
                     }
                 },
-                new PropertyColumn<Maker, String>(new ResourceModel("maker.file"), "file", "file") {
+                new PropertyColumn<Product, String>(new ResourceModel("file"), "file", "file") {
                     @Override
-                    public void populateItem(Item<ICellPopulator<Maker>> item, String componentId, IModel<Maker> rowModel) {
+                    public void populateItem(Item<ICellPopulator<Product>> item, String componentId, IModel<Product> rowModel) {
                         FileImage image = new FileImage(componentId, new PropertyModel<>(rowModel, "file"));
                         item.add(image);
                     }
                 },
-                new PropertyColumn(new ResourceModel("maker.note"), "note", "note")
+                new PropertyColumn<Product, String>(new ResourceModel("note"), "note", "note")
         ));
         super.onInitialize();
 
@@ -73,12 +73,12 @@ public class MakerTablePage extends EntityTablePage<Maker> {
     }
 
     @Override
-    protected EntityEditPage createEditPage(IModel<Maker> entityModel) {
-        return new MakerEditPage(entityModel);
+    protected EntityEditPage createEditPage(IModel<Product> entityModel) {
+        return new EditPage(entityModel);
     }
 
     @Override
-    public MakerRepository getRepository() {
+    public ProductRepository getRepository() {
         return repository;
     }
 }

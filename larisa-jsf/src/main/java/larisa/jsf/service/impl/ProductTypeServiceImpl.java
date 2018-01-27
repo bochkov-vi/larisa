@@ -7,6 +7,8 @@ import larisa.repository.ProductTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by home on 25.02.17.
  */
@@ -23,5 +25,6 @@ public class ProductTypeServiceImpl extends JsfHierarchicalEntityServiceImpl<Pro
     public ProductTypeRepository getRepository() {
         return repository;
     }
+
 
 }

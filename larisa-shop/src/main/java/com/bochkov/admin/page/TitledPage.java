@@ -8,11 +8,12 @@ public abstract class TitledPage<T> extends BasePage<T> {
     public TitledPage() {
     }
 
-    public TitledPage(IModel model) {
+    public TitledPage(IModel<T> model) {
         super(model);
     }
 
     public TitledPage(PageParameters parameters) {
         super(parameters);
     }
+
 }

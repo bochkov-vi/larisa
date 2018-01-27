@@ -9,6 +9,8 @@ import de.agilecoders.wicket.core.settings.BootstrapSettings;
 import de.agilecoders.wicket.core.settings.IBootstrapSettings;
 import de.agilecoders.wicket.extensions.javascript.GoogleClosureJavaScriptCompressor;
 import de.agilecoders.wicket.extensions.javascript.YuiCssCompressor;
+import de.agilecoders.wicket.less.BootstrapLess;
+import de.agilecoders.wicket.less.ContextRelativeLessResourceReference;
 import larisa.entity.File;
 import larisa.repository.FileRepository;
 import org.apache.wicket.ResourceBundles;
@@ -142,14 +144,16 @@ public class WicketApplication extends AutoMountWebApplication {
      */
     private void configureBootstrap() {
         final IBootstrapSettings settings = new BootstrapSettings();
+        settings.setCssResourceReference(new ContextRelativeLessResourceReference("less/bootsrap.less"));
         Bootstrap.builder().withBootstrapSettings(settings).install(this);
+        BootstrapLess.install(this);
         /*final ThemeProvider themeProvider = new BootswatchThemeProvider(BootswatchTheme.Flatly);
 
         settings.setJsResourceFilterName("footer-container")
                 .setThemeProvider(themeProvider)
                 .setActiveThemeProvider(new CookieThemeProvider());
 
-        BootstrapLess.install(this);*/
+       */
     }
 
 }

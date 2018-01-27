@@ -4,11 +4,13 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxFallbackLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-public class LabeledLink extends Panel {
+import java.util.Optional;
+
+public abstract class LabeledLink<T> extends GenericPanel<T> {
 
     public LabeledLink(String id, String label) {
         this(id, null, new Model(label), true);
@@ -18,33 +20,32 @@ public class LabeledLink extends Panel {
         this(id, null, new Model(label), ajaxified);
     }
 
-    public LabeledLink(String id, IModel model, IModel labelModel) {
+    public LabeledLink(String id, IModel<T> model, IModel labelModel) {
         this(id, model, labelModel, true);
     }
 
-    public LabeledLink(String id, IModel model, IModel labelModel, boolean ajaxified) {
+    public LabeledLink(String id, IModel<T> model, IModel labelModel, boolean ajaxified) {
         super(id);
 
-        Link link;
+        Link<T> link;
         if (ajaxified) {
-            link = new IndicatingAjaxFallbackLink("linkId", model) {
-
+            link = new IndicatingAjaxFallbackLink<T>("linkId", model) {
                 @Override
-                public void onClick(AjaxRequestTarget target) {
-                    LabeledLink.this.onClick(target);
+                public void onClick(Optional optional) {
+                    LabeledLink.this.onClick(optional);
                 }
             };
-        } else
-            link = new Link("linkId", model) {
+        } else {
+            link = new Link<T>("linkId", model) {
 
                 @Override
                 public void onClick() {
                     LabeledLink.this.onClick(null);
                 }
             };
+        }
         add(link.add(new Label("labelId", labelModel)));
     }
 
-    public void onClick(AjaxRequestTarget target) {
-    }
+    public abstract void onClick(Optional<AjaxRequestTarget> target) ;
 }
