@@ -5,8 +5,10 @@ import com.bochkov.admin.component.LabeledLink;
 import com.bochkov.admin.page.EntityEditPage;
 import com.bochkov.admin.page.EntityTablePage;
 import com.google.common.collect.Lists;
+import de.agilecoders.wicket.core.markup.html.bootstrap.dialog.Modal;
 import larisa.entity.Maker;
 import larisa.repository.MakerRepository;
+import org.apache.wicket.Component;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.repeater.Item;
@@ -45,7 +47,7 @@ public class MakerTablePage extends EntityTablePage<Maker> {
     protected void onInitialize() {
 
         setColumns(Lists.newArrayList(
-                new PropertyColumn(new ResourceModel("maker.id"), "id", "id"),
+                new PropertyColumn<Maker,String>(new ResourceModel("maker.id"), "id", "id"),
                 new PropertyColumn<Maker, String>(new ResourceModel("maker.name"), "name", "name") {
                     @Override
                     public void populateItem(Item<ICellPopulator<Maker>> item, String componentId, IModel<Maker> rowModel) {
@@ -65,7 +67,7 @@ public class MakerTablePage extends EntityTablePage<Maker> {
                         item.add(image);
                     }
                 },
-                new PropertyColumn(new ResourceModel("maker.note"), "note", "note")
+                new PropertyColumn<Maker,String>(new ResourceModel("maker.note"), "note", "note")
         ));
         super.onInitialize();
 
@@ -80,5 +82,18 @@ public class MakerTablePage extends EntityTablePage<Maker> {
     @Override
     public MakerRepository getRepository() {
         return repository;
+    }
+
+    @Override
+    public Component createDetailsPanel(String id, IModel<Maker> model) {
+        return new DetailsPanel(id, model);
+    }
+
+    @Override
+    public Modal createDeleteDialog(String id) {
+        Modal modal = super.createDeleteDialog(id);
+       /* modal.add(new AttributeAppender("class"," center-block "));*/
+        modal.size(Modal.Size.Small);
+        return modal;
     }
 }

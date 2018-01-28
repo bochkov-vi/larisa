@@ -18,6 +18,7 @@ import org.springframework.data.util.TypeInformation;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -143,13 +144,8 @@ public abstract class EntityEditPage<T extends Persistable<ID>, ID extends Seria
     }
 
     @Override
-    public void onDelete(Optional<AjaxRequestTarget> target, IModel<T> entityModel) {
+    public void onDelete(Optional<AjaxRequestTarget> target, IModel<Collection<T>> entityModel) {
         super.onDelete(target, entityModel);
         onCancel(target);
-    }
-
-    @Override
-    public IModel<T> getDeletedModel() {
-        return super.getDeletedModel();
     }
 }

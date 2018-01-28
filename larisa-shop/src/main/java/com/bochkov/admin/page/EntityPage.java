@@ -1,11 +1,12 @@
 package com.bochkov.admin.page;
 
 import com.bochkov.admin.component.button.*;
+import com.google.common.collect.ImmutableList;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.ButtonBehavior;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons;
 import de.agilecoders.wicket.core.markup.html.bootstrap.dialog.Modal;
 import de.agilecoders.wicket.core.markup.html.bootstrap.dialog.ModalCloseButton;
-import de.agilecoders.wicket.core.markup.html.bootstrap.dialog.TextContentModal;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.GenericWebPage;
@@ -33,7 +34,7 @@ public abstract class EntityPage<T extends Persistable> extends TitledPage<T> {
     };
 
 
-    Modal<String> deleteDialog = createDeleteDialog("delete-dialog");
+    Modal<String> deleteDialog;
 
     public EntityPage() {
     }
@@ -50,6 +51,7 @@ public abstract class EntityPage<T extends Persistable> extends TitledPage<T> {
     @Override
     protected void onInitialize() {
         super.onInitialize();
+        deleteDialog =createDeleteDialog("delete-dialog");
         add(deleteDialog);
     }
 
@@ -116,7 +118,7 @@ public abstract class EntityPage<T extends Persistable> extends TitledPage<T> {
     }
 
 
-    public void onDelete(Optional<AjaxRequestTarget> target, IModel<T> entityModel) {
+    public void onDelete(Optional<AjaxRequestTarget> target, IModel<Collection<T>> entityModel) {
         target.ifPresent(t -> t.add(feedback));
         if (entityModel.isPresent().getObject()) {
             try {
@@ -149,8 +151,8 @@ public abstract class EntityPage<T extends Persistable> extends TitledPage<T> {
         backNavigateAction.navigate(RequestCycle.get(), getModel());
     }
 
-    public IModel getDeletedModel() {
-        return getModel();
+    public IModel<Collection<T>> getDeletedModel() {
+        return LambdaModel.of(() -> ImmutableList.of(getModelObject()));
     }
 
     public boolean isDeleteEnabled() {
@@ -158,9 +160,13 @@ public abstract class EntityPage<T extends Persistable> extends TitledPage<T> {
     }
 
     public Modal createDeleteDialog(String id) {
-        Modal modal = new TextContentModal(id,
-                new StringResourceModel("deleteEntityMessage", getPage()).setParameters(LambdaModel.of(() -> Optional.ofNullable(getDeletedModel()).map(model -> model.getObject()).orElse(null))))
-                .header(new ResourceModel("confirmEntityDeleteing").wrapOnAssignment(EntityPage.this));
+        DeleteModal<T> modal = new DeleteModal<T>(id, getDeletedModel()) {
+            @Override
+            public Component createDetails(String id, IModel<T> model) {
+                return createDetailsPanel(id, model);
+            }
+        };
+        modal.header(new ResourceModel("confirmEntityDeleteing").wrapOnAssignment(EntityPage.this));
         modal.setOutputMarkupId(true);
         modal.addButton(new ModalCloseButton(new ResourceModel("cancel").wrapOnAssignment(getPage())));
         modal.addButton(new AjaxLink<String>("button", new ResourceModel("delete").wrapOnAssignment(getPage())) {
@@ -177,5 +183,9 @@ public abstract class EntityPage<T extends Persistable> extends TitledPage<T> {
             }
         }.add(new ButtonBehavior(Buttons.Type.Default)));
         return modal;
+    }
+
+    public Component createDetailsPanel(String id, IModel<T> model) {
+        return null;
     }
 }

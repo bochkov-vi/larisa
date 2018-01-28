@@ -29,6 +29,10 @@ public class FileResource extends AbstractResource {
         return new FileResource(fileModel);
     }
 
+   /* public static FileResource of(IModel<? extends IGetFile> fileModel) {
+        return new FileResource(new PropertyModel<>(fileModel,"file"));
+    }*/
+
     @Override
     protected ResourceResponse newResourceResponse(final Attributes attributes) {
         final ResourceResponse response = new ResourceResponse();

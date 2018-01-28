@@ -47,7 +47,7 @@ public abstract class EntityTablePage<T extends Persistable> extends EntityPage<
 
     List<? extends IColumn<T, String>> columns = ImmutableList.of();
 
-    IModel<Collection<T>> selection;
+    final IModel<Collection<T>> selection = new CollectionModel<>();
 
     public EntityTablePage() {
     }
@@ -119,9 +119,6 @@ public abstract class EntityTablePage<T extends Persistable> extends EntityPage<
 
     public void onSelect(AjaxRequestTarget target, Item<T> row) {
         target.add(toolbarForm);
-        if (selection == null) {
-            selection = new CollectionModel<>(ImmutableList.of());
-        }
         T entity = row.getModelObject();
         Collection<T> selected = selection.orElse(ImmutableList.of()).getObject();
         if (selected.contains(entity)) {
@@ -162,7 +159,7 @@ public abstract class EntityTablePage<T extends Persistable> extends EntityPage<
     }
 
     @Override
-    public void onDelete(Optional<AjaxRequestTarget> target, IModel<T> entityModel) {
+    public void onDelete(Optional<AjaxRequestTarget> target, IModel<Collection<T>> entityModel) {
         super.onDelete(target, entityModel);
         target.ifPresent(t->t.add(table));
     }

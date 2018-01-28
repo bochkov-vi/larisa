@@ -2,6 +2,7 @@ package com.bochkov.admin.component;
 
 import com.bochkov.admin.page.file.FileResource;
 import larisa.entity.File;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.image.NonCachingImage;
@@ -32,5 +33,6 @@ public class FileImage extends GenericPanel<File> {
     protected void onInitialize() {
         super.onInitialize();
         add(createImage("image", getModel()));
+        add(new AttributeAppender("class","img-thumbnail"));
     }
 }
