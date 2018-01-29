@@ -1,5 +1,5 @@
-.idea/
-*.iml
+**/.idea/**
+**/*.iml
 target/
 Будет удалено larisa-jpa/src/test/resources/
 Будет удалено larisa-jsf/src/main/java/larisa/service/
