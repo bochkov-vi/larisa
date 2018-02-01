@@ -1,5 +1,6 @@
 package com.bochkov.admin.page;
 
+import com.bochkov.admin.component.action.NavigateAction;
 import com.bochkov.admin.component.button.*;
 import com.google.common.collect.ImmutableList;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.ButtonBehavior;

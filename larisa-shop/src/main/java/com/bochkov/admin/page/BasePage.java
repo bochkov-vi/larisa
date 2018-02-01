@@ -1,7 +1,7 @@
 package com.bochkov.admin.page;
 
 import com.bochkov.admin.page.maker.MakerTablePage;
-import com.bochkov.admin.page.productType.TablePage;
+import com.bochkov.admin.page.productType.ProductTypeTablePage;
 import de.agilecoders.wicket.core.Bootstrap;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.dropdown.MenuBookmarkablePageLink;
 import de.agilecoders.wicket.core.markup.html.bootstrap.common.NotificationPanel;
@@ -133,7 +133,7 @@ abstract public class BasePage<T> extends GenericWebPage<T> {
             protected List<AbstractLink> newSubMenuButtons(String buttonMarkupId) {
                 final List<AbstractLink> subMenu = new ArrayList<>();
                 subMenu.add(new MenuBookmarkablePageLink<Void>(MakerTablePage.class, new ResourceModel("maker.title")).setIconType(GlyphIconType.refresh));
-                subMenu.add(new MenuBookmarkablePageLink<Void>(com.bochkov.admin.page.productType.TablePage.class, new ResourceModel("productType.title")).setIconType(GlyphIconType.refresh));
+                subMenu.add(new MenuBookmarkablePageLink<Void>(ProductTypeTablePage.class, new ResourceModel("productType.title")).setIconType(GlyphIconType.refresh));
                 subMenu.add(new MenuBookmarkablePageLink<Void>(com.bochkov.admin.page.product.TablePage.class, new ResourceModel("product.title")).setIconType(GlyphIconType.refresh));
                 return subMenu;
             }

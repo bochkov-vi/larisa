@@ -7,9 +7,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import java.io.Serializable;
 import java.util.Iterator;
 
 public abstract class EntityDataProvider<T extends Persistable> extends SortableDataProvider<T, String> {
@@ -20,20 +20,20 @@ public abstract class EntityDataProvider<T extends Persistable> extends Sortable
     public Iterator<? extends T> iterator(long first, long count) {
         SingleSortState state = (SingleSortState) this.getSortState();
         Pageable pageRequest = new PageRequest((int) (first / count), (int) count, getSort(state));
-        return getRepository().findAll(pageRequest).getContent().iterator();
+        return getRepository().findAll(createSpecification(), pageRequest).getContent().iterator();
     }
 
     @Override
     public long size() {
         if (size == null) {
-            size = getRepository().count();
+            size = getRepository().count(createSpecification());
         }
         return size;
     }
 
     protected Sort getSort(SingleSortState<String> sortState) {
-        if (sortState != null && sortState.getSort()!=null) {
-            return new Sort(sortState.getSort().isAscending() ? Sort.Direction.ASC : Sort.Direction.DESC,sortState.getSort().getProperty());
+        if (sortState != null && sortState.getSort() != null) {
+            return new Sort(sortState.getSort().isAscending() ? Sort.Direction.ASC : Sort.Direction.DESC, sortState.getSort().getProperty());
         }
         return null;
     }
@@ -44,8 +44,12 @@ public abstract class EntityDataProvider<T extends Persistable> extends Sortable
 
     @Override
     public void detach() {
-        size=null;
+        size = null;
     }
 
-    public abstract PagingAndSortingRepository<T, ? extends Serializable> getRepository();
+    public abstract JpaSpecificationExecutor<T> getRepository();
+
+    public Specification<T> createSpecification() {
+        return null;
+    }
 }

@@ -2,25 +2,22 @@ package com.bochkov.admin.page;
 
 import com.bochkov.admin.component.button.ButtonCreator;
 import com.bochkov.admin.component.button.ToolbarPanel;
+import com.bochkov.admin.component.selectiontable.SelectRowDataTable;
 import com.bochkov.model.EntityDataProvider;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import de.agilecoders.wicket.core.markup.html.bootstrap.behavior.CssClassNameAppender;
-import de.agilecoders.wicket.extensions.markup.html.bootstrap.table.BootstrapDefaultDataTable;
-import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LambdaModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.util.CollectionModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.danekja.java.util.function.serializable.SerializableSupplier;
+import org.entity3.repository.CustomRepository;
 import org.springframework.data.domain.Persistable;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Collection;
 import java.util.List;
@@ -36,18 +33,18 @@ public abstract class EntityTablePage<T extends Persistable> extends EntityPage<
         }
 
         @Override
-        public PagingAndSortingRepository getRepository() {
+        public JpaSpecificationExecutor<T> getRepository() {
             return EntityTablePage.this.getRepository();
+        }
+
+        @Override
+        public Specification<T> createSpecification() {
+            return EntityTablePage.this.createSpecification();
         }
     };
 
-    DataTable<T, String> table;
+    SelectRowDataTable<T, ?> table;
 
-    boolean selectable = true;
-
-    List<? extends IColumn<T, String>> columns = ImmutableList.of();
-
-    final IModel<Collection<T>> selection = new CollectionModel<>();
 
     public EntityTablePage() {
     }
@@ -62,11 +59,12 @@ public abstract class EntityTablePage<T extends Persistable> extends EntityPage<
 
     @Override
     protected void onInitialize() {
-        super.onInitialize();
+
         add(toolbarForm);
         toolbarForm.add(createToolbar("toolbar", toolbarForm));
         add(table = createTable("table"));
         table.setOutputMarkupId(true);
+        super.onInitialize();
     }
 
     public ISortableDataProvider getSortableDataProvider() {
@@ -78,69 +76,27 @@ public abstract class EntityTablePage<T extends Persistable> extends EntityPage<
         return this;
     }
 
-    public BootstrapDefaultDataTable<T, String> createTable(String id) {
-        BootstrapDefaultDataTable table = new BootstrapDefaultDataTable<T, String>(id, columns, sortableDataProvider, 50) {
+    public SelectRowDataTable<T, ?> createTable(String id) {
+        SelectRowDataTable<T, ?> table = new SelectRowDataTable<T,String>(id, createColumns(), sortableDataProvider, 50) {
             @Override
-            protected Item<T> newRowItem(String id, int index, IModel<T> model) {
-                Item<T> item = super.newRowItem(id, index, model);
-
-                if (isSelectable()) {
-                    item.setOutputMarkupId(true);
-                    item.add(new AjaxEventBehavior("click") {
-                        @Override
-                        protected void onEvent(AjaxRequestTarget target) {
-                            onSelect(target, item);
-                        }
-                    });
-                    Optional.ofNullable(selection).ifPresent(sm -> {
-                        IModel<Boolean> bm = sm.map(selected -> selected.contains(item.getModelObject()));
-                        if (bm.isPresent().getObject() && bm.getObject()) {
-                            item.add(new CssClassNameAppender("active"));
-                        }
-                    });
-
-                }
-                return item;
+            public void onSelect(AjaxRequestTarget target, IModel<T> entity) {
+                EntityTablePage.this.onSelect(target, entity);
             }
-        }.hover();
-
-
+        };
+        table.hover();
         return table;
     }
 
-    public List<? extends IColumn<T, String>> getColumns() {
-        return columns;
-    }
+    public abstract List<? extends IColumn<T, String>> createColumns();
 
-    public EntityTablePage<T> setColumns(List<? extends IColumn<T, String>> columns) {
-        this.columns = columns;
-        return this;
-    }
 
-    public void onSelect(AjaxRequestTarget target, Item<T> row) {
+    public void onSelect(AjaxRequestTarget target, IModel<T> entityModel) {
         target.add(toolbarForm);
-        T entity = row.getModelObject();
-        Collection<T> selected = selection.orElse(ImmutableList.of()).getObject();
-        if (selected.contains(entity)) {
-            selected.remove(entity);
-            target.appendJavaScript("$('#" + row.getMarkupId() + "').removeClass('active')");
-        } else {
-            target.appendJavaScript("$('#" + row.getMarkupId() + "').addClass('active')");
-            selection.setObject(Lists.newArrayList(Iterables.concat(selected, ImmutableList.of(entity))));
-        }
     }
 
-    public boolean isSelectable() {
-        return selectable;
-    }
-
-    public EntityTablePage<T> setSelectable(boolean selectable) {
-        this.selectable = selectable;
-        return this;
-    }
 
     @Override
-    protected abstract PagingAndSortingRepository<T, ?> getRepository();
+    protected abstract CustomRepository<T, ?> getRepository();
 
     @Override
     public ToolbarPanel createToolbar(String id, Form form, ButtonCreator... buttonCreators) {
@@ -150,7 +106,7 @@ public abstract class EntityTablePage<T extends Persistable> extends EntityPage<
 
     @Override
     public IModel<Collection<T>> getDeletedModel() {
-        return selection;
+        return LambdaModel.of((SerializableSupplier<Collection<T>>) () -> Optional.ofNullable(getSelection()).orElse(Model.of((Collection<T>) ImmutableList.<T>of())).orElse(ImmutableList.of()).getObject());
     }
 
     @Override
@@ -161,6 +117,28 @@ public abstract class EntityTablePage<T extends Persistable> extends EntityPage<
     @Override
     public void onDelete(Optional<AjaxRequestTarget> target, IModel<Collection<T>> entityModel) {
         super.onDelete(target, entityModel);
-        target.ifPresent(t->t.add(table));
+        target.ifPresent(t -> t.add(table));
+    }
+
+    public boolean isSelectable() {
+        return table.isSelectable();
+    }
+
+    public EntityTablePage<T> setSelectable(boolean selectable) {
+        table.setSelectable(selectable);
+        return this;
+    }
+
+    public IModel<Collection<T>> getSelection() {
+        return table.getSelection();
+    }
+
+    public EntityTablePage<T> setSelection(IModel<Collection<T>> selection) {
+        table.setSelection(selection);
+        return this;
+    }
+
+    public Specification<T> createSpecification() {
+        return null;
     }
 }

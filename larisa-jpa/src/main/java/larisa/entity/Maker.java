@@ -3,6 +3,7 @@ package larisa.entity;
 import org.entity3.IGetNamed;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by home on 23.02.17.
@@ -22,20 +23,23 @@ public class Maker extends DefaultEntity<Integer> implements IGetFile, IGetNamed
     @Column(name = "note")
     String note;
 
-    @OneToOne(fetch = FetchType.EAGER,orphanRemoval = true)
+    @OneToOne(fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinTable(name = "maker_file", joinColumns = @JoinColumn(name = "id_maker"), inverseJoinColumns = @JoinColumn(name = "id_file"))
     File file;
 
-    @Override
-    public Integer getId() {
-        return id;
-    }
+    @OneToMany(orphanRemoval = true, mappedBy = "maker")
+    List<ProductType> productTypes;
 
     public Maker(String name) {
         this.name = name;
     }
 
     public Maker() {
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
     }
 
     public void setId(Integer id) {
@@ -69,5 +73,13 @@ public class Maker extends DefaultEntity<Integer> implements IGetFile, IGetNamed
     @Override
     public String toString() {
         return name;
+    }
+
+    public List<ProductType> getProductTypes() {
+        return productTypes;
+    }
+
+    public void setProductTypes(List<ProductType> productTypes) {
+        this.productTypes = productTypes;
     }
 }

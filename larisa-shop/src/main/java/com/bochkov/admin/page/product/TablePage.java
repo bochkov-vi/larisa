@@ -4,10 +4,11 @@ import com.bochkov.admin.component.FileImage;
 import com.bochkov.admin.component.LabeledLink;
 import com.bochkov.admin.page.EntityEditPage;
 import com.bochkov.admin.page.EntityTablePage;
-import com.google.common.collect.Lists;
+import com.google.common.collect.ImmutableList;
 import larisa.entity.Product;
 import larisa.repository.ProductRepository;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
@@ -18,6 +19,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.wicketstuff.wicket.mount.core.annotation.MountPath;
 
 import javax.inject.Inject;
+import java.util.List;
 import java.util.Optional;
 
 @MountPath("products")
@@ -43,8 +45,12 @@ public class TablePage extends EntityTablePage<Product> {
 
     @Override
     protected void onInitialize() {
+        super.onInitialize();
+    }
 
-        setColumns(Lists.newArrayList(
+    @Override
+    public List<? extends IColumn<Product, String>> createColumns() {
+        return ImmutableList.of(
                 new PropertyColumn<Product, String>(new ResourceModel("id"), "id", "id"),
                 new PropertyColumn<Product, String>(new ResourceModel("name"), "name", "name") {
                     @Override
@@ -66,10 +72,7 @@ public class TablePage extends EntityTablePage<Product> {
                     }
                 },
                 new PropertyColumn<Product, String>(new ResourceModel("note"), "note", "note")
-        ));
-        super.onInitialize();
-
-
+        );
     }
 
     @Override
