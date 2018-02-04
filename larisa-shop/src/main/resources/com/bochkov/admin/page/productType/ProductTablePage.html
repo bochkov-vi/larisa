@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+    <link href="webjars/bootstrap/3.3.7-1/css/bootstrap.css">
+</head>
+<body>
+
+<wicket:extend>
+    <form wicket:id="form">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <h3>
+                        <a data-toggle="collapse" href="#filter-panel">
+                            <wicket:message key="filter-header"/>
+                        </a>
+                    </h3>
+
+                </div>
+            </div>
+
+            <div id="filter-panel" class="panel-collapse">
+                <div class="panel-body">
+                    <div wicket:id="maker-g">
+                        <select id="filter-maker" class="form-control" style="width: 100%" wicket:id="maker"/>
+                    </div>
+                    <div wicket:id="product-type-g">
+                        <select id="filter-parents" class="form-control" style="width: 100%" wicket:id="product-type"/>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group">
+                    <a class="btn btn-default" onclick="$('form').get(0).reset();$('#filter-maker').val(null).trigger('change');$('#filter-parents').val(null).trigger('change');"><span class="glyphicon glyphicon-ban-circle"></span> </a>
+                </div>
+            </div>
+        </div>
+    </form>
+</wicket:extend>
+</body>
+</html>

@@ -32,6 +32,12 @@
             </properties>
         </profile>
         <profile>
+            <id>exend-db-tables</id>
+            <properties>
+                <eclipselink.ddl-generation>create-or-extend-tables</eclipselink.ddl-generation>
+            </properties>
+        </profile>
+        <profile>
             <id>deploy-to-server</id>
             <properties>
                 <database.name>/opt/web/shop/shop-database</database.name>

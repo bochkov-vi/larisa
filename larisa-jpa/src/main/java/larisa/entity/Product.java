@@ -20,11 +20,10 @@ public class Product extends AbstractAuditableEntity<Integer> implements IGetFil
     @ColumnPosition(1)
     Integer id;
 
-    @Column(name = "date", nullable = true)
-    @Temporal(TemporalType.DATE)
-    @Convert(converter = JodaLocalDateConverter.class)
+    @ManyToOne
+    @JoinColumn(name = "id_product_receipt", nullable = false)
     @ColumnPosition(2)
-    LocalDate date;
+    ProductReceipt productReceipt;
 
     @ManyToOne
     @JoinColumn(name = "id_product_type")
@@ -48,6 +47,7 @@ public class Product extends AbstractAuditableEntity<Integer> implements IGetFil
 
     @ManyToMany
     @JoinTable(name = "product_file", joinColumns = @JoinColumn(name = "id_product"), inverseJoinColumns = @JoinColumn(name = "id_file"))
+    @ColumnPosition(7)
     List<File> files;
 
     @Override
@@ -65,14 +65,6 @@ public class Product extends AbstractAuditableEntity<Integer> implements IGetFil
 
     public void setVolume(Double volume) {
         this.volume = volume;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
     }
 
     public ProductType getProductType() {
@@ -107,5 +99,13 @@ public class Product extends AbstractAuditableEntity<Integer> implements IGetFil
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public ProductReceipt getProductReceipt() {
+        return productReceipt;
+    }
+
+    public void setProductReceipt(ProductReceipt productReceipt) {
+        this.productReceipt = productReceipt;
     }
 }

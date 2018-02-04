@@ -15,7 +15,6 @@ public class ProductServiceImpl extends DefaultServiceImpl<Product, Integer> {
     @Override
     public Product createNewInstance() {
         Product product = super.createNewInstance();
-        product.setDate(new LocalDate(DateTimeZone.forTimeZone(LocaleContextHolder.getTimeZone())));
         return product;
     }
 }

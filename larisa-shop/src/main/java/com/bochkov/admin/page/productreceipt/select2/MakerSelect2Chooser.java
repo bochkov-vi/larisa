@@ -1,4 +1,4 @@
-package com.bochkov.admin.page.maker.select2;
+package com.bochkov.admin.page.productreceipt.select2;
 
 import com.google.common.collect.Lists;
 import larisa.entity.Maker;

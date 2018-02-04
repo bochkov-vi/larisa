@@ -11,7 +11,7 @@ import org.wicketstuff.wicket.mount.core.annotation.MountPath;
 import javax.inject.Inject;
 
 @MountPath("product-type")
-public class EditPage extends EntityEditPage<ProductType, Integer> {
+public class ProductTypeEditPage extends EntityEditPage<ProductType, Integer> {
 
     @Inject
     ProductTypeRepository repository;
@@ -19,14 +19,14 @@ public class EditPage extends EntityEditPage<ProductType, Integer> {
     @Inject
     FileRepository fileRepository;
 
-    public EditPage() {
+    public ProductTypeEditPage() {
     }
 
-    public EditPage(IModel<ProductType> model) {
+    public ProductTypeEditPage(IModel<ProductType> model) {
         super(model);
     }
 
-    public EditPage(PageParameters parameters) {
+    public ProductTypeEditPage(PageParameters parameters) {
         super(parameters);
     }
 
@@ -39,8 +39,8 @@ public class EditPage extends EntityEditPage<ProductType, Integer> {
    }
 
     @Override
-    protected EditPage createEditPage(IModel<ProductType> entityModel) {
-        return new EditPage(entityModel);
+    protected ProductTypeEditPage createEditPage(IModel<ProductType> entityModel) {
+        return new ProductTypeEditPage(entityModel);
     }
     
 

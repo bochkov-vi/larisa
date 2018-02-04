@@ -1,8 +1,7 @@
-package com.bochkov.admin.page.maker;
+package com.bochkov.admin.page.productreceipt;
 
-import com.bochkov.admin.page.file.FileResource;
 import de.agilecoders.wicket.core.util.Attributes;
-import larisa.entity.Maker;
+import larisa.entity.ProductReceipt;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.CssHeaderItem;
@@ -14,21 +13,20 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.resource.PackageResourceReference;
 
-public class DetailsPanel extends GenericPanel<Maker> {
+public class DetailsPanel extends GenericPanel<ProductReceipt> {
     Image image;
 
     Component title;
 
     Component note;
 
-    public DetailsPanel(String id, IModel<Maker> model) {
+    public DetailsPanel(String id, IModel<ProductReceipt> model) {
         super(id, model);
     }
 
     @Override
     protected void onInitialize() {
         super.onInitialize();
-        image = new Image("image", FileResource.ofGetFile(getModel()));
         title = new Label("title", new PropertyModel<>(getModel(), "name"));
         note = new Label("note", new PropertyModel<>(getModel(), "note"));
         add(image, title, note);

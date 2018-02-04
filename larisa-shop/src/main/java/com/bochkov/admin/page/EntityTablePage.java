@@ -1,17 +1,23 @@
 package com.bochkov.admin.page;
 
+import com.bochkov.admin.component.FileImage;
 import com.bochkov.admin.component.button.ButtonCreator;
 import com.bochkov.admin.component.button.ToolbarPanel;
 import com.bochkov.admin.component.selectiontable.SelectRowDataTable;
 import com.bochkov.model.EntityDataProvider;
 import com.google.common.collect.ImmutableList;
+import larisa.entity.IGetFile;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LambdaModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.danekja.java.util.function.serializable.SerializableSupplier;
 import org.entity3.repository.CustomRepository;
@@ -43,7 +49,7 @@ public abstract class EntityTablePage<T extends Persistable> extends EntityPage<
         }
     };
 
-    SelectRowDataTable<T, ?> table;
+    protected SelectRowDataTable<T, ?> table;
 
 
     public EntityTablePage() {
@@ -77,11 +83,12 @@ public abstract class EntityTablePage<T extends Persistable> extends EntityPage<
     }
 
     public SelectRowDataTable<T, ?> createTable(String id) {
-        SelectRowDataTable<T, ?> table = new SelectRowDataTable<T,String>(id, createColumns(), sortableDataProvider, 50) {
+        SelectRowDataTable<T, ?> table = new SelectRowDataTable<T, String>(id, createColumns(), sortableDataProvider, 50) {
             @Override
             public void onSelect(AjaxRequestTarget target, IModel<T> entity) {
                 EntityTablePage.this.onSelect(target, entity);
             }
+
         };
         table.hover();
         return table;
@@ -140,5 +147,31 @@ public abstract class EntityTablePage<T extends Persistable> extends EntityPage<
 
     public Specification<T> createSpecification() {
         return null;
+    }
+
+    protected <E extends IGetFile> IColumn<E, String> createImageColumn(IModel<String> header) {
+        return new PropertyColumn<E, String>(header, "file", "file") {
+            @Override
+            public void populateItem(Item<ICellPopulator<E>> item, String componentId, IModel<E> rowModel) {
+                FileImage image = new FileImage(componentId, new PropertyModel<>(rowModel, "file"));
+                item.add(image);
+            }
+
+            @Override
+            public String getCssClass() {
+                return "visible-lg visible-sm visible-md";
+            }
+        };
+
+    }
+
+    protected <E extends Persistable> IColumn<E, String> createIdColumn(IModel<String> header) {
+        return new PropertyColumn<E, String>(header, "id", "id") {
+            @Override
+            public String getCssClass() {
+                return "visible-lg visible-sm visible-md";
+            }
+        };
+
     }
 }

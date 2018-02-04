@@ -9,6 +9,7 @@ import org.apache.wicket.request.resource.ContentDisposition;
 import org.apache.wicket.util.time.Time;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Collection;
 
 public class FileResource extends AbstractResource {
     IModel<? extends File> fileModel;
@@ -21,10 +22,12 @@ public class FileResource extends AbstractResource {
         return new FileResource(new PropertyModel<>(getFile, "file"));
     }
 
-    public static FileResource ofProperty(IModel<? extends IGetFile> getFileModel) {
+    public static FileResource ofGetFile(IModel<? extends IGetFile> getFileModel) {
         return new FileResource(new PropertyModel<>(getFileModel, "file"));
     }
-
+    public static FileResource ofGetFiles(IModel<Collection<? extends IGetFile>> getFileModel) {
+        return new FileResource(new PropertyModel<>(getFileModel, "file"));
+    }
     public static FileResource of(IModel<? extends File> fileModel) {
         return new FileResource(fileModel);
     }

@@ -15,18 +15,23 @@
                             <wicket:message key="filter-header"/>
                         </a>
                     </h3>
-                    <a href="#" class="btn btn-default pull-right"><span class="glyphicon-plus"></span></a>
+
                 </div>
             </div>
 
             <div id="filter-panel" class="panel-collapse">
                 <div class="panel-body">
                     <div wicket:id="maker-g">
-                        <select class="form-control" style="width: 100%" wicket:id="maker"/>
+                        <select id="filter-maker" class="form-control" style="width: 100%" wicket:id="maker"/>
                     </div>
                     <div wicket:id="product-type-g">
-                        <select class="form-control" style="width: 100%" wicket:id="product-type"/>
+                        <select id="filter-parents" class="form-control" style="width: 100%" wicket:id="product-type"/>
                     </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group">
+                    <a class="btn btn-default" onclick="$('form').get(0).reset();$('#filter-maker').val(null).trigger('change');$('#filter-parents').val(null).trigger('change');"><span class="glyphicon glyphicon-ban-circle"></span> </a>
                 </div>
             </div>
         </div>

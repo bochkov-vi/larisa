@@ -1,4 +1,4 @@
-package com.bochkov.admin.page.maker;
+package com.bochkov.admin.page.productreceipt;
 
 import com.bochkov.admin.component.LabeledLink;
 import com.bochkov.admin.component.action.NavigateAction;
@@ -7,9 +7,9 @@ import com.bochkov.admin.page.EntityTablePage;
 import com.bochkov.admin.page.product.ProductTablePage;
 import com.google.common.collect.ImmutableList;
 import de.agilecoders.wicket.core.markup.html.bootstrap.dialog.Modal;
-import larisa.entity.Maker;
+import larisa.entity.ProductReceipt;
 import larisa.entity.ProductType;
-import larisa.repository.MakerRepository;
+import larisa.repository.ProductReceiptRepository;
 import org.apache.wicket.Component;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
@@ -26,24 +26,24 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 
-@MountPath("makers")
-public class MakerTablePage extends EntityTablePage<Maker> {
+@MountPath("product-receipts")
+public class ProductReceiptTablePage extends EntityTablePage<ProductReceipt> {
     @Inject
-    MakerRepository repository;
+    ProductReceiptRepository repository;
 
     /**
      * Construct.
      *
      * @param parameters current backPage parameters
      */
-    public MakerTablePage(PageParameters parameters) {
+    public ProductReceiptTablePage(PageParameters parameters) {
         super(parameters);
     }
 
-    public MakerTablePage() {
+    public ProductReceiptTablePage() {
     }
 
-    public MakerTablePage(IModel model) {
+    public ProductReceiptTablePage(IModel model) {
         super(model);
     }
 
@@ -53,29 +53,28 @@ public class MakerTablePage extends EntityTablePage<Maker> {
     }
 
     @Override
-    public List<? extends IColumn<Maker, String>> createColumns() {
+    public List<? extends IColumn<ProductReceipt, String>> createColumns() {
         return ImmutableList.of(
-                createIdColumn(new ResourceModel("maker.id")),
-                new PropertyColumn<Maker, String>(new ResourceModel("maker.name"), "name", "name") {
+                createIdColumn(new ResourceModel("productReceipts.id")),
+                new PropertyColumn<ProductReceipt, String>(new ResourceModel("productReceipts.name"), "name", "name") {
                     @Override
-                    public void populateItem(Item<ICellPopulator<Maker>> item, String componentId, IModel<Maker> rowModel) {
-                        LabeledLink link = new LabeledLink<Maker>(componentId, rowModel, getDataModel(rowModel), false) {
+                    public void populateItem(Item<ICellPopulator<ProductReceipt>> item, String componentId, IModel<ProductReceipt> rowModel) {
+                        LabeledLink link = new LabeledLink<ProductReceipt>(componentId, rowModel, getDataModel(rowModel), false) {
                             @Override
                             public void onClick(Optional optional) {
-                                setResponsePage(new MakerEditPage(rowModel).setBackNavigateAction((circle, model) -> RequestCycle.get().setResponsePage(getPage())));
+                                setResponsePage(new ProductReceiptEditPage(rowModel).setBackNavigateAction((circle, model) -> RequestCycle.get().setResponsePage(getPage())));
                             }
                         };
                         item.add(link);
                     }
                 },
-                createImageColumn(new ResourceModel("maker.file")),
-                new PropertyColumn<Maker, String>(new ResourceModel("maker.note"), "note", "note"),
-                new AbstractColumn<Maker, String>(new ResourceModel("maker.productTypes")) {
+                new PropertyColumn<ProductReceipt, String>(new ResourceModel("productReceipts.note"), "note", "note"),
+                new AbstractColumn<ProductReceipt, String>(new ResourceModel("productReceipts.products")) {
                     @Override
-                    public void populateItem(Item<ICellPopulator<Maker>> item, String componentId, IModel<Maker> rowModel) {
-                        item.add(LabeledLink.of(componentId, rowModel.map(maker -> maker.getProductTypes().size()).orElse(0).getObject(), target -> setResponsePage(
+                    public void populateItem(Item<ICellPopulator<ProductReceipt>> item, String componentId, IModel<ProductReceipt> rowModel) {
+                        item.add(LabeledLink.of(componentId, rowModel.map(productReceipts -> productReceipts.getProducts().size()).orElse(0).getObject(), target -> setResponsePage(
                                 new ProductTablePage()
-                                        .setFilterMakerModel(rowModel)
+                                        .setFilterProductReceiptModel(rowModel)
                                         .setBackNavigateAction(NavigateAction.<ProductType>goBack(getPage())))).setLabelClasses("label", "label-default"));
                     }
                 }
@@ -83,17 +82,17 @@ public class MakerTablePage extends EntityTablePage<Maker> {
     }
 
     @Override
-    protected EntityEditPage createEditPage(IModel<Maker> entityModel) {
-        return new MakerEditPage(entityModel);
+    protected EntityEditPage createEditPage(IModel<ProductReceipt> entityModel) {
+        return new ProductReceiptEditPage(entityModel);
     }
 
     @Override
-    public MakerRepository getRepository() {
+    public ProductReceiptRepository getRepository() {
         return repository;
     }
 
     @Override
-    public Component createDetailsPanel(String id, IModel<Maker> model) {
+    public Component createDetailsPanel(String id, IModel<ProductReceipt> model) {
         return new DetailsPanel(id, model);
     }
 

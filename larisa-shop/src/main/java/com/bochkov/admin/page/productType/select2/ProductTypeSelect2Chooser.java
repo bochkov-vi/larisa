@@ -5,6 +5,7 @@ import larisa.entity.ProductType;
 import larisa.repository.ProductTypeRepository;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 import org.entity3.service.impl.EntityServiceUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -64,8 +65,7 @@ public class ProductTypeSelect2Chooser extends Select2Choice<ProductType> {
     @Override
     protected void onInitialize() {
         super.onInitialize();
-        getSettings().setCloseOnSelect(true);
-
+        getSettings().setCloseOnSelect(true).setPlaceholder(new ResourceModel("placeholder").wrapOnAssignment(this).getObject()).setAllowClear(true);
     }
 
     public ProductTypeRepository getRepository() {

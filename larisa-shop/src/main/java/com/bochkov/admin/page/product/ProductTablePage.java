@@ -1,4 +1,4 @@
-package com.bochkov.admin.page.productType;
+package com.bochkov.admin.page.product;
 
 import com.bochkov.admin.component.LabeledLink;
 import com.bochkov.admin.component.action.NavigateAction;
@@ -6,11 +6,13 @@ import com.bochkov.admin.page.EntityEditPage;
 import com.bochkov.admin.page.EntityTablePage;
 import com.bochkov.admin.page.maker.MakerEditPage;
 import com.bochkov.admin.page.maker.select2.MakerSelect2Chooser;
+import com.bochkov.admin.page.productType.ProductTypeEditPage;
 import com.bochkov.admin.page.productType.select2.ProductTypeMultiSelect;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormGroup;
 import larisa.entity.Maker;
+import larisa.entity.ProductReceipt;
 import larisa.entity.ProductType;
 import larisa.repository.ProductTypeRepository;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -36,14 +38,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@MountPath("product-types")
-public class ProductTypeTablePage extends EntityTablePage<ProductType> {
+@MountPath("products")
+public class ProductTablePage extends EntityTablePage<ProductType> {
     @Inject
     ProductTypeRepository repository;
 
     IModel<Maker> filterMakerModel = new Model<>();
 
     IModel<Collection<ProductType>> filterProductTypesModel = new CollectionModel<>();
+    IModel<ProductReceipt> filterProductReceiptModel = new Model<>();
 
     Form form;
 
@@ -52,11 +55,11 @@ public class ProductTypeTablePage extends EntityTablePage<ProductType> {
      *
      * @param parameters current backPage parameters
      */
-    public ProductTypeTablePage(PageParameters parameters) {
+    public ProductTablePage(PageParameters parameters) {
         super(parameters);
     }
 
-    public ProductTypeTablePage() {
+    public ProductTablePage() {
     }
 
 
@@ -145,7 +148,7 @@ public class ProductTypeTablePage extends EntityTablePage<ProductType> {
         return filterMakerModel;
     }
 
-    public ProductTypeTablePage setFilterMakerModel(IModel<Maker> filterMakerModel) {
+    public ProductTablePage setFilterMakerModel(IModel<Maker> filterMakerModel) {
         this.filterMakerModel = filterMakerModel;
         return this;
     }
@@ -154,7 +157,7 @@ public class ProductTypeTablePage extends EntityTablePage<ProductType> {
         return filterProductTypesModel;
     }
 
-    public ProductTypeTablePage setFilterProductTypesModel(IModel<Collection<ProductType>> filterProductTypesModel) {
+    public ProductTablePage setFilterProductTypesModel(IModel<Collection<ProductType>> filterProductTypesModel) {
         this.filterProductTypesModel = filterProductTypesModel;
         return this;
     }
@@ -167,5 +170,14 @@ public class ProductTypeTablePage extends EntityTablePage<ProductType> {
                 .ifPresent(m -> productType.setParents(
                         m.map(c -> Lists.newArrayList(c)).getObject()));
         return productType;
+    }
+
+    public IModel<ProductReceipt> getFilterProductReceiptModel() {
+        return filterProductReceiptModel;
+    }
+
+    public ProductTablePage setFilterProductReceiptModel(IModel<ProductReceipt> filterProductReceiptModel) {
+        this.filterProductReceiptModel = filterProductReceiptModel;
+        return this;
     }
 }

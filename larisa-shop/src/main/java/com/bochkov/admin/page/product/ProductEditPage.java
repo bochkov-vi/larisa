@@ -1,9 +1,10 @@
 package com.bochkov.admin.page.product;
 
 import com.bochkov.admin.page.EntityEditPage;
-import larisa.entity.Product;
+import com.bochkov.admin.page.productType.ProductTypeEditPage;
+import larisa.entity.ProductType;
 import larisa.repository.FileRepository;
-import larisa.repository.ProductRepository;
+import larisa.repository.ProductTypeRepository;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.wicketstuff.wicket.mount.core.annotation.MountPath;
@@ -11,22 +12,22 @@ import org.wicketstuff.wicket.mount.core.annotation.MountPath;
 import javax.inject.Inject;
 
 @MountPath("product")
-public class EditPage extends EntityEditPage<Product, Integer> {
+public class ProductEditPage extends EntityEditPage<ProductType, Integer> {
 
     @Inject
-    ProductRepository repository;
+    ProductTypeRepository repository;
 
     @Inject
     FileRepository fileRepository;
 
-    public EditPage() {
+    public ProductEditPage() {
     }
 
-    public EditPage(IModel<Product> model) {
+    public ProductEditPage(IModel<ProductType> model) {
         super(model);
     }
 
-    public EditPage(PageParameters parameters) {
+    public ProductEditPage(PageParameters parameters) {
         super(parameters);
     }
 
@@ -34,18 +35,18 @@ public class EditPage extends EntityEditPage<Product, Integer> {
     @Override
     protected void onInitialize() {
         super.onInitialize();
-        Input input = new Input("input", getModel());
+        InputPanel input = new InputPanel("input", getModel());
         form.add(input);
    }
 
     @Override
-    protected EditPage createEditPage(IModel<Product> entityModel) {
-        return new EditPage(entityModel);
+    protected ProductTypeEditPage createEditPage(IModel<ProductType> entityModel) {
+        return new ProductTypeEditPage(entityModel);
     }
-
+    
 
     @Override
-    protected ProductRepository getRepository() {
+    protected ProductTypeRepository getRepository() {
         return repository;
     }
 

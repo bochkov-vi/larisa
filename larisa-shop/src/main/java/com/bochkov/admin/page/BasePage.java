@@ -1,7 +1,9 @@
 package com.bochkov.admin.page;
 
 import com.bochkov.admin.page.maker.MakerTablePage;
+import com.bochkov.admin.page.product.ProductTablePage;
 import com.bochkov.admin.page.productType.ProductTypeTablePage;
+import com.bochkov.admin.page.productreceipt.ProductReceiptTablePage;
 import de.agilecoders.wicket.core.Bootstrap;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.dropdown.MenuBookmarkablePageLink;
 import de.agilecoders.wicket.core.markup.html.bootstrap.common.NotificationPanel;
@@ -83,11 +85,12 @@ abstract public class BasePage<T> extends GenericWebPage<T> {
 
         navbar.addComponents(NavbarComponents.transform(Navbar.ComponentPosition.LEFT,
                 new NavbarButton<Void>(StartPage.class, new ResourceModel("Overview")).setIconType(GlyphIconType.home),
-//                        new NavbarButton<Void>(BaseCssPage.class, Model.of("Base CSS")),
-//                        new NavbarButton<Void>(ComponentsPage.class, Model.of("Components")),
+                new NavbarButton<Void>(MakerTablePage.class, new ResourceModel("maker.title")),
+                new NavbarButton<Void>(ProductTypeTablePage.class, new ResourceModel("productType.title")),
+                new NavbarButton<Void>(ProductReceiptTablePage.class, new ResourceModel("productReceipts.title"))
 
-                newAticlesDropDownButton())
-        );
+//                ,newAticlesDropDownButton()
+        ));
         //navbar.addComponents(new NavbarText(navbar.newExtraItemId(), "Plain text").position(Navbar.ComponentPosition.RIGHT));
 
       /*  DropDownButton dropdown = new NavbarDropDownButton(Model.of("Themes")) {
@@ -134,7 +137,7 @@ abstract public class BasePage<T> extends GenericWebPage<T> {
                 final List<AbstractLink> subMenu = new ArrayList<>();
                 subMenu.add(new MenuBookmarkablePageLink<Void>(MakerTablePage.class, new ResourceModel("maker.title")).setIconType(GlyphIconType.refresh));
                 subMenu.add(new MenuBookmarkablePageLink<Void>(ProductTypeTablePage.class, new ResourceModel("productType.title")).setIconType(GlyphIconType.refresh));
-                subMenu.add(new MenuBookmarkablePageLink<Void>(com.bochkov.admin.page.product.TablePage.class, new ResourceModel("product.title")).setIconType(GlyphIconType.refresh));
+                subMenu.add(new MenuBookmarkablePageLink<Void>(ProductTablePage.class, new ResourceModel("product.title")).setIconType(GlyphIconType.refresh));
                 return subMenu;
             }
         }.setIconType(GlyphIconType.thlarge);
