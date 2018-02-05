@@ -4,7 +4,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.wicketstuff.wicket.mount.core.annotation.MountPath;
 
 @MountPath("admin")
-public class StartPage extends BasePage {
+public class StartPage extends BasePage<Void> {
 
     /**
      * Construct.

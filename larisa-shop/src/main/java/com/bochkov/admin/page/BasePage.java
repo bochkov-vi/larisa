@@ -87,7 +87,8 @@ abstract public class BasePage<T> extends GenericWebPage<T> {
                 new NavbarButton<Void>(StartPage.class, new ResourceModel("Overview")).setIconType(GlyphIconType.home),
                 new NavbarButton<Void>(MakerTablePage.class, new ResourceModel("maker.title")),
                 new NavbarButton<Void>(ProductTypeTablePage.class, new ResourceModel("productType.title")),
-                new NavbarButton<Void>(ProductReceiptTablePage.class, new ResourceModel("productReceipts.title"))
+                new NavbarButton<Void>(ProductReceiptTablePage.class, new ResourceModel("productReceipts.title")),
+                new NavbarButton<Void>(ProductTablePage.class, new ResourceModel("product.title"))
 
 //                ,newAticlesDropDownButton()
         ));

@@ -20,12 +20,13 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.repository.CrudRepository;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Optional;
 
 import static com.bochkov.ReflectionUtils.getGenericParameterClass;
 
-public abstract class EntityPage<T extends Persistable> extends TitledPage<T> implements IDetailed<T>{
+public abstract class EntityPage<T extends Persistable<? extends Serializable>> extends TitledPage<T> implements IDetailed<T>, IEditPageCreator<T> {
 
     protected NavigateAction<T> backNavigateAction = new NavigateAction<T>() {
         @Override
@@ -135,7 +136,7 @@ public abstract class EntityPage<T extends Persistable> extends TitledPage<T> im
         }
     }
 
-    protected abstract EntityEditPage createEditPage(IModel<T> entityModel);
+
 
     protected abstract CrudRepository<T, ?> getRepository();
 

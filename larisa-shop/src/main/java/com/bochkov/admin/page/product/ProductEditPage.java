@@ -1,10 +1,9 @@
 package com.bochkov.admin.page.product;
 
 import com.bochkov.admin.page.EntityEditPage;
-import com.bochkov.admin.page.productType.ProductTypeEditPage;
-import larisa.entity.ProductType;
+import larisa.entity.Product;
 import larisa.repository.FileRepository;
-import larisa.repository.ProductTypeRepository;
+import larisa.repository.ProductRepository;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.wicketstuff.wicket.mount.core.annotation.MountPath;
@@ -12,10 +11,10 @@ import org.wicketstuff.wicket.mount.core.annotation.MountPath;
 import javax.inject.Inject;
 
 @MountPath("product")
-public class ProductEditPage extends EntityEditPage<ProductType, Integer> {
+public class ProductEditPage extends EntityEditPage<Product, Integer> {
 
     @Inject
-    ProductTypeRepository repository;
+    ProductRepository repository;
 
     @Inject
     FileRepository fileRepository;
@@ -23,7 +22,7 @@ public class ProductEditPage extends EntityEditPage<ProductType, Integer> {
     public ProductEditPage() {
     }
 
-    public ProductEditPage(IModel<ProductType> model) {
+    public ProductEditPage(IModel<Product> model) {
         super(model);
     }
 
@@ -40,13 +39,13 @@ public class ProductEditPage extends EntityEditPage<ProductType, Integer> {
    }
 
     @Override
-    protected ProductTypeEditPage createEditPage(IModel<ProductType> entityModel) {
-        return new ProductTypeEditPage(entityModel);
+    protected ProductEditPage createEditPage(IModel<Product> entityModel) {
+        return new ProductEditPage(entityModel);
     }
     
 
     @Override
-    protected ProductTypeRepository getRepository() {
+    protected ProductRepository getRepository() {
         return repository;
     }
 

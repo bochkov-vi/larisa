@@ -8,12 +8,15 @@ import com.bochkov.admin.page.maker.MakerEditPage;
 import com.bochkov.admin.page.maker.select2.MakerSelect2Chooser;
 import com.bochkov.admin.page.productType.ProductTypeEditPage;
 import com.bochkov.admin.page.productType.select2.ProductTypeMultiSelect;
+import com.bochkov.admin.page.productType.select2.ProductTypeSelect2Chooser;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormGroup;
 import larisa.entity.Maker;
+import larisa.entity.Product;
 import larisa.entity.ProductReceipt;
 import larisa.entity.ProductType;
+import larisa.repository.ProductRepository;
 import larisa.repository.ProductTypeRepository;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -26,7 +29,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.util.CollectionModel;
-import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
@@ -39,14 +41,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @MountPath("products")
-public class ProductTablePage extends EntityTablePage<ProductType> {
+public class ProductTablePage extends EntityTablePage<Product> {
     @Inject
-    ProductTypeRepository repository;
+    ProductRepository repository;
 
     IModel<Maker> filterMakerModel = new Model<>();
 
-    IModel<Collection<ProductType>> filterProductTypesModel = new CollectionModel<>();
-    IModel<ProductReceipt> filterProductReceiptModel = new Model<>();
+    IModel<ProductType> filterProductTypesModel = Model.of();
+
+    IModel<ProductReceipt> filterProductReceiptModel = Model.of();
 
     Form form;
 
@@ -79,7 +82,7 @@ public class ProductTablePage extends EntityTablePage<ProductType> {
                 }
         ));
         form.add(makerGroup);
-        form.add(new FormGroup("product-type-g", new ResourceModel("parents")).add(new ProductTypeMultiSelect("product-type", filterProductTypesModel).add(
+        form.add(new FormGroup("product-type-g", new ResourceModel("parents")).add(new ProductTypeSelect2Chooser("product-type", filterProductTypesModel).add(
                 new AjaxFormComponentUpdatingBehavior("change") {
 
                     @Override
@@ -91,55 +94,36 @@ public class ProductTablePage extends EntityTablePage<ProductType> {
 
     }
 
-    public void onFilterChange(AjaxRequestTarget target){
+    public void onFilterChange(AjaxRequestTarget target) {
         target.add(table);
     }
 
     @Override
-    public List<? extends IColumn<ProductType, String>> createColumns() {
+    public List<? extends IColumn<Product, String>> createColumns() {
         return ImmutableList.of(
                 createIdColumn(new ResourceModel("id")),
-                new PropertyColumn<ProductType, String>(new ResourceModel("name"), "name", "name") {
-                    @Override
-                    public void populateItem(Item<ICellPopulator<ProductType>> item, String componentId, IModel<ProductType> rowModel) {
-                        LabeledLink link = new LabeledLink<ProductType>(componentId, rowModel, getDataModel(rowModel), false) {
-                            @Override
-                            public void onClick(Optional optional) {
-                                setResponsePage(new ProductTypeEditPage(rowModel).setBackNavigateAction((circle, model) -> RequestCycle.get().setResponsePage(getPage())));
-                            }
-                        };
-                        item.add(link);
-                    }
-                },
-                new PropertyColumn<ProductType, String>(new ResourceModel("productType.maker"), "maker.name", "maker.name") {
-                    @Override
-                    public void populateItem(Item<ICellPopulator<ProductType>> item, String componentId, IModel<ProductType> rowModel) {
-                        item.add(LabeledLink.of(componentId, rowModel.map(ProductType::getMaker).map(Maker::getName).getObject(),
-                                target -> setResponsePage(new MakerEditPage(rowModel.map(pt -> pt.getMaker()))
-                                        .setBackNavigateAction(NavigateAction.goBack(getPage())))));
-                    }
-                },
+                createProductTypeColumn(new ResourceModel("productType.name"),"productType.name",getPage(),entityModel -> new ProductTypeEditPage(entityModel)),
                 createImageColumn(new ResourceModel("file")),
                 new PropertyColumn<ProductType, String>(new ResourceModel("volumeNote"), "volumeNote", "volumeNote")
         );
     }
 
     @Override
-    protected EntityEditPage createEditPage(IModel<ProductType> entityModel) {
-        return new ProductTypeEditPage(entityModel);
+    public ProductEditPage createEditPage(IModel<Product> entityModel) {
+        return new ProductEditPage(entityModel);
     }
 
     @Override
-    public ProductTypeRepository getRepository() {
+    public ProductRepository getRepository() {
         return repository;
     }
 
     @Override
-    public Specification<ProductType> createSpecification() {
-        Specification<ProductType> makerSpecification = filterMakerModel.map(maker -> (Specification<ProductType>) (root, query, cb) -> cb.equal(root.get("maker"), maker)).getObject();
-        Specification<ProductType> productTypeSpecification = filterProductTypesModel.map(
-                productTypes -> (Specification<ProductType>) (root, query, cb) -> root.get("id").in(productTypes.stream().map(pt -> pt.getId()).collect(Collectors.toList()))).getObject();
-        Specifications<ProductType> result = Specifications.where(makerSpecification);
+    public Specification<Product> createSpecification() {
+        Specification<Product> makerSpecification = filterMakerModel.map(maker -> (Specification<Product>) (root, query, cb) -> cb.equal(root.get("maker"), maker)).getObject();
+        Specification<Product> productTypeSpecification = filterProductTypesModel.map(
+                productTypes -> (Specification<Product>) (root, query, cb) -> root.get("id").in(productTypes.stream().map(pt -> pt.getId()).collect(Collectors.toList()))).getObject();
+        Specifications<Product> result = Specifications.where(makerSpecification);
         result = result.and(productTypeSpecification);
         return result;
     }
@@ -163,12 +147,12 @@ public class ProductTablePage extends EntityTablePage<ProductType> {
     }
 
     @Override
-    protected ProductType createNewEntity() {
-        ProductType productType = super.createNewEntity();
-        Optional.ofNullable(filterMakerModel).ifPresent(makerIModel -> productType.setMaker(makerIModel.getObject()));
+    protected Product createNewEntity() {
+        Product product = super.createNewEntity();
+
         Optional.ofNullable(filterProductTypesModel)
-                .ifPresent(m -> productType.setParents(
-                        m.map(c -> Lists.newArrayList(c)).getObject()));
+                .ifPresent(m -> product.setProductType(
+                        m.map(productType ->productType).getObject()));
         return productType;
     }
 

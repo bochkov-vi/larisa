@@ -26,11 +26,13 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.util.CollectionModel;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.wicketstuff.wicket.mount.core.annotation.MountPath;
 
 import javax.inject.Inject;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -122,7 +124,7 @@ public class ProductTypeTablePage extends EntityTablePage<ProductType> {
     }
 
     @Override
-    protected EntityEditPage createEditPage(IModel<ProductType> entityModel) {
+    protected ProductTypeEditPage createEditPage(IModel<ProductType> entityModel) {
         return new ProductTypeEditPage(entityModel);
     }
 
@@ -168,4 +170,5 @@ public class ProductTypeTablePage extends EntityTablePage<ProductType> {
                         m.map(c -> Lists.newArrayList(c)).getObject()));
         return productType;
     }
+
 }

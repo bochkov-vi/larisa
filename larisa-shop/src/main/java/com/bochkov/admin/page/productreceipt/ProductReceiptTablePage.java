@@ -7,8 +7,8 @@ import com.bochkov.admin.page.EntityTablePage;
 import com.bochkov.admin.page.product.ProductTablePage;
 import com.google.common.collect.ImmutableList;
 import de.agilecoders.wicket.core.markup.html.bootstrap.dialog.Modal;
+import larisa.entity.Product;
 import larisa.entity.ProductReceipt;
-import larisa.entity.ProductType;
 import larisa.repository.ProductReceiptRepository;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
@@ -74,14 +74,14 @@ public class ProductReceiptTablePage extends EntityTablePage<ProductReceipt> imp
                         item.add(LabeledLink.of(componentId, rowModel.map(productReceipt -> productReceipt.getProducts().size()).orElse(0).getObject(), target -> setResponsePage(
                                 new ProductTablePage()
                                         .setFilterProductReceiptModel(rowModel)
-                                        .setBackNavigateAction(NavigateAction.<ProductType>goBack(getPage())))).setLabelClasses("label", "label-default"));
+                                        .setBackNavigateAction(NavigateAction.<Product>goBack(getPage())))).setLabelClasses("label", "label-default"));
                     }
                 }
         );
     }
 
     @Override
-    protected EntityEditPage createEditPage(IModel<ProductReceipt> entityModel) {
+    public EntityEditPage createEditPage(IModel<ProductReceipt> entityModel) {
         return new ProductReceiptEditPage(entityModel);
     }
 
