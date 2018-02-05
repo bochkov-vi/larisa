@@ -4,11 +4,13 @@
     <link href="webjars/bootstrap/3.3.7-1/css/bootstrap.css">
 </head>
 <body>
-<wicket:panel>
+<wicket:border>
+    <img class="img-thumbnail" wicket:id="detailed-image" src="http://placehold.it/300x200" alt="">
     <div class="caption">
         <h3 wicket:id="title">Thumbnail label</h3>
         <p wicket:id="note"></p>
     </div>
-</wicket:panel>
+    <wicket:body/>
+</wicket:border>
 </body>
 </html>

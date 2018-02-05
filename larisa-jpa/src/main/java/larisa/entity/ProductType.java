@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "product_type")
-public class ProductType extends AbstractAuditableEntity<Integer> implements IGetNamed, IHierarchical<Integer, ProductType>, IGetFile {
+public class ProductType extends AbstractAuditableEntity<Integer> implements IGetNamed, IHierarchical<Integer, ProductType>, IGetFile, INotable,INamable {
     @Id
     @GeneratedValue(generator = "product_type")
     @TableGenerator(name = "product_type", initialValue = 100, allocationSize = 1)
@@ -36,6 +36,9 @@ public class ProductType extends AbstractAuditableEntity<Integer> implements IGe
     @ColumnPosition(4)
     LocalDate sertificated;
 
+    @Column(name = "note")
+    @ColumnPosition(6)
+    String note;
 
     @ManyToOne
     @JoinColumn(name = "id_maker")
@@ -125,5 +128,14 @@ public class ProductType extends AbstractAuditableEntity<Integer> implements IGe
 
     public void setSertificated(LocalDate sertificated) {
         this.sertificated = sertificated;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public ProductType setNote(String note) {
+        this.note = note;
+        return this;
     }
 }

@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class EntityTablePage<T extends Persistable> extends EntityPage<T> {
+public abstract class EntityTablePage<T extends Persistable> extends EntityPage<T>  {
     protected Form toolbarForm = new Form("toolbar-form");
 
     protected ISortableDataProvider<T, String> sortableDataProvider = new EntityDataProvider<T>() {

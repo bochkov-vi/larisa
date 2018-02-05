@@ -4,7 +4,6 @@ import com.bochkov.admin.page.EntityEditPage;
 import larisa.entity.ProductReceipt;
 import larisa.repository.FileRepository;
 import larisa.repository.ProductReceiptRepository;
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -14,7 +13,7 @@ import org.wicketstuff.wicket.mount.core.annotation.MountPath;
 import javax.inject.Inject;
 
 @MountPath("product-receipt")
-public class ProductReceiptEditPage extends EntityEditPage<ProductReceipt, Integer> {
+public class ProductReceiptEditPage extends EntityEditPage<ProductReceipt, Integer> implements IProductReceiptDetailed{
 
     @Inject
     ProductReceiptRepository repository;
@@ -55,7 +54,7 @@ public class ProductReceiptEditPage extends EntityEditPage<ProductReceipt, Integ
 
     public void save() {
         repository.save(getModelObject());
-        success(new StringResourceModel("maker.saved", this, getModel()).getObject());
+        success(new StringResourceModel("productReceipt.saved", this, getModel()).getObject());
     }
 
     @Override
@@ -63,8 +62,4 @@ public class ProductReceiptEditPage extends EntityEditPage<ProductReceipt, Integ
         return repository;
     }
 
-    @Override
-    public Component createDetailsPanel(String id, IModel<ProductReceipt> model) {
-        return new DetailsPanel(id, model);
-    }
 }

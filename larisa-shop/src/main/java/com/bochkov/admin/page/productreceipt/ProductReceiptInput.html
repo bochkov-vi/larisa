@@ -3,32 +3,26 @@
 <body>
 <wicket:panel>
     <form wicket:id="form">
-        <div class="form-group">
-            <label wicket:for="id">
-                <wicket:message key="maker.id"/>
-                :</label>
-            <div class="controls">
-                <input wicket:id="id" type="text" class="form-control">
-            </div>
+        <div wicket:id="id-g">
+            <input wicket:id="id" type="text" class="form-control">
         </div>
-        <div class="form-group">
-            <label wicket:for="name">
-                <wicket:message key="maker.name"/>
-                :</label>
-            <div class="controls">
-                <input wicket:id="name" type="text" class="form-control">
-            </div>
+        <div wicket:id="date-g">
+            <input wicket:id="date" type="text" class="form-control">
         </div>
-        <div class="form-group">
-            <label wicket:for="note">
-                <wicket:message key="maker.note"/>
-                :</label>
-            <div class="controls">
-                <textarea wicket:id="note" type="text" class="form-control"/>
-            </div>
+        <div wicket:id="receiptType-g">
+            <select wicket:id="receiptType" class="form-control" style="width: 100%"></select>
         </div>
-        <div wicket:id="file"></div>
+        <!-- <div wicket:id="products-g">
+             <input wicket:id="products" type="text" class="form-control">
+         </div>-->
+        <!-- <div wicket:id="files-g">
+            <input wicket:id="files" type="text" class="form-control">
+        </div>-->
+        <div wicket:id="note-g">
+            <textarea wicket:id="note" class="form-control"></textarea>
+        </div>
     </form>
+    <!--<table wicket:id="product-table"></table>-->
 </wicket:panel>
 </body>
 </html>

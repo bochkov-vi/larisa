@@ -25,7 +25,7 @@ import java.util.Optional;
 
 import static com.bochkov.ReflectionUtils.getGenericParameterClass;
 
-public abstract class EntityPage<T extends Persistable> extends TitledPage<T> {
+public abstract class EntityPage<T extends Persistable> extends TitledPage<T> implements IDetailed<T>{
 
     protected NavigateAction<T> backNavigateAction = new NavigateAction<T>() {
         @Override
@@ -186,7 +186,4 @@ public abstract class EntityPage<T extends Persistable> extends TitledPage<T> {
         return modal;
     }
 
-    public Component createDetailsPanel(String id, IModel<T> model) {
-        return null;
-    }
 }

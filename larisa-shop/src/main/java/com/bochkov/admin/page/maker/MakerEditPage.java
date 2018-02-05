@@ -4,7 +4,6 @@ import com.bochkov.admin.page.EntityEditPage;
 import larisa.entity.Maker;
 import larisa.repository.FileRepository;
 import larisa.repository.MakerRepository;
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -63,8 +62,5 @@ public class MakerEditPage extends EntityEditPage<Maker, Integer> {
         return repository;
     }
 
-    @Override
-    public Component createDetailsPanel(String id, IModel<Maker> model) {
-        return new DetailsPanel(id, model);
-    }
+
 }

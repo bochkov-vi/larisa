@@ -1,10 +1,9 @@
 package larisa.entity;
 
 import org.entity3.column.ColumnPosition;
-import org.entity3.converter.JodaLocalDateConverter;
-import org.joda.time.LocalDate;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "product_receipt")
-public class ProductReceipt extends AbstractAuditableEntity<Integer> implements IGetFiles {
+public class ProductReceipt extends AbstractAuditableEntity<Integer> implements IGetFiles,INotable {
     @Id
     @GeneratedValue(generator = "product_receipt")
     @TableGenerator(name = "product_receipt", initialValue = 100, allocationSize = 1)
@@ -22,9 +21,8 @@ public class ProductReceipt extends AbstractAuditableEntity<Integer> implements 
 
     @Column(name = "date", nullable = true)
     @Temporal(TemporalType.DATE)
-    @Convert(converter = JodaLocalDateConverter.class)
     @ColumnPosition(2)
-    LocalDate date;
+    Date date;
 
     @Column(name = "receipt_type",nullable = false, columnDefinition = "VARCHAR_IGNORECASE(255) NOT NULL")
     @ColumnPosition(3)
@@ -51,12 +49,13 @@ public class ProductReceipt extends AbstractAuditableEntity<Integer> implements 
         this.id = id;
     }
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public ProductReceipt setDate(Date date) {
         this.date = date;
+        return this;
     }
 
     @Override

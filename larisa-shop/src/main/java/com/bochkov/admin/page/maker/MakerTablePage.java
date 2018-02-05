@@ -6,11 +6,9 @@ import com.bochkov.admin.page.EntityEditPage;
 import com.bochkov.admin.page.EntityTablePage;
 import com.bochkov.admin.page.product.ProductTablePage;
 import com.google.common.collect.ImmutableList;
-import de.agilecoders.wicket.core.markup.html.bootstrap.dialog.Modal;
 import larisa.entity.Maker;
 import larisa.entity.ProductType;
 import larisa.repository.MakerRepository;
-import org.apache.wicket.Component;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -92,16 +90,13 @@ public class MakerTablePage extends EntityTablePage<Maker> {
         return repository;
     }
 
-    @Override
-    public Component createDetailsPanel(String id, IModel<Maker> model) {
-        return new DetailsPanel(id, model);
-    }
 
-    @Override
+
+   /* @Override
     public Modal createDeleteDialog(String id) {
         Modal modal = super.createDeleteDialog(id);
-        /* modal.add(new AttributeAppender("class"," center-block "));*/
+        *//* modal.add(new AttributeAppender("class"," center-block "));*//*
         modal.size(Modal.Size.Small);
         return modal;
-    }
+    }*/
 }

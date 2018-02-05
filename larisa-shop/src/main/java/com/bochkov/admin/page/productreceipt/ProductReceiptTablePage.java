@@ -10,7 +10,6 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.dialog.Modal;
 import larisa.entity.ProductReceipt;
 import larisa.entity.ProductType;
 import larisa.repository.ProductReceiptRepository;
-import org.apache.wicket.Component;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -27,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @MountPath("product-receipts")
-public class ProductReceiptTablePage extends EntityTablePage<ProductReceipt> {
+public class ProductReceiptTablePage extends EntityTablePage<ProductReceipt> implements IProductReceiptDetailed{
     @Inject
     ProductReceiptRepository repository;
 
@@ -55,8 +54,8 @@ public class ProductReceiptTablePage extends EntityTablePage<ProductReceipt> {
     @Override
     public List<? extends IColumn<ProductReceipt, String>> createColumns() {
         return ImmutableList.of(
-                createIdColumn(new ResourceModel("productReceipts.id")),
-                new PropertyColumn<ProductReceipt, String>(new ResourceModel("productReceipts.name"), "name", "name") {
+                createIdColumn(new ResourceModel("productReceipt.id")),
+                new PropertyColumn<ProductReceipt, String>(new ResourceModel("productReceipt.date"), "date", "date") {
                     @Override
                     public void populateItem(Item<ICellPopulator<ProductReceipt>> item, String componentId, IModel<ProductReceipt> rowModel) {
                         LabeledLink link = new LabeledLink<ProductReceipt>(componentId, rowModel, getDataModel(rowModel), false) {
@@ -68,11 +67,11 @@ public class ProductReceiptTablePage extends EntityTablePage<ProductReceipt> {
                         item.add(link);
                     }
                 },
-                new PropertyColumn<ProductReceipt, String>(new ResourceModel("productReceipts.note"), "note", "note"),
-                new AbstractColumn<ProductReceipt, String>(new ResourceModel("productReceipts.products")) {
+                new PropertyColumn<ProductReceipt, String>(new ResourceModel("productReceipt.note"), "note", "note"),
+                new AbstractColumn<ProductReceipt, String>(new ResourceModel("productReceipt.products")) {
                     @Override
                     public void populateItem(Item<ICellPopulator<ProductReceipt>> item, String componentId, IModel<ProductReceipt> rowModel) {
-                        item.add(LabeledLink.of(componentId, rowModel.map(productReceipts -> productReceipts.getProducts().size()).orElse(0).getObject(), target -> setResponsePage(
+                        item.add(LabeledLink.of(componentId, rowModel.map(productReceipt -> productReceipt.getProducts().size()).orElse(0).getObject(), target -> setResponsePage(
                                 new ProductTablePage()
                                         .setFilterProductReceiptModel(rowModel)
                                         .setBackNavigateAction(NavigateAction.<ProductType>goBack(getPage())))).setLabelClasses("label", "label-default"));
@@ -91,10 +90,6 @@ public class ProductReceiptTablePage extends EntityTablePage<ProductReceipt> {
         return repository;
     }
 
-    @Override
-    public Component createDetailsPanel(String id, IModel<ProductReceipt> model) {
-        return new DetailsPanel(id, model);
-    }
 
     @Override
     public Modal createDeleteDialog(String id) {

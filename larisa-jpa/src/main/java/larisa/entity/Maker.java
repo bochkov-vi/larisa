@@ -10,7 +10,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "maker")
-public class Maker extends DefaultEntity<Integer> implements IGetFile, IGetNamed {
+public class Maker extends DefaultEntity<Integer> implements IGetFile, IGetNamed, INotable, INamable {
     @Id
     @Column(name = "id_maker")
     @GeneratedValue(generator = "maker")
