@@ -18,4 +18,8 @@ public interface ProductReceiptRepository extends DefaultEntityRepository<Produc
     countQuery = "SELECT COUNT(DISTINCT o.receiptType) FROM ProductReceipt o WHERE o.receiptType LIKE :mask")
     Page<String> findReceiptTypeByMask(@Param("mask") String mask, @Param("term") String term, Pageable pageable);
 
+    @Query(value = "SELECT DISTINCT o.seller FROM ProductReceipt o WHERE o.seller LIKE :mask ORDER BY LOCATE(:term,o.seller)",
+            countQuery = "SELECT COUNT(DISTINCT o.seller) FROM ProductReceipt o WHERE o.seller LIKE :mask")
+    Page<String> findSellerByMask(@Param("mask") String mask, @Param("term") String term, Pageable pageable);
+
 }

@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
 <head>
     <link href="webjars/bootstrap/3.3.7-1/css/bootstrap.css">
+    <link href="webjars/font-awesome/4.7.0/css/font-awesome.css">
 </head>
 <body>
 
@@ -31,7 +32,14 @@
             </div>
             <div class="panel-footer">
                 <div class="btn-group">
-                    <a class="btn btn-default" onclick="$('form').get(0).reset();$('#filter-maker').val(null).trigger('change');$('#filter-parents').val(null).trigger('change');"><span class="glyphicon glyphicon-ban-circle"></span> </a>
+                    <a class="btn btn-default"
+                       onclick="$('form').get(0).reset();$('#filter-maker').val(null).trigger('change');$('#filter-parents').val(null).trigger('change');">
+                        <i class="fa fa-filter" style="position: relative">
+                            <i class="fa fa-ban"
+                               style="position: absolute;  top: -50%;  left: -50%;  font-size: 200%;color: rgba(217, 83, 79, 0.7);"></i>
+                        </i>
+
+                    </a>
                 </div>
             </div>
         </div>

@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+    <link href="webjars/bootstrap/3.3.7-1/css/bootstrap.css">
+</head>
 <body>
 <wicket:panel>
     <form wicket:id="form">
         <div wicket:id="id-g">
             <input wicket:id="id" type="text" class="form-control">
         </div>
-        <div wicket:id="date-g">
-            <input wicket:id="date" type="text" class="form-control">
-        </div>
-        <div wicket:id="receiptType-g">
-            <select wicket:id="receiptType" class="form-control" style="width: 100%"></select>
-        </div>
-        <!-- <div wicket:id="products-g">
-             <input wicket:id="products" type="text" class="form-control">
-         </div>-->
-        <!-- <div wicket:id="files-g">
-            <input wicket:id="files" type="text" class="form-control">
-        </div>-->
-        <div wicket:id="note-g">
-            <textarea wicket:id="note" class="form-control"></textarea>
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div wicket:id="date-g">
+                    <input wicket:id="date" type="text" class="form-control">
+                </div>
+                <div wicket:id="receiptType-g">
+                    <select wicket:id="receiptType" class="form-control" style="width: 100%"></select>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div wicket:id="seller-g">
+                    <select wicket:id="seller" class="form-control" style="width: 100%"></select>
+                </div>
+                <div wicket:id="note-g">
+                    <textarea wicket:id="note" class="form-control"></textarea>
+                </div>
+            </div>
         </div>
     </form>
     <!--<table wicket:id="product-table"></table>-->

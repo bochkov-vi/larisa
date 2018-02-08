@@ -31,23 +31,24 @@ public class ProductEditPage extends EntityEditPage<Product, Integer> {
     }
 
 
+
+
+
     @Override
     protected void onInitialize() {
         super.onInitialize();
         InputPanel input = new InputPanel("input", getModel());
         form.add(input);
-   }
+    }
 
     @Override
-    protected ProductEditPage createEditPage(IModel<Product> entityModel) {
+    public ProductEditPage createEditPage(IModel<Product> entityModel) {
         return new ProductEditPage(entityModel);
     }
-    
 
     @Override
     protected ProductRepository getRepository() {
         return repository;
     }
-
 
 }

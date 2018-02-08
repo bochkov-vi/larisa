@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+    <link href="webjars/bootstrap/3.3.7-1/css/bootstrap.css">
+</head>
 <body>
 <wicket:extend>
     <div wicket:id="input"/>
+    <div class="panel panel-default">
+        <div class="panel-heading clearfix">
+            <div class=" panel-title pull-left">
+                <h4>
+                    <wicket:message key="product.title"/>
+                </h4>
+            </div>
+            <div class="pull-right" wicket:id="product-toolbar">
+
+            </div>
+        </div>
+        <div class="panel-body">
+            <table wicket:id="products"></table>
+        </div>
+    </div>
 </wicket:extend>
 </body>
 </html>

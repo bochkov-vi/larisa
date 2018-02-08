@@ -1,44 +1,32 @@
 package com.bochkov.admin.page.product;
 
-import com.bochkov.admin.component.LabeledLink;
-import com.bochkov.admin.component.action.NavigateAction;
-import com.bochkov.admin.page.EntityEditPage;
 import com.bochkov.admin.page.EntityTablePage;
-import com.bochkov.admin.page.maker.MakerEditPage;
 import com.bochkov.admin.page.maker.select2.MakerSelect2Chooser;
 import com.bochkov.admin.page.productType.ProductTypeEditPage;
-import com.bochkov.admin.page.productType.select2.ProductTypeMultiSelect;
-import com.bochkov.admin.page.productType.select2.ProductTypeSelect2Chooser;
+import com.bochkov.admin.page.productType.select2.SelectProductType;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormGroup;
 import larisa.entity.Maker;
 import larisa.entity.Product;
 import larisa.entity.ProductReceipt;
 import larisa.entity.ProductType;
 import larisa.repository.ProductRepository;
-import larisa.repository.ProductTypeRepository;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.model.util.CollectionModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.wicketstuff.wicket.mount.core.annotation.MountPath;
 
 import javax.inject.Inject;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @MountPath("products")
 public class ProductTablePage extends EntityTablePage<Product> {
@@ -47,7 +35,7 @@ public class ProductTablePage extends EntityTablePage<Product> {
 
     IModel<Maker> filterMakerModel = new Model<>();
 
-    IModel<ProductType> filterProductTypesModel = Model.of();
+    IModel<ProductType> filterProductTypeModel = Model.of();
 
     IModel<ProductReceipt> filterProductReceiptModel = Model.of();
 
@@ -82,7 +70,7 @@ public class ProductTablePage extends EntityTablePage<Product> {
                 }
         ));
         form.add(makerGroup);
-        form.add(new FormGroup("product-type-g", new ResourceModel("parents")).add(new ProductTypeSelect2Chooser("product-type", filterProductTypesModel).add(
+        form.add(new FormGroup("product-type-g", new ResourceModel("parents")).add(new SelectProductType("product-type", filterProductTypeModel).add(
                 new AjaxFormComponentUpdatingBehavior("change") {
 
                     @Override
@@ -100,11 +88,11 @@ public class ProductTablePage extends EntityTablePage<Product> {
 
     @Override
     public List<? extends IColumn<Product, String>> createColumns() {
+
         return ImmutableList.of(
                 createIdColumn(new ResourceModel("id")),
-                createProductTypeColumn(new ResourceModel("productType.name"),"productType.name",getPage(),entityModel -> new ProductTypeEditPage(entityModel)),
-                createImageColumn(new ResourceModel("file")),
-                new PropertyColumn<ProductType, String>(new ResourceModel("volumeNote"), "volumeNote", "volumeNote")
+                ProductTypeEditPage.createProductTypeColumn(new ResourceModel("productType.name"), "productType.name", getPage(), entityModel -> new ProductTypeEditPage(entityModel)),
+                new PropertyColumn<Product, String>(new ResourceModel("volumeNote"), "volumeNote", "volumeNote")
         );
     }
 
@@ -121,8 +109,8 @@ public class ProductTablePage extends EntityTablePage<Product> {
     @Override
     public Specification<Product> createSpecification() {
         Specification<Product> makerSpecification = filterMakerModel.map(maker -> (Specification<Product>) (root, query, cb) -> cb.equal(root.get("maker"), maker)).getObject();
-        Specification<Product> productTypeSpecification = filterProductTypesModel.map(
-                productTypes -> (Specification<Product>) (root, query, cb) -> root.get("id").in(productTypes.stream().map(pt -> pt.getId()).collect(Collectors.toList()))).getObject();
+        Specification<Product> productTypeSpecification = filterProductTypeModel.map(
+                productTypes -> (Specification<Product>) (root, query, cb) -> cb.equal(root.get("id"), productTypes.getId())).getObject();
         Specifications<Product> result = Specifications.where(makerSpecification);
         result = result.and(productTypeSpecification);
         return result;
@@ -137,12 +125,12 @@ public class ProductTablePage extends EntityTablePage<Product> {
         return this;
     }
 
-    public IModel<Collection<ProductType>> getFilterProductTypesModel() {
-        return filterProductTypesModel;
+    public IModel<ProductType> getFilterProductTypeModel() {
+        return filterProductTypeModel;
     }
 
-    public ProductTablePage setFilterProductTypesModel(IModel<Collection<ProductType>> filterProductTypesModel) {
-        this.filterProductTypesModel = filterProductTypesModel;
+    public ProductTablePage setFilterProductTypeModel(IModel<ProductType> filterProductTypeModel) {
+        this.filterProductTypeModel = filterProductTypeModel;
         return this;
     }
 
@@ -150,10 +138,10 @@ public class ProductTablePage extends EntityTablePage<Product> {
     protected Product createNewEntity() {
         Product product = super.createNewEntity();
 
-        Optional.ofNullable(filterProductTypesModel)
+        Optional.ofNullable(filterProductTypeModel)
                 .ifPresent(m -> product.setProductType(
-                        m.map(productType ->productType).getObject()));
-        return productType;
+                        m.map(productType -> productType).getObject()));
+        return product;
     }
 
     public IModel<ProductReceipt> getFilterProductReceiptModel() {

@@ -5,6 +5,7 @@ import com.bochkov.admin.page.product.ProductTablePage;
 import com.bochkov.admin.page.productType.ProductTypeTablePage;
 import com.bochkov.admin.page.productreceipt.ProductReceiptTablePage;
 import de.agilecoders.wicket.core.Bootstrap;
+import de.agilecoders.wicket.core.markup.html.bootstrap.behavior.CssClassNameAppender;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.dropdown.MenuBookmarkablePageLink;
 import de.agilecoders.wicket.core.markup.html.bootstrap.common.NotificationPanel;
 import de.agilecoders.wicket.core.markup.html.bootstrap.html.HtmlTag;
@@ -75,7 +76,14 @@ abstract public class BasePage<T> extends GenericWebPage<T> {
      * @return a new {@link Navbar} instance
      */
     protected Navbar newNavbar(String markupId) {
-        Navbar navbar = new Navbar(markupId);
+        Navbar navbar = new Navbar(markupId) {
+            @Override
+            protected Component newBrandNameLink(String componentId) {
+                Component component = super.newBrandNameLink(componentId);
+                component.add(new CssClassNameAppender("visible-lg"));
+                return component;
+            }
+        };
 
         navbar.setPosition(Navbar.Position.TOP);
         navbar.setInverted(true);

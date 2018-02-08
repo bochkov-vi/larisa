@@ -1,8 +1,8 @@
-package com.bochkov.admin.page.productreceipt.select2;
+package com.bochkov.admin.page.productType.select2;
 
 import com.google.common.collect.Lists;
-import larisa.entity.Maker;
-import larisa.repository.MakerRepository;
+import larisa.entity.ProductType;
+import larisa.repository.ProductTypeRepository;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -18,37 +18,37 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class MakerSelect2Chooser extends Select2Choice<Maker> {
+public class SelectProductType extends Select2Choice<ProductType> {
 
     int pageSize =10;
 
     @Inject
-    transient MakerRepository repository;
+    transient ProductTypeRepository repository;
 
-    public MakerSelect2Chooser(String id) {
+    public SelectProductType(String id) {
         super(id);
         setProvider(choiceProvider());
     }
 
-    public MakerSelect2Chooser(String id, IModel<Maker> model) {
+    public SelectProductType(String id, IModel<ProductType> model) {
         super(id, model);
         setProvider(choiceProvider());
     }
 
-    ChoiceProvider<Maker> choiceProvider(){
-        return new ChoiceProvider<Maker>() {
+    ChoiceProvider<ProductType> choiceProvider(){
+        return new ChoiceProvider<ProductType>() {
             @Override
-            public String getDisplayValue(Maker object) {
-                return Optional.ofNullable(object).map(Maker::toString).orElse("");
+            public String getDisplayValue(ProductType object) {
+                return Optional.ofNullable(object).map(ProductType::toString).orElse("");
             }
 
             @Override
-            public String getIdValue(Maker object) {
-                return Optional.ofNullable(object).map(Maker::getId).map(Object::toString).orElse("");
+            public String getIdValue(ProductType object) {
+                return Optional.ofNullable(object).map(ProductType::getId).map(Object::toString).orElse("");
             }
 
             @Override
-            public void query(String term, int page, Response<Maker> response) {
+            public void query(String term, int page, Response<ProductType> response) {
                 org.springframework.data.domain.Pageable pageRequest = new PageRequest(page,pageSize);
                 Page pageResponse  =getRepository().findAll(EntityServiceUtils.maskSpecification(Optional.ofNullable(term).orElse(""), "name", Lists.newArrayList()),pageRequest);
                 response.setResults(pageResponse.getContent());
@@ -56,7 +56,7 @@ public class MakerSelect2Chooser extends Select2Choice<Maker> {
             }
 
             @Override
-            public Collection<Maker> toChoices(Collection<String> ids) {
+            public Collection<ProductType> toChoices(Collection<String> ids) {
                 return getRepository().findAll(ids.stream().map(Integer::new).collect(Collectors.toList()));
             }
         };
@@ -66,10 +66,9 @@ public class MakerSelect2Chooser extends Select2Choice<Maker> {
     protected void onInitialize() {
         super.onInitialize();
         getSettings().setCloseOnSelect(true).setPlaceholder(new ResourceModel("placeholder").wrapOnAssignment(this).getObject()).setAllowClear(true);
-
     }
 
-    public MakerRepository getRepository() {
+    public ProductTypeRepository getRepository() {
         if (repository == null) {
             Injector.get().inject(this);
         }
@@ -80,7 +79,7 @@ public class MakerSelect2Chooser extends Select2Choice<Maker> {
         return pageSize;
     }
 
-    public Select2Choice<Maker> setPageSize(int pageSize) {
+    public Select2Choice<ProductType> setPageSize(int pageSize) {
         this.pageSize = pageSize;
         return this;
     }

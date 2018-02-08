@@ -3,6 +3,8 @@ package com.bochkov.model;
 import org.apache.wicket.extensions.markup.html.repeater.util.SingleSortState;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Persistable;
@@ -51,5 +53,10 @@ public abstract class EntityDataProvider<T extends Persistable> extends Sortable
 
     public Specification<T> createSpecification() {
         return null;
+    }
+
+    @Override
+    public IModel<T> model(T object) {
+        return Model.of(object);
     }
 }

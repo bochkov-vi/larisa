@@ -1,5 +1,7 @@
 package com.bochkov.admin.page;
 
+import com.bochkov.admin.component.CurrencyLabel;
+import com.bochkov.admin.component.FileImage;
 import com.bochkov.admin.component.action.NavigateAction;
 import com.bochkov.admin.component.button.*;
 import com.google.common.collect.ImmutableList;
@@ -7,11 +9,16 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.button.ButtonBehavior;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons;
 import de.agilecoders.wicket.core.markup.html.bootstrap.dialog.Modal;
 import de.agilecoders.wicket.core.markup.html.bootstrap.dialog.ModalCloseButton;
+import larisa.entity.IGetFile;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.html.GenericWebPage;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.*;
 import org.apache.wicket.model.util.CollectionModel;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -72,8 +79,8 @@ public abstract class EntityPage<T extends Persistable<? extends Serializable>> 
     }
 
 
-    public ToolbarPanel createToolbar(String toolbarId, Form form, ButtonCreator... buttonCreators) {
-        ToolbarPanel toolbarPanel = new ToolbarPanel(toolbarId, buttonCreators);
+    public ToolbarPanel createToolbar(String toolbarId, Form form, ComponentCreator... componentCreators) {
+        ToolbarPanel toolbarPanel = new ToolbarPanel(toolbarId, componentCreators);
         toolbarPanel.add(id -> new CancelButton(id, form) {
             @Override
             protected void onSubmit(Optional<AjaxRequestTarget> target) {
@@ -168,7 +175,7 @@ public abstract class EntityPage<T extends Persistable<? extends Serializable>> 
                 return createDetailsPanel(id, model);
             }
         };
-        modal.header(new ResourceModel("confirmEntityDeleteing").wrapOnAssignment(EntityPage.this));
+        modal.header(new ResourceModel("confirmEntityDeleting").wrapOnAssignment(EntityPage.this));
         modal.setOutputMarkupId(true);
         modal.addButton(new ModalCloseButton(new ResourceModel("cancel").wrapOnAssignment(getPage())));
         modal.addButton(new AjaxLink<String>("button", new ResourceModel("delete").wrapOnAssignment(getPage())) {
@@ -186,5 +193,66 @@ public abstract class EntityPage<T extends Persistable<? extends Serializable>> 
         }.add(new ButtonBehavior(Buttons.Type.Default)));
         return modal;
     }
+
+    public static  <T> Modal deleteModal(String id) {
+        DeleteModal<T> modal = new DeleteModal<T>(id, getDeletedModel()) {
+            @Override
+            public Component createDetails(String id, IModel<T> model) {
+                return createDetailsPanel(id, model);
+            }
+        };
+        modal.header(new ResourceModel("confirmEntityDeleting").wrapOnAssignment(EntityPage.this));
+        modal.setOutputMarkupId(true);
+        modal.addButton(new ModalCloseButton(new ResourceModel("cancel").wrapOnAssignment(getPage())));
+        modal.addButton(new AjaxLink<String>("button", new ResourceModel("delete").wrapOnAssignment(getPage())) {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                onDelete(Optional.of(target), getDeletedModel());
+                target.prependJavaScript(String.format("$('#%s').modal('hide');", modal.getMarkupId()));
+            }
+
+            @Override
+            protected void onInitialize() {
+                super.onInitialize();
+                setBody(getDefaultModel());
+            }
+        }.add(new ButtonBehavior(Buttons.Type.Default)));
+        return modal;
+    }
+
+    protected static <E extends IGetFile> IColumn<E, String> createImageColumn(IModel<String> header) {
+        return new PropertyColumn<E, String>(header, "file", "file") {
+            @Override
+            public void populateItem(Item<ICellPopulator<E>> item, String componentId, IModel<E> rowModel) {
+                FileImage image = new FileImage(componentId, new PropertyModel<>(rowModel, "file"));
+                item.add(image);
+            }
+
+            @Override
+            public String getCssClass() {
+                return "visible-lg visible-sm visible-md";
+            }
+        };
+
+    }
+
+    protected static <E extends Persistable> IColumn<E, String> createIdColumn(IModel<String> header) {
+        return new PropertyColumn<E, String>(header, "id", "id") {
+            @Override
+            public String getCssClass() {
+                return "visible-lg visible-sm visible-md";
+            }
+        };
+    }
+    protected static <E extends Persistable> IColumn<E, String> createPriceColumn(IModel<String> header) {
+        return new PropertyColumn<E, String>(header, "price", "price") {
+            @Override
+            public void populateItem(Item<ICellPopulator<E>> item, String componentId, IModel<E> rowModel) {
+                item.add(new CurrencyLabel(componentId,getDataModel(rowModel)));
+            }
+        };
+    }
+
+
 
 }

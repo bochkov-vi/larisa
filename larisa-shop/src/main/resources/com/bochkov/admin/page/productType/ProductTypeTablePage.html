@@ -31,7 +31,12 @@
             </div>
             <div class="panel-footer">
                 <div class="btn-group">
-                    <a class="btn btn-default" onclick="$('form').get(0).reset();$('#filter-maker').val(null).trigger('change');$('#filter-parents').val(null).trigger('change');"><span class="glyphicon glyphicon-ban-circle"></span> </a>
+                    <a class="btn btn-default" onclick="$('form').get(0).reset();$('#filter-maker').val(null).trigger('change');$('#filter-parents').val(null).trigger('change');">
+                        <i class="fa fa-filter" style="position: relative">
+                            <i class="fa fa-ban"
+                               style="position: absolute;  top: -50%;  left: -50%;  font-size: 200%;color: rgba(217, 83, 79, 0.7);"></i>
+                        </i>
+                    </a>
                 </div>
             </div>
         </div>

@@ -46,7 +46,8 @@ public class ProductReceiptInput extends GenericPanel<ProductReceipt> {
         BootstrapForm<ProductReceipt> form = new BootstrapForm<ProductReceipt>("form", new CompoundPropertyModel<ProductReceipt>(getModel()));
         form.type(FormType.Default);
         form.add(new FormGroup("id-g").add(new TextField("id").setLabel(new ResourceModel("productReceipt.id"))));
-        DateTextField date = new DateTextField("date",new ResourceModel("datePattern").wrapOnAssignment(getPage()).getObject());
+        DateTextField date = new DateTextField("date", new ResourceModel("datePattern").wrapOnAssignment(getPage()).getObject());
+        date.setRequired(true);
         date.getConfig()
                 .withLanguage("ru")
                 .showTodayButton(DateTextFieldConfig.TodayButton.TRUE)
@@ -54,17 +55,28 @@ public class ProductReceiptInput extends GenericPanel<ProductReceipt> {
                 .highlightToday(true)
                 .autoClose(true);
         form.add(new FormGroup("date-g").add(date.setLabel(new ResourceModel("productReceipt.date"))));
-        form.add(new FormGroup("receiptType-g").add(new Select2Choice<String>("receiptType", new StringTextChoiceProvider() {
+        Select2Choice<String> receiptType = new Select2Choice<String>("receiptType", new StringTextChoiceProvider() {
             @Override
             public void query(String term, int pageNumber, Response<String> response) {
                 Pageable pageRequest = new PageRequest(pageNumber, 10);
                 Page page = repository.findReceiptTypeByMask("%" + term + "%", term, pageRequest);
                 response.setHasMore(page.hasNext());
-                response.setResults(Lists.newArrayList(Iterables.concat(ImmutableList.of(term),page.getContent())));
+                response.setResults(Lists.newArrayList(Iterables.concat(ImmutableList.of(term), page.getContent())));
             }
-        }).setLabel(new ResourceModel("productReceipt.receiptType"))));
+        });
+        receiptType.setRequired(true);
+        form.add(new FormGroup("receiptType-g").add(receiptType.setLabel(new ResourceModel("productReceipt.receiptType"))));
         form.add(new FormGroup("note-g").add(new TextArea<String>("note").setLabel(new ResourceModel("productReceipt.note"))));
-
+        Select2Choice<String> seller = new Select2Choice<String>("seller", new StringTextChoiceProvider() {
+            @Override
+            public void query(String term, int pageNumber, Response<String> response) {
+                PageRequest pageRequest = new PageRequest(pageNumber, 10);
+                Page page = repository.findSellerByMask("%" + term + "&", term, pageRequest);
+                response.setResults(Lists.newArrayList(Iterables.concat(ImmutableList.of(term), page.getContent()))).setHasMore(page.hasNext());
+            }
+        });
+        seller.getSettings().setCloseOnSelect(true).setPlaceholder(new ResourceModel("productReceipt.seller").wrapOnAssignment(getPage()).getObject()).setAllowClear(true);
+        form.add(new FormGroup("seller-g").add(seller.setLabel(new ResourceModel("productReceipt.seller"))));
         add(form);
 
         //SelectRowDataTable<Product,String> table = new SelectRowDataTable<>("product-table",)

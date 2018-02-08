@@ -40,6 +40,10 @@ public class ProductReceipt extends AbstractAuditableEntity<Integer> implements 
     @ColumnPosition(5)
     String note;
 
+    @Column(name = "seller", columnDefinition = "VARCHAR_IGNORECASE(255) DEFAULT NULL")
+    @ColumnPosition(3)
+    String seller;
+
     @Override
     public Integer getId() {
         return id;
@@ -90,5 +94,14 @@ public class ProductReceipt extends AbstractAuditableEntity<Integer> implements 
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public String getSeller() {
+        return seller;
+    }
+
+    public ProductReceipt setSeller(String seller) {
+        this.seller = seller;
+        return this;
     }
 }

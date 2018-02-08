@@ -11,7 +11,7 @@ public class ToolbarPanel extends Panel {
 
     RepeatingView buttonComponents = new RepeatingView("button");
 
-    public ToolbarPanel(String id, ButtonCreator... creators) {
+    public ToolbarPanel(String id, ComponentCreator... creators) {
         super(id);
         add(new ClassAttributeModifier() {
             @Override
@@ -26,10 +26,11 @@ public class ToolbarPanel extends Panel {
     }
 
 
-    public ToolbarPanel add(ButtonCreator... creators) {
-        for (ButtonCreator bc : creators) {
+    public ToolbarPanel add(ComponentCreator... creators) {
+        for (ComponentCreator bc : creators) {
             buttonComponents.add(bc.create(buttonComponents.newChildId()));
         }
         return this;
     }
+
 }

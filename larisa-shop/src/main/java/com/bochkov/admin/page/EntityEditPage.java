@@ -1,6 +1,6 @@
 package com.bochkov.admin.page;
 
-import com.bochkov.admin.component.button.ButtonCreator;
+import com.bochkov.admin.component.button.ComponentCreator;
 import com.bochkov.admin.component.button.SaveButton;
 import com.bochkov.admin.component.button.ToolbarPanel;
 import com.bochkov.model.EntityModel;
@@ -99,8 +99,8 @@ public abstract class EntityEditPage<T extends Persistable<ID>, ID extends Seria
     }
 
     @Override
-    public ToolbarPanel createToolbar(String id, Form form, ButtonCreator... buttonCreators) {
-        ToolbarPanel toolbarPanel = super.createToolbar(id, form, buttonCreators);
+    public ToolbarPanel createToolbar(String id, Form form, ComponentCreator... componentCreators) {
+        ToolbarPanel toolbarPanel = super.createToolbar(id, form, componentCreators);
         toolbarPanel.add(bid -> new SaveButton(bid, form) {
             @Override
             protected void onSubmit(Optional<AjaxRequestTarget> target) {

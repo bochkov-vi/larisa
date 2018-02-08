@@ -10,7 +10,7 @@ import org.apache.wicket.markup.html.form.Form;
 
 import java.util.Optional;
 
-public abstract class FontAwesomeButton extends BootstrapAjaxFallbackButton {
+public class FontAwesomeButton extends BootstrapAjaxFallbackButton {
 
 
     public FontAwesomeButton(String id, Form<?> form) {

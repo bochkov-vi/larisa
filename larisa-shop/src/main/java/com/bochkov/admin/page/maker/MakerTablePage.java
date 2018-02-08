@@ -4,10 +4,9 @@ import com.bochkov.admin.component.LabeledLink;
 import com.bochkov.admin.component.action.NavigateAction;
 import com.bochkov.admin.page.EntityEditPage;
 import com.bochkov.admin.page.EntityTablePage;
-import com.bochkov.admin.page.product.ProductTablePage;
+import com.bochkov.admin.page.productType.ProductTypeTablePage;
 import com.google.common.collect.ImmutableList;
 import larisa.entity.Maker;
-import larisa.entity.ProductType;
 import larisa.repository.MakerRepository;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
@@ -72,16 +71,16 @@ public class MakerTablePage extends EntityTablePage<Maker> {
                     @Override
                     public void populateItem(Item<ICellPopulator<Maker>> item, String componentId, IModel<Maker> rowModel) {
                         item.add(LabeledLink.of(componentId, rowModel.map(maker -> maker.getProductTypes().size()).orElse(0).getObject(), target -> setResponsePage(
-                                new ProductTablePage()
+                                new ProductTypeTablePage()
                                         .setFilterMakerModel(rowModel)
-                                        .setBackNavigateAction(NavigateAction.<ProductType>goBack(getPage())))).setLabelClasses("label", "label-default"));
+                                        .setBackNavigateAction(NavigateAction.goBack(getPage())))).setLabelClasses("label", "label-default"));
                     }
                 }
         );
     }
 
     @Override
-    protected EntityEditPage createEditPage(IModel<Maker> entityModel) {
+    public EntityEditPage createEditPage(IModel<Maker> entityModel) {
         return new MakerEditPage(entityModel);
     }
 
