@@ -1,8 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+    <link href="webjars/bootstrap/3.3.7-1/css/bootstrap.css">
+</head>
 <body>
 <wicket:extend>
-
+    <div class="panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <wicket:message key="title"></wicket:message>
+            </div>
+        </div>
+        <div class="list-group">
+            <wicket:link>
+                <a class="list-group-item" href="makers">
+                    <wicket:message key="maker.title"/>
+                </a>
+                <a class="list-group-item" href="product-types">
+                    <wicket:message key="productType.title"/>
+                </a>
+                <a class="list-group-item" href="product-receipts">
+                    <wicket:message key="productReceipt.title"/>
+                </a>
+                <a class="list-group-item" href="products">
+                    <wicket:message key="product.title"/>
+                </a>
+            </wicket:link>
+        </div>
+    </div>
 </wicket:extend>
 </body>
 </html>

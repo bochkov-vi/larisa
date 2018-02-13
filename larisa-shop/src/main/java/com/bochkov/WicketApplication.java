@@ -11,7 +11,6 @@ import de.agilecoders.wicket.extensions.javascript.GoogleClosureJavaScriptCompre
 import de.agilecoders.wicket.extensions.javascript.YuiCssCompressor;
 import de.agilecoders.wicket.less.BootstrapLess;
 import de.agilecoders.wicket.less.ContextRelativeLessResourceReference;
-import larisa.entity.File;
 import larisa.repository.FileRepository;
 import org.apache.wicket.ResourceBundles;
 import org.apache.wicket.core.util.file.WebApplicationPath;
@@ -28,6 +27,7 @@ import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.wicketstuff.wicket.mount.AutoMountWebApplication;
 
 import javax.inject.Inject;
+import java.util.Optional;
 
 /**
  * Application object for your web application.
@@ -69,11 +69,7 @@ public class WicketApplication extends AutoMountWebApplication {
             @Override
             protected byte[] getImageData(Attributes attributes) {
                 Integer id = attributes.getParameters().get("id").toOptionalInteger();
-                byte[] data = new byte[0];
-                if (id != null) {
-                    File file = fileRepository.findOne(id);
-                    data = file.getData();
-                }
+                byte[] data = Optional.ofNullable(id).map(i -> fileRepository.findById(i).get()).map(f -> f.getData()).orElse(new byte[0]);
                 return data;
             }
         });

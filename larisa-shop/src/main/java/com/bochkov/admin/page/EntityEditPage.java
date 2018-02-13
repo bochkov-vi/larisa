@@ -4,6 +4,7 @@ import com.bochkov.admin.component.button.ComponentCreator;
 import com.bochkov.admin.component.button.SaveButton;
 import com.bochkov.admin.component.button.ToolbarPanel;
 import com.bochkov.model.EntityModel;
+import larisa.entity.DefaultEntity;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -22,7 +23,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class EntityEditPage<T extends Persistable<ID>, ID extends Serializable> extends EntityPage<T> {
+public abstract class EntityEditPage<T extends DefaultEntity<ID>, ID extends Serializable> extends EntityPage<T> {
 
 
     protected Form<T> form = new Form<>("form");
@@ -43,7 +44,7 @@ public abstract class EntityEditPage<T extends Persistable<ID>, ID extends Seria
                 return EntityEditPage.this.getRepository();
             }
         });
-        T entity = extract(parameters);
+        T entity = extract(parameters).orElse(null);
         getModel().setObject(entity);
     }
 
@@ -78,11 +79,11 @@ public abstract class EntityEditPage<T extends Persistable<ID>, ID extends Seria
         form.add(createToolbar("toolbar", form));
     }
 
-    protected T extract(PageParameters pageParameters) {
+    protected Optional<T> extract(PageParameters pageParameters) {
         Class<T> entityClass = argument(this, 0);
-        T entity = null;
+        Optional<T> entity = null;
         try {
-            entity = pageParameters.get(parameterName(entityClass)).toOptional(entityClass);
+            entity = Optional.ofNullable(pageParameters.get(parameterName(entityClass)).toOptional(entityClass));
         } catch (Exception e) {
             Class<ID> idClass = argument(this, 1);
             ID id = null;
@@ -92,7 +93,7 @@ public abstract class EntityEditPage<T extends Persistable<ID>, ID extends Seria
 
             }
             if (id != null) {
-                entity = getRepository().findOne(id);
+                entity = getRepository().findById(id);
             }
         }
         return entity;

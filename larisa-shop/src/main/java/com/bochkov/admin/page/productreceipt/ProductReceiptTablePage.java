@@ -68,6 +68,7 @@ public class ProductReceiptTablePage extends EntityTablePage<ProductReceipt> imp
                     }
                 },
                 new PropertyColumn<ProductReceipt, String>(new ResourceModel("productReceipt.note"), "note", "note"),
+                new PropertyColumn<>(new ResourceModel("productReceipt.seller"),"seller","seller"),
                 new AbstractColumn<ProductReceipt, String>(new ResourceModel("productReceipt.products")) {
                     @Override
                     public void populateItem(Item<ICellPopulator<ProductReceipt>> item, String componentId, IModel<ProductReceipt> rowModel) {

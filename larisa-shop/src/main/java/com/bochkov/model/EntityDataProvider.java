@@ -1,5 +1,6 @@
 package com.bochkov.model;
 
+import larisa.entity.DefaultEntity;
 import org.apache.wicket.extensions.markup.html.repeater.util.SingleSortState;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
@@ -7,14 +8,14 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Iterator;
+import java.util.Optional;
 
-public abstract class EntityDataProvider<T extends Persistable> extends SortableDataProvider<T, String> {
+public abstract class EntityDataProvider<T extends DefaultEntity> extends SortableDataProvider<T, String> {
 
     transient Long size = null;
 
@@ -34,10 +35,7 @@ public abstract class EntityDataProvider<T extends Persistable> extends Sortable
     }
 
     protected Sort getSort(SingleSortState<String> sortState) {
-        if (sortState != null && sortState.getSort() != null) {
-            return new Sort(sortState.getSort().isAscending() ? Sort.Direction.ASC : Sort.Direction.DESC, sortState.getSort().getProperty());
-        }
-        return null;
+        return Optional.of(sortState).map(st -> st.getSort()).map(s -> new Sort(s.isAscending() ? Sort.Direction.ASC : Sort.Direction.DESC, s.getProperty())).orElse(Sort.unsorted());
     }
 
     protected Sort.Order convert(SortParam<String> sortParam) {

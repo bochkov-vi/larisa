@@ -1,14 +1,14 @@
 package larisa.entity;
 
 
-import org.entity3.column.ColumnPosition;
-import org.entity3.converter.JodaDateTimeConverter;
-import org.joda.time.DateTime;
-import org.springframework.data.domain.Auditable;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by bochkov
@@ -16,52 +16,48 @@ import java.io.Serializable;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class AbstractAuditableEntity<ID extends Serializable> extends DefaultEntity<ID> implements Auditable<Account, ID> {
+public abstract class AbstractAuditableEntity<ID extends Serializable> extends DefaultEntity<ID> {
 
     @ManyToOne
     @JoinColumn(name = "editor", nullable = false)
-    @ColumnPosition(98)
+    @LastModifiedBy
     Account lastModifiedBy;
 
     @ManyToOne
     @JoinColumn(name = "creator", nullable = false)
-    @ColumnPosition(99)
+    @CreatedBy
     Account createdBy;
 
-    @ColumnPosition(100)
     @Column(name = "edited_date")
     @Temporal(TemporalType.TIMESTAMP)
-    @Convert(converter = JodaDateTimeConverter.class)
-    DateTime lastModifiedDate;
+    @LastModifiedDate
+    Date lastModifiedDate;
 
 
-    @Override
     public Account getLastModifiedBy() {
         return lastModifiedBy;
     }
 
-    @Override
-    public void setLastModifiedBy(Account lastModifiedBy) {
+    public AbstractAuditableEntity setLastModifiedBy(Account lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
+        return this;
     }
 
-    @Override
     public Account getCreatedBy() {
         return createdBy;
     }
 
-    @Override
-    public void setCreatedBy(Account createdBy) {
+    public AbstractAuditableEntity setCreatedBy(Account createdBy) {
         this.createdBy = createdBy;
+        return this;
     }
 
-    @Override
-    public DateTime getLastModifiedDate() {
+    public Date getLastModifiedDate() {
         return lastModifiedDate;
     }
 
-    @Override
-    public void setLastModifiedDate(DateTime lastModifiedDate) {
+    public AbstractAuditableEntity setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+        return this;
     }
 }

@@ -1,10 +1,8 @@
 package larisa.entity;
 
-import org.entity3.column.ColumnPosition;
-import org.entity3.converter.JodaLocalDateConverter;
-import org.joda.time.LocalDate;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,34 +14,26 @@ public class Inventory extends AbstractAuditableEntity<Integer> implements IGetF
     @Id
     @GeneratedValue(generator = "inventory")
     @Column(name = "id_inventory")
-    @ColumnPosition(1)
     @TableGenerator(name = "inventory", initialValue = 100)
     Integer id;
 
     @Column(name = "date", nullable = true)
     @Temporal(TemporalType.DATE)
-    @Convert(converter = JodaLocalDateConverter.class)
-    @ColumnPosition(2)
-    LocalDate date;
+    Date date;
 
     @ManyToOne
     @JoinColumn(name = "id_product_type")
-    @ColumnPosition(3)
     ProductType productType;
 
     @Column(name = "volume", precision = 4, scale = 2)
-    @ColumnPosition(4)
     Double volume;
 
     @Column(name = "price", precision = 4, scale = 2)
-    @ColumnPosition(5)
     Double price;
 
     @Column(name = "expiration_date")
     @Temporal(TemporalType.DATE)
-    @Convert(converter = JodaLocalDateConverter.class)
-    @ColumnPosition(6)
-    LocalDate expirationDate;
+    Date expirationDate;
 
 
     @ManyToMany
@@ -67,11 +57,11 @@ public class Inventory extends AbstractAuditableEntity<Integer> implements IGetF
         this.volume = volume;
     }
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -83,11 +73,11 @@ public class Inventory extends AbstractAuditableEntity<Integer> implements IGetF
         this.productType = productType;
     }
 
-    public LocalDate getExpirationDate() {
+    public Date getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(LocalDate expirationDate) {
+    public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
     }
 

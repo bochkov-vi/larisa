@@ -9,6 +9,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * Created by home on 23.02.17.
@@ -29,17 +30,20 @@ public class TokenService implements PersistentTokenRepository {
 
     @Override
     public void updateToken(String series, String tokenValue, Date lastUsed) {
-        Token token = tokenRepository.findOne(series);
-        if (token != null) {
-            token.setTokenValue(tokenValue);
-            token.setDate(lastUsed);
-            tokenRepository.save(token);
-        }
+        Optional<Token> token = tokenRepository.findById(series);
+        token.ifPresent(t -> {
+            t.setTokenValue(tokenValue);
+            t.setDate(lastUsed);
+            tokenRepository.save(t);
+        });
     }
 
     @Override
     public PersistentRememberMeToken getTokenForSeries(String seriesId) {
-        return token(tokenRepository.findOne(seriesId));
+        return tokenRepository.findById(seriesId).map(entity ->
+                new PersistentRememberMeToken(entity.getAccount().getId(),
+                        entity.getId(), entity.getTokenValue(),
+                        entity.getDate())).get();
     }
 
     @Override
@@ -48,13 +52,7 @@ public class TokenService implements PersistentTokenRepository {
     }
 
     Token entity(PersistentRememberMeToken token) {
-        return new Token(token.getSeries(), accountRepository.findOne(token.getUsername()), token.getTokenValue(), token.getDate());
+        return new Token(token.getSeries(), accountRepository.findById(token.getUsername()).get(), token.getTokenValue(), token.getDate());
     }
 
-    PersistentRememberMeToken token(Token entity) {
-        if (entity != null) {
-            return new PersistentRememberMeToken(entity.getAccount().getId(), entity.getId(), entity.getTokenValue(), entity.getDate());
-        }
-        return null;
-    }
 }

@@ -1,10 +1,7 @@
 package larisa.entity;
 
-import org.entity3.column.ColumnPosition;
-import org.entity3.converter.JodaLocalDateConverter;
-import org.joda.time.LocalDate;
-
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by home on 23.02.17.
@@ -15,30 +12,23 @@ public class Price extends AbstractAuditableEntity<Integer> {
     @Id
     @GeneratedValue(generator = "price")
     @Column(name = "id_price")
-    @TableGenerator(name = "price",initialValue = 100,allocationSize = 1)
-    @ColumnPosition(1)
+    @TableGenerator(name = "price", initialValue = 100, allocationSize = 1)
     Integer id;
 
     @ManyToOne
     @JoinColumn(name = "id_product_type")
-    @ColumnPosition(2)
     ProductType productType;
 
 
     @Temporal(TemporalType.DATE)
-    @Convert(converter = JodaLocalDateConverter.class)
     @Column(name = "date_from", nullable = false)
-    @ColumnPosition(3)
-    LocalDate dateFrom;
+    Date dateFrom;
 
     @Temporal(TemporalType.DATE)
-    @Convert(converter = JodaLocalDateConverter.class)
     @Column(name = "date_to", nullable = true)
-    @ColumnPosition(4)
-    LocalDate dateTo;
+    Date dateTo;
 
     @Column(name = "price", precision = 4, scale = 2, nullable = true)
-    @ColumnPosition(5)
     Double price;
 
     @Override
@@ -46,19 +36,19 @@ public class Price extends AbstractAuditableEntity<Integer> {
         return id;
     }
 
-    public LocalDate getDateFrom() {
+    public Date getDateFrom() {
         return dateFrom;
     }
 
-    public void setDateFrom(LocalDate dateFrom) {
+    public void setDateFrom(Date dateFrom) {
         this.dateFrom = dateFrom;
     }
 
-    public LocalDate getDateTo() {
+    public Date getDateTo() {
         return dateTo;
     }
 
-    public void setDateTo(LocalDate dateTo) {
+    public void setDateTo(Date dateTo) {
         this.dateTo = dateTo;
     }
 

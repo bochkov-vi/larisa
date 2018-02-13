@@ -9,6 +9,7 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.button.ButtonBehavior;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons;
 import de.agilecoders.wicket.core.markup.html.bootstrap.dialog.Modal;
 import de.agilecoders.wicket.core.markup.html.bootstrap.dialog.ModalCloseButton;
+import larisa.entity.DefaultEntity;
 import larisa.entity.IGetFile;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -33,7 +34,7 @@ import java.util.Optional;
 
 import static com.bochkov.ReflectionUtils.getGenericParameterClass;
 
-public abstract class EntityPage<T extends Persistable<? extends Serializable>> extends TitledPage<T> implements IDetailed<T>, IEditPageCreator<T> {
+public abstract class EntityPage<T extends DefaultEntity<? extends Serializable>> extends TitledPage<T> implements IDetailed<T>, IEditPageCreator<T> {
 
     protected NavigateAction<T> backNavigateAction = new NavigateAction<T>() {
         @Override
@@ -56,11 +57,44 @@ public abstract class EntityPage<T extends Persistable<? extends Serializable>> 
         super(parameters);
     }
 
+    protected static <E extends IGetFile> IColumn<E, String> createImageColumn(IModel<String> header) {
+        return new PropertyColumn<E, String>(header, "file", "file") {
+            @Override
+            public void populateItem(Item<ICellPopulator<E>> item, String componentId, IModel<E> rowModel) {
+                FileImage image = new FileImage(componentId, new PropertyModel<>(rowModel, "file"));
+                item.add(image);
+            }
+
+            @Override
+            public String getCssClass() {
+                return "visible-lg visible-sm visible-md";
+            }
+        };
+
+    }
+
+    protected static <E extends Persistable> IColumn<E, String> createIdColumn(IModel<String> header) {
+        return new PropertyColumn<E, String>(header, "id", "id") {
+            @Override
+            public String getCssClass() {
+                return "visible-lg visible-sm visible-md";
+            }
+        };
+    }
+
+    protected static <E extends Persistable> IColumn<E, String> createPriceColumn(IModel<String> header) {
+        return new PropertyColumn<E, String>(header, "price", "price") {
+            @Override
+            public void populateItem(Item<ICellPopulator<E>> item, String componentId, IModel<E> rowModel) {
+                item.add(new CurrencyLabel(componentId, getDataModel(rowModel)));
+            }
+        };
+    }
 
     @Override
     protected void onInitialize() {
         super.onInitialize();
-        deleteDialog =createDeleteDialog("delete-dialog");
+        deleteDialog = createDeleteDialog("delete-dialog");
         add(deleteDialog);
     }
 
@@ -77,7 +111,6 @@ public abstract class EntityPage<T extends Persistable<? extends Serializable>> 
     protected Class<T> getEntityClass() {
         return getGenericParameterClass(getClass(), GenericWebPage.class, 0);
     }
-
 
     public ToolbarPanel createToolbar(String toolbarId, Form form, ComponentCreator... componentCreators) {
         ToolbarPanel toolbarPanel = new ToolbarPanel(toolbarId, componentCreators);
@@ -117,7 +150,8 @@ public abstract class EntityPage<T extends Persistable<? extends Serializable>> 
     }
 
     public void onCreateNew() {
-        onEdit(Model.of(createNewEntity()));
+        T entity = createNewEntity();
+        onEdit(Model.of(entity));
     }
 
     public void onEdit(IModel<T> entityModel) {
@@ -126,15 +160,14 @@ public abstract class EntityPage<T extends Persistable<? extends Serializable>> 
         RequestCycle.get().setResponsePage(entityEditPage);
     }
 
-
     public void onDelete(Optional<AjaxRequestTarget> target, IModel<Collection<T>> entityModel) {
         target.ifPresent(t -> t.add(feedback));
         if (entityModel.isPresent().getObject()) {
             try {
                 if (entityModel instanceof CollectionModel) {
-                    getRepository().delete((Collection) entityModel.getObject());
+                    getRepository().deleteAll((Collection) entityModel.getObject());
                 } else {
-                    getRepository().delete(entityModel.getObject());
+                    getRepository().deleteAll(entityModel.getObject());
                 }
                 success(new StringResourceModel(""));
             } catch (Exception e) {
@@ -142,8 +175,6 @@ public abstract class EntityPage<T extends Persistable<? extends Serializable>> 
             }
         }
     }
-
-
 
     protected abstract CrudRepository<T, ?> getRepository();
 
@@ -161,11 +192,12 @@ public abstract class EntityPage<T extends Persistable<? extends Serializable>> 
     }
 
     public IModel<Collection<T>> getDeletedModel() {
-        return LambdaModel.of(() -> ImmutableList.of(getModelObject()));
+        Optional<IModel<T>> optional = Optional.of(getModel());
+        return optional.map(singleModel -> singleModel.map(singleObject -> (Collection<T>) ImmutableList.of(singleObject))).orElse(Model.of((Collection<T>) ImmutableList.<T>of()));
     }
 
     public boolean isDeleteEnabled() {
-        return getDeletedModel() != null && (Boolean) getDeletedModel().isPresent().getObject();
+        return Optional.ofNullable(getDeletedModel()).flatMap(deleteModel -> Optional.of(deleteModel.map(c -> !c.isEmpty()).orElse(false).getObject())).orElse(false);
     }
 
     public Modal createDeleteDialog(String id) {
@@ -193,41 +225,6 @@ public abstract class EntityPage<T extends Persistable<? extends Serializable>> 
         }.add(new ButtonBehavior(Buttons.Type.Default)));
         return modal;
     }
-
-
-    protected static <E extends IGetFile> IColumn<E, String> createImageColumn(IModel<String> header) {
-        return new PropertyColumn<E, String>(header, "file", "file") {
-            @Override
-            public void populateItem(Item<ICellPopulator<E>> item, String componentId, IModel<E> rowModel) {
-                FileImage image = new FileImage(componentId, new PropertyModel<>(rowModel, "file"));
-                item.add(image);
-            }
-
-            @Override
-            public String getCssClass() {
-                return "visible-lg visible-sm visible-md";
-            }
-        };
-
-    }
-
-    protected static <E extends Persistable> IColumn<E, String> createIdColumn(IModel<String> header) {
-        return new PropertyColumn<E, String>(header, "id", "id") {
-            @Override
-            public String getCssClass() {
-                return "visible-lg visible-sm visible-md";
-            }
-        };
-    }
-    protected static <E extends Persistable> IColumn<E, String> createPriceColumn(IModel<String> header) {
-        return new PropertyColumn<E, String>(header, "price", "price") {
-            @Override
-            public void populateItem(Item<ICellPopulator<E>> item, String componentId, IModel<E> rowModel) {
-                item.add(new CurrencyLabel(componentId,getDataModel(rowModel)));
-            }
-        };
-    }
-
 
 
 }

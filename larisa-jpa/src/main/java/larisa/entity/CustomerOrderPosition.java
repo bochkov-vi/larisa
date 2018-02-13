@@ -2,7 +2,6 @@ package larisa.entity;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import org.entity3.column.ColumnPosition;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -15,15 +14,12 @@ public class CustomerOrderPosition implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_product_type")
-    @ColumnPosition(6)
     ProductType productType;
 
     @Column(name = "price", precision = 4, scale = 2)
-    @ColumnPosition(7)
     Double price;
 
     @Column(name = "volume", precision = 4, scale = 2, nullable = false)
-    @ColumnPosition(8)
     Integer volume;
 
 

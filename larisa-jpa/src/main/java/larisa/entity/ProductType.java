@@ -1,12 +1,10 @@
 package larisa.entity;
 
-import org.entity3.IGetNamed;
-import org.entity3.IHierarchical;
-import org.entity3.column.ColumnPosition;
-import org.entity3.converter.JodaLocalDateConverter;
-import org.joda.time.LocalDate;
+
+import com.bochkov.hierarchical.IHierarchical;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,30 +12,24 @@ import java.util.List;
  */
 @Entity
 @Table(name = "product_type")
-public class ProductType extends AbstractAuditableEntity<Integer> implements IGetNamed, IHierarchical<Integer, ProductType>, IGetFile, INotable,INamable {
+public class ProductType extends AbstractAuditableEntity<Integer> implements IGetNamed, IHierarchical<Integer, ProductType>, IGetFile, INotable, INamable {
     @Id
     @GeneratedValue(generator = "product_type")
     @TableGenerator(name = "product_type", initialValue = 100, allocationSize = 1)
     @Column(name = "id_product_type")
-    @ColumnPosition(1)
     Integer id;
 
     @Column(name = "name", unique = true, nullable = false)
-    @ColumnPosition(2)
     String name;
 
     @Column(name = "volume_note", length = 45)
-    @ColumnPosition(3)
     String volumeNote;
 
     @Temporal(TemporalType.DATE)
-    @Convert(converter = JodaLocalDateConverter.class)
     @Column(name = "sertificated")
-    @ColumnPosition(4)
-    LocalDate sertificated;
+    Date sertificated;
 
     @Column(name = "note")
-    @ColumnPosition(6)
     String note;
 
     @ManyToOne
@@ -122,11 +114,11 @@ public class ProductType extends AbstractAuditableEntity<Integer> implements IGe
         return name;
     }
 
-    public LocalDate getSertificated() {
+    public Date getSertificated() {
         return sertificated;
     }
 
-    public void setSertificated(LocalDate sertificated) {
+    public void setSertificated(Date sertificated) {
         this.sertificated = sertificated;
     }
 

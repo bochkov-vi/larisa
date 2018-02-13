@@ -1,10 +1,10 @@
 package com.bochkov.admin.page;
 
+import larisa.entity.DefaultEntity;
 import org.apache.wicket.model.IModel;
-import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 
-public interface IEditPageCreator<T extends Persistable<? extends Serializable>> {
+public interface IEditPageCreator<T extends DefaultEntity<? extends Serializable>> {
     EntityEditPage<T , ? extends Serializable> createEditPage(IModel<T> entityModel);
 }

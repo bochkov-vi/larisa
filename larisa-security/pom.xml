@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
     <artifactId>larisa-security</artifactId>
     <properties>
-        <spring.security.version>4.2.3.RELEASE</spring.security.version>
+        <spring.security.version>5.0.1.RELEASE</spring.security.version>
     </properties>
     <dependencies>
         <dependency>

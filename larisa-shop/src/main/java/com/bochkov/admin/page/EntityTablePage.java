@@ -5,6 +5,8 @@ import com.bochkov.admin.component.button.ToolbarPanel;
 import com.bochkov.admin.component.selectiontable.SelectRowDataTable;
 import com.bochkov.model.EntityDataProvider;
 import com.google.common.collect.ImmutableList;
+import larisa.DefaultEntityRepository;
+import larisa.entity.DefaultEntity;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
@@ -14,8 +16,6 @@ import org.apache.wicket.model.LambdaModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.danekja.java.util.function.serializable.SerializableSupplier;
-import org.entity3.repository.CustomRepository;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class EntityTablePage<T extends Persistable<? extends Serializable>> extends EntityPage<T> {
+public abstract class EntityTablePage<T extends DefaultEntity<? extends Serializable>> extends EntityPage<T> {
     protected Form toolbarForm = new Form("toolbar-form");
 
     protected ISortableDataProvider<T, String> sortableDataProvider = new EntityDataProvider<T>() {
@@ -97,7 +97,7 @@ public abstract class EntityTablePage<T extends Persistable<? extends Serializab
     }
 
     @Override
-    protected abstract CustomRepository<T, ?> getRepository();
+    protected abstract DefaultEntityRepository<T, ? extends Serializable> getRepository();
 
     @Override
     public ToolbarPanel createToolbar(String id, Form form, ComponentCreator... componentCreators) {

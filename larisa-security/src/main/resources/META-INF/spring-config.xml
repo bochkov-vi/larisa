@@ -20,7 +20,7 @@
               security="none"/>
     <sec:http use-expressions="true">
         <sec:csrf disabled="true"/>
-        <sec:form-login login-backPage="/login.xhtml"
+        <sec:form-login login-page="/login.xhtml"
                         login-processing-url="/login"
                         password-parameter="password"
                         username-parameter="user"
@@ -42,8 +42,8 @@
           class="org.springframework.security.authentication.ProviderManager">
         <constructor-arg>
             <list>
-                <ref local="daoAuthenticationProvider"/>
-                <ref local="anonymousAuthenticationProvider"/>
+                <ref bean="daoAuthenticationProvider"/>
+                <ref bean="anonymousAuthenticationProvider"/>
             </list>
         </constructor-arg>
     </bean>

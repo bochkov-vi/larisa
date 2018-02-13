@@ -45,6 +45,8 @@ public class ProductReceiptEditPage extends EntityEditPage<ProductReceipt, Integ
     @Inject
     FileRepository fileRepository;
 
+    MdalableTablePanel<Product, String> productDataTable;
+
     public ProductReceiptEditPage() {
     }
 
@@ -83,7 +85,7 @@ public class ProductReceiptEditPage extends EntityEditPage<ProductReceipt, Integ
         }, 50);*/
         ToolbarPanel productsToolbar = new ToolbarPanel("product-toolbar");
         productsToolbar.setOutputMarkupId(true);
-        MdalableTablePanel<Product, String> productDataTable = new MdalableTablePanel<Product, String>("products", columns, new EntityDataProvider<Product>() {
+        productDataTable = new MdalableTablePanel<Product, String>("products", columns, new EntityDataProvider<Product>() {
 
             @Override
             public JpaSpecificationExecutor<Product> getRepository() {
@@ -98,7 +100,7 @@ public class ProductReceiptEditPage extends EntityEditPage<ProductReceipt, Integ
         }, 50) {
             @Override
             public void onDelete(Optional<AjaxRequestTarget> target, IModel<Collection<Product>> entityModel) {
-                super.onDelete(target, entityModel);
+                onDeleteProduct(target, entityModel);
             }
 
             @Override
@@ -133,10 +135,14 @@ public class ProductReceiptEditPage extends EntityEditPage<ProductReceipt, Integ
             @Override
             public void onSave(Optional<AjaxRequestTarget> target) {
                 super.onSave(target);
-                Optional<List<Product>> products = Optional.ofNullable(ProductReceiptEditPage.this.getModel().getObject().getProducts());
-                ProductReceiptEditPage.this.getModelObject().setProducts(Lists.newArrayList(
-                        Iterables.concat(ImmutableList.of(getModelObject()), products.orElse(ImmutableList.of()))
-                ));
+                IModel<ProductReceipt> productReceiptModel = ProductReceiptEditPage.this.getModel();
+                List<Product> products = Optional.ofNullable(productReceiptModel)
+                        .map(model -> model.map(pr -> pr.getProducts()).getObject())
+                        .orElse(ImmutableList.of());
+                IModel<Product> productModel = getModel();
+                if (productReceiptModel.isPresent().getObject() && productModel.isPresent().getObject()) {
+                    productReceiptModel.getObject().setProducts(Lists.newArrayList(Iterables.concat(products, ImmutableList.of(productModel.getObject()))));
+                }
                 ProductReceiptEditPage.this.onSave(Optional.empty());
                 setResponsePage(ProductReceiptEditPage.this);
             }
@@ -147,6 +153,14 @@ public class ProductReceiptEditPage extends EntityEditPage<ProductReceipt, Integ
         page.onEdit(Model.of(product));
     }
 
+
+    public void onDeleteProduct(Optional<AjaxRequestTarget> target, IModel<Collection<Product>> product) {
+        target.ifPresent(t -> t.add(productDataTable, feedback));
+        if (product.isPresent().getObject()) {
+            productRepository.deleteAll(product.getObject());
+        }
+    }
+
     @Override
     public ProductReceiptEditPage createEditPage(IModel<ProductReceipt> entityModel) {
         return new ProductReceiptEditPage(entityModel);
@@ -155,7 +169,6 @@ public class ProductReceiptEditPage extends EntityEditPage<ProductReceipt, Integ
     protected void onSubmit(AjaxRequestTarget target) {
         save();
         target.add(feedback);
-
     }
 
 

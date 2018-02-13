@@ -1,6 +1,5 @@
 package larisa.entity;
 
-import org.entity3.column.ColumnPosition;
 
 import javax.persistence.*;
 
@@ -12,25 +11,20 @@ import javax.persistence.*;
 public class File extends AbstractAuditableEntity<Integer> {
     @Id
     @Column(name = "id_file")
-    @ColumnPosition(1)
     @GeneratedValue(generator = "file")
     @TableGenerator(name = "file", initialValue = 1, allocationSize = 1)
     Integer id;
 
     @Column(name = "name")
-    @ColumnPosition(1)
     String name;
 
-    @ColumnPosition(2)
     @Column(name = "type")
     String type;
 
-    @ColumnPosition(3)
     @Column(name = "encoding")
     String encoding;
 
     @Lob
-    @ColumnPosition(4)
     @Column(name = "data", nullable = false)
     byte[] data;
 

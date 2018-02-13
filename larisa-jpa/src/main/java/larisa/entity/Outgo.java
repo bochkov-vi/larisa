@@ -1,10 +1,8 @@
 package larisa.entity;
 
-import org.entity3.column.ColumnPosition;
-import org.entity3.converter.JodaLocalDateConverter;
-import org.joda.time.LocalDate;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by home on 23.02.17.
@@ -18,24 +16,18 @@ public class Outgo extends AbstractAuditableEntity<Integer> {
     Integer id;
 
     @Temporal(TemporalType.DATE)
-    @Convert(converter = JodaLocalDateConverter.class)
     @Column(name = "date", nullable = false)
-    LocalDate date;
+    Date date;
 
-    @Column(name = "volume", precision = 4, scale = 2,nullable = false)
-    @ColumnPosition(4)
+    @Column(name = "volume", precision = 4, scale = 2, nullable = false)
     Integer volume;
 
     @Column(name = "price", precision = 4, scale = 2)
-    @ColumnPosition(4)
     Double price;
 
     @ManyToOne
     @JoinColumn(name = "id_product_type")
-    @ColumnPosition(3)
     ProductType productType;
-
-
 
 
     @Override
@@ -43,11 +35,15 @@ public class Outgo extends AbstractAuditableEntity<Integer> {
         return id;
     }
 
-    public LocalDate getDate() {
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -65,10 +61,6 @@ public class Outgo extends AbstractAuditableEntity<Integer> {
 
     public void setProductType(ProductType productType) {
         this.productType = productType;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Double getPrice() {

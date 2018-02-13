@@ -1,51 +1,38 @@
 package larisa.entity;
 
 
-import org.eclipse.persistence.annotations.Customizer;
-import org.entity3.column.ColumnPosition;
-import org.entity3.column.EntityColumnPositionCustomizer;
-import org.entity3.converter.JodaDateTimeConverter;
-import org.joda.time.DateTime;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.domain.Persistable;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by bochkov
  */
 
 @MappedSuperclass
-@EntityListeners(DefaultEntity.CreateListener.class)
-@Customizer(EntityColumnPositionCustomizer.class)
-public abstract class DefaultEntity<ID extends Serializable> extends DefaultIdableEntity<ID> implements Persistable<ID>{
-    @ColumnPosition(100)
+public abstract class DefaultEntity<ID extends Serializable> extends DefaultIdableEntity<ID> implements Persistable<ID> ,Serializable{
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
-    @Convert(converter = JodaDateTimeConverter.class)
-    private DateTime createdDate;
+    @CreatedDate
+    private Date createdDate;
 
-    public DateTime getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(DateTime createdDate) {
+    public DefaultEntity setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+        return this;
     }
 
     @Override
     public boolean isNew() {
         return createdDate == null;
     }
-
-    public static class CreateListener {
-        @PrePersist
-        public void prePersist(DefaultEntity entity) {
-            entity.createdDate = new DateTime();
-        }
-
-    }
-
-
-
 }

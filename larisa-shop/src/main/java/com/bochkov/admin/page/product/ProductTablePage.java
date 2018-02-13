@@ -4,7 +4,7 @@ import com.bochkov.admin.page.EntityTablePage;
 import com.bochkov.admin.page.maker.select2.MakerSelect2Chooser;
 import com.bochkov.admin.page.productType.ProductTypeEditPage;
 import com.bochkov.admin.page.productType.select2.SelectProductType;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormGroup;
 import larisa.entity.Maker;
 import larisa.entity.Product;
@@ -14,7 +14,7 @@ import larisa.repository.ProductRepository;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.LambdaColumn;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -89,11 +89,13 @@ public class ProductTablePage extends EntityTablePage<Product> {
     @Override
     public List<? extends IColumn<Product, String>> createColumns() {
 
-        return ImmutableList.of(
-                createIdColumn(new ResourceModel("id")),
-                ProductTypeEditPage.createProductTypeColumn(new ResourceModel("productType.name"), "productType.name", getPage(), entityModel -> new ProductTypeEditPage(entityModel)),
-                new PropertyColumn<Product, String>(new ResourceModel("volumeNote"), "volumeNote", "volumeNote")
+        List<IColumn<Product, String>> columns = Lists.newArrayList(
+                ProductTypeEditPage.createProductTypeColumn("productType", getPage(), entityModel -> new ProductTypeEditPage(entityModel)),
+                createPriceColumn(new ResourceModel("product.price")),
+                new LambdaColumn<Product, String>(new ResourceModel("product.volume"), "volume", p -> p.getVolume()),
+                new LambdaColumn<Product, String>(new ResourceModel("product.totalPrice"), product -> product.getVolume() * product.getPrice())
         );
+        return columns;
     }
 
     @Override

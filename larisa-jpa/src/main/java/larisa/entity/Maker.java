@@ -1,6 +1,5 @@
 package larisa.entity;
 
-import org.entity3.IGetNamed;
 
 import javax.persistence.*;
 import java.util.List;

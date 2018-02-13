@@ -16,7 +16,7 @@ public abstract class ListEntityModel<T extends Persistable<ID>, ID extends Seri
     protected List<T> load() {
         List<T> result = null;
         if (ids != null && !ids.isEmpty()) {
-            result = Lists.newArrayList(getRepostory().findAll(ids));
+            result = Lists.newArrayList(getRepostory().findAllById(ids));
         }
         return result;
     }

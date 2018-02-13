@@ -35,7 +35,6 @@
     </bean>
 
     <jpa:repositories base-package="larisa.repository"
-                      base-class="org.entity3.repository.BidirectionalCustomRepository"
                       entity-manager-factory-ref="entityManagerFactory"
                       transaction-manager-ref="txManager"/>
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">

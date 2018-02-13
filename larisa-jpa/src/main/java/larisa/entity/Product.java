@@ -1,11 +1,11 @@
 package larisa.entity;
 
-import org.entity3.column.ColumnPosition;
-import org.entity3.converter.JodaLocalDateConverter;
-import org.joda.time.LocalDate;
 
 import javax.persistence.*;
+import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by home on 23.02.17.
@@ -17,37 +17,29 @@ public class Product extends AbstractAuditableEntity<Integer> implements IGetFil
     @GeneratedValue(generator = "product")
     @TableGenerator(name = "product", initialValue = 100, allocationSize = 1)
     @Column(name = "id_product")
-    @ColumnPosition(1)
     Integer id;
 
     @ManyToOne
     @JoinColumn(name = "id_product_receipt", nullable = false)
-    @ColumnPosition(2)
     ProductReceipt productReceipt;
 
     @ManyToOne
     @JoinColumn(name = "id_product_type")
-    @ColumnPosition(3)
     ProductType productType;
 
     @Column(name = "volume", precision = 4, scale = 2)
-    @ColumnPosition(4)
     Double volume;
 
     @Column(name = "price", precision = 4, scale = 2)
-    @ColumnPosition(5)
     Double price;
 
     @Column(name = "expiration_date")
     @Temporal(TemporalType.DATE)
-    @Convert(converter = JodaLocalDateConverter.class)
-    @ColumnPosition(6)
-    LocalDate expirationDate;
+    Date expirationDate;
 
 
     @ManyToMany
     @JoinTable(name = "product_file", joinColumns = @JoinColumn(name = "id_product"), inverseJoinColumns = @JoinColumn(name = "id_file"))
-    @ColumnPosition(7)
     List<File> files;
 
     @Override
@@ -75,11 +67,11 @@ public class Product extends AbstractAuditableEntity<Integer> implements IGetFil
         this.productType = productType;
     }
 
-    public LocalDate getExpirationDate() {
+    public Date getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(LocalDate expirationDate) {
+    public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
     }
 
@@ -107,5 +99,11 @@ public class Product extends AbstractAuditableEntity<Integer> implements IGetFil
 
     public void setProductReceipt(ProductReceipt productReceipt) {
         this.productReceipt = productReceipt;
+    }
+
+    @Override
+    public String toString() {
+        return MessageFormat.format("Поступление от {0,date}, \"{1}\" \"{2}\", {3}шт. по {4,number,currency}", productReceipt.getDate(), productType,
+                Optional.ofNullable(productType).flatMap(pt -> Optional.ofNullable(pt.getMaker()).map(maker -> maker.getName())).orElse(""), volume, price);
     }
 }

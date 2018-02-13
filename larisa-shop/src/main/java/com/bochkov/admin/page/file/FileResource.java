@@ -18,16 +18,18 @@ public class FileResource extends AbstractResource {
         this.fileModel = fileModel;
     }
 
-    public static <T extends IGetFile>FileResource of(T getFile) {
+    public static <T extends IGetFile> FileResource of(T getFile) {
         return new FileResource(new PropertyModel<>(getFile, "file"));
     }
 
     public static FileResource ofGetFile(IModel<? extends IGetFile> getFileModel) {
         return new FileResource(new PropertyModel<>(getFileModel, "file"));
     }
+
     public static FileResource ofGetFiles(IModel<Collection<? extends IGetFile>> getFileModel) {
         return new FileResource(new PropertyModel<>(getFileModel, "file"));
     }
+
     public static FileResource of(IModel<? extends File> fileModel) {
         return new FileResource(fileModel);
     }
@@ -41,7 +43,7 @@ public class FileResource extends AbstractResource {
         final ResourceResponse response = new ResourceResponse();
         File file = fileModel.getObject();
         if (file.getLastModifiedDate() != null) {
-            response.setLastModified(Time.millis(file.getLastModifiedDate().getMillis()));
+            response.setLastModified(Time.millis(file.getLastModifiedDate().getTime()));
         } else {
             response.setLastModified(Time.now());
         }

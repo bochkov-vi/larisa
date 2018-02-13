@@ -1,6 +1,5 @@
 package larisa.entity;
 
-import org.entity3.column.ColumnPosition;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,31 +13,24 @@ public class Customer extends DefaultEntity<Integer> implements IGetFiles {
     @Id
     @GeneratedValue
     @Column(name = "id_customer")
-    @ColumnPosition(1)
     Integer id;
 
     @Column(name = "name")
-    @ColumnPosition(2)
     String name;
 
     @Column(name = "patronymic")
-    @ColumnPosition(3)
     String patronymic;
 
     @Column(name = "family")
-    @ColumnPosition(4)
     String family;
 
     @Column(name = "address")
-    @ColumnPosition(5)
     String address;
 
     @Column(name = "phone")
-    @ColumnPosition(6)
     String phone;
 
     @Column(name = "email")
-    @ColumnPosition(7)
     String email;
 
     @Column(name = "phones")

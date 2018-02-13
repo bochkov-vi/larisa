@@ -1,14 +1,14 @@
 package larisa.entity;
 
-import com.google.common.base.Objects;
-import org.entity3.IIdable;
+import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Created by home on 10.03.17.
  */
-public abstract class DefaultIdableEntity<ID extends Serializable> implements IIdable<ID> ,Serializable{
+public abstract class DefaultIdableEntity<ID extends Serializable> implements Persistable<ID>, Serializable {
 
     @Override
     public boolean equals(Object o) {
@@ -19,7 +19,7 @@ public abstract class DefaultIdableEntity<ID extends Serializable> implements II
             return false;
         }
         DefaultIdableEntity<?> that = (DefaultIdableEntity<?>) o;
-        return Objects.equal(getId(), that.getId());
+        return Objects.equals(getId(), that.getId());
     }
 
     @Override

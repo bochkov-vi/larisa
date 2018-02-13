@@ -1,6 +1,5 @@
 package larisa.entity;
 
-import org.entity3.column.ColumnPosition;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,21 +10,18 @@ import java.util.List;
  */
 @Entity
 @Table(name = "product_receipt")
-public class ProductReceipt extends AbstractAuditableEntity<Integer> implements IGetFiles,INotable {
+public class ProductReceipt extends AbstractAuditableEntity<Integer> implements IGetFiles, INotable {
     @Id
     @GeneratedValue(generator = "product_receipt")
     @TableGenerator(name = "product_receipt", initialValue = 100, allocationSize = 1)
     @Column(name = "id_product_receipt")
-    @ColumnPosition(1)
     Integer id;
 
     @Column(name = "date", nullable = true)
     @Temporal(TemporalType.DATE)
-    @ColumnPosition(2)
     Date date;
 
-    @Column(name = "receipt_type",nullable = false, columnDefinition = "VARCHAR_IGNORECASE(255) NOT NULL")
-    @ColumnPosition(3)
+    @Column(name = "receipt_type", nullable = false, columnDefinition = "VARCHAR_IGNORECASE(255) NOT NULL")
     String receiptType;
 
     @OneToMany(orphanRemoval = true, mappedBy = "productReceipt")
@@ -33,15 +29,12 @@ public class ProductReceipt extends AbstractAuditableEntity<Integer> implements 
 
     @ManyToMany
     @JoinTable(name = "product_receipt_files", joinColumns = @JoinColumn(name = "id_product_receipt"), inverseJoinColumns = @JoinColumn(name = "id_file"))
-    @ColumnPosition(4)
     List<File> files;
 
     @Column(name = "note", columnDefinition = "VARCHAR_IGNORECASE(255) DEFAULT NULL")
-    @ColumnPosition(5)
     String note;
 
     @Column(name = "seller", columnDefinition = "VARCHAR_IGNORECASE(255) DEFAULT NULL")
-    @ColumnPosition(3)
     String seller;
 
     @Override

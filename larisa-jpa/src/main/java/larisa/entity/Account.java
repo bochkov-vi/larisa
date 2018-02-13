@@ -1,9 +1,8 @@
 package larisa.entity;
 
-import org.entity3.converter.JodaLocalDateConverter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,8 +20,7 @@ public class Account extends DefaultEntity<String> {
 
     @Column(name = "expiration_date")
     @Temporal(TemporalType.DATE)
-    @Convert(converter = JodaLocalDateConverter.class)
-    LocalDate expirationDate;
+    Date expirationDate;
 
     @ElementCollection
     @CollectionTable(name = "account_role", joinColumns = @JoinColumn(name = "login", referencedColumnName = "login"))
@@ -54,31 +52,38 @@ public class Account extends DefaultEntity<String> {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
-    public LocalDate getExpirationDate() {
+    public Date getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(LocalDate expirationDate) {
-        this.expirationDate = expirationDate;
-    }
 
     public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
 
     public Customer getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public Account setPassword(String password) {
+        this.password = password;
+        return this;
+    }
+
+    public Account setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
+        return this;
+    }
+
+    public Account setRoles(List<Role> roles) {
+        this.roles = roles;
+        return this;
+    }
+
+    public Account setCustomer(Customer customer) {
         this.customer = customer;
+        return this;
     }
 }
