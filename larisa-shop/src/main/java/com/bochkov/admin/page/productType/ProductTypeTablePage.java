@@ -145,7 +145,7 @@ public class ProductTypeTablePage extends EntityTablePage<ProductType> {
     }
 
     @Override
-    protected ProductType createNewEntity() {
+    public ProductType createNewEntity() {
         ProductType productType = super.createNewEntity();
         Optional.ofNullable(filterMakerModel).ifPresent(makerIModel -> productType.setMaker(makerIModel.getObject()));
         Optional.ofNullable(filterProductTypesModel)

@@ -59,11 +59,6 @@ public abstract class EntityTablePage<T extends Persistable<? extends Serializab
     }
 
 
-
-
-
-
-
     @Override
     protected void onInitialize() {
 
@@ -140,7 +135,7 @@ public abstract class EntityTablePage<T extends Persistable<? extends Serializab
     }
 
     public EntityTablePage<T> setSelection(IModel<Collection<T>> selection) {
-        table.setSelection(selection);
+        table.getSelection().setObject(selection.orElse(ImmutableList.of()).getObject());
         return this;
     }
 

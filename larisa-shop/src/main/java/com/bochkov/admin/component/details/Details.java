@@ -65,7 +65,7 @@ public class Details<T> extends Border implements IGenericComponent<T, Details<T
             IObjectClassAwareModel<? extends INamable> namableModel = (IObjectClassAwareModel<? extends INamable>) model;
             return new Label("title", LambdaModel.of(namableModel, t -> t.getName()));
         } else {
-            return new Label("title");
+            return new Label("title",LambdaModel.of(model,e->e.toString()));
         }
     }
 

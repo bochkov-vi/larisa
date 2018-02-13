@@ -135,7 +135,7 @@ public class ProductTablePage extends EntityTablePage<Product> {
     }
 
     @Override
-    protected Product createNewEntity() {
+    public Product createNewEntity() {
         Product product = super.createNewEntity();
 
         Optional.ofNullable(filterProductTypeModel)

@@ -64,7 +64,7 @@ public abstract class EntityPage<T extends Persistable<? extends Serializable>> 
         add(deleteDialog);
     }
 
-    protected T createNewEntity() {
+    public T createNewEntity() {
         Class<T> cl = getEntityClass();
         T entity = null;
         try {
@@ -194,31 +194,6 @@ public abstract class EntityPage<T extends Persistable<? extends Serializable>> 
         return modal;
     }
 
-    public static  <T> Modal deleteModal(String id) {
-        DeleteModal<T> modal = new DeleteModal<T>(id, getDeletedModel()) {
-            @Override
-            public Component createDetails(String id, IModel<T> model) {
-                return createDetailsPanel(id, model);
-            }
-        };
-        modal.header(new ResourceModel("confirmEntityDeleting").wrapOnAssignment(EntityPage.this));
-        modal.setOutputMarkupId(true);
-        modal.addButton(new ModalCloseButton(new ResourceModel("cancel").wrapOnAssignment(getPage())));
-        modal.addButton(new AjaxLink<String>("button", new ResourceModel("delete").wrapOnAssignment(getPage())) {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                onDelete(Optional.of(target), getDeletedModel());
-                target.prependJavaScript(String.format("$('#%s').modal('hide');", modal.getMarkupId()));
-            }
-
-            @Override
-            protected void onInitialize() {
-                super.onInitialize();
-                setBody(getDefaultModel());
-            }
-        }.add(new ButtonBehavior(Buttons.Type.Default)));
-        return modal;
-    }
 
     protected static <E extends IGetFile> IColumn<E, String> createImageColumn(IModel<String> header) {
         return new PropertyColumn<E, String>(header, "file", "file") {

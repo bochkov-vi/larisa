@@ -12,6 +12,7 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDat
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.util.CollectionModel;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,12 +20,12 @@ import java.util.Optional;
 
 public class SelectRowDataTable<T, S> extends BootstrapDefaultDataTable<T, S> {
 
+    final IModel<Collection<T>> selection = new CollectionModel<T>();
+
     boolean selectable = true;
 
-    IModel<Collection<T>> selection;
 
-
-    public SelectRowDataTable(String id, List<? extends IColumn<T,S>> columns, ISortableDataProvider<T,S> dataProvider, long rowsPerPage) {
+    public SelectRowDataTable(String id, List<? extends IColumn<T, S>> columns, ISortableDataProvider<T, S> dataProvider, long rowsPerPage) {
         super(id, columns, dataProvider, rowsPerPage);
     }
 
@@ -53,20 +54,20 @@ public class SelectRowDataTable<T, S> extends BootstrapDefaultDataTable<T, S> {
 
     final void onSelect(AjaxRequestTarget target, Item<T> row) {
         T entity = row.getModelObject();
-        IModel<Collection<T>> selectedEntities = Optional.ofNullable(this.selection).orElseGet(() -> new Model(Lists.<T>newArrayList()));
-        if (selectedEntities.isPresent().getObject() && selectedEntities.getObject().contains(entity)) {
-            selectedEntities.getObject().remove(entity);
+        Collection<T> selectedEntities = selection.orElse(Lists.<T>newArrayList()).getObject();
+        if (selectedEntities.contains(entity)) {
+            selectedEntities.remove(entity);
             target.appendJavaScript("$('#" + row.getMarkupId() + "').removeClass('active')");
         } else {
             target.appendJavaScript("$('#" + row.getMarkupId() + "').addClass('active')");
-            selectedEntities.setObject(Lists.newArrayList(Iterables.concat(selectedEntities.getObject(), ImmutableList.of(row.getModelObject()))));
+            selectedEntities = Lists.newArrayList(Iterables.concat(selectedEntities, ImmutableList.of(row.getModelObject())));
         }
-        selection = selectedEntities;
+        selection.setObject(selectedEntities);
         onSelect(target, row.getModel());
     }
 
     public void onSelect(AjaxRequestTarget target, IModel<T> entity) {
-
+        System.out.println(selection);
     }
 
     public boolean isSelectable() {
@@ -82,8 +83,4 @@ public class SelectRowDataTable<T, S> extends BootstrapDefaultDataTable<T, S> {
         return selection;
     }
 
-    public SelectRowDataTable<T, S> setSelection(IModel<Collection<T>> selection) {
-        this.selection = selection;
-        return this;
-    }
 }

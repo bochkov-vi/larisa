@@ -1,15 +1,16 @@
 package com.bochkov.admin.page.productreceipt;
 
+import com.bochkov.admin.component.button.CreateNewButton;
 import com.bochkov.admin.component.button.DeleteButton;
-import com.bochkov.admin.component.button.DeleteButtonWithModal;
 import com.bochkov.admin.component.button.ToolbarPanel;
-import com.bochkov.admin.component.selectiontable.SelectRowDataTable;
+import com.bochkov.admin.component.selectiontable.MdalableTablePanel;
 import com.bochkov.admin.page.EntityEditPage;
 import com.bochkov.admin.page.product.ProductEditPage;
 import com.bochkov.admin.page.productType.ProductTypeEditPage;
 import com.bochkov.model.EntityDataProvider;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import de.agilecoders.wicket.core.markup.html.bootstrap.dialog.Modal;
 import larisa.entity.Product;
 import larisa.entity.ProductReceipt;
 import larisa.repository.FileRepository;
@@ -19,6 +20,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.LambdaColumn;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -66,7 +68,7 @@ public class ProductReceiptEditPage extends EntityEditPage<ProductReceipt, Integ
                 new LambdaColumn<Product, String>(new ResourceModel("product.volume"), "volume", p -> p.getVolume()),
                 new LambdaColumn<Product, String>(new ResourceModel("product.totalPrice"), product -> product.getVolume() * product.getPrice())
         );
-        SelectRowDataTable<Product, String> productDataTable = new SelectRowDataTable<Product, String>("products", columns, new EntityDataProvider<Product>() {
+       /* SelectRowDataTable<Product, String> productDataTable = new SelectRowDataTable<Product, String>("products", columns, new EntityDataProvider<Product>() {
 
             @Override
             public JpaSpecificationExecutor<Product> getRepository() {
@@ -77,27 +79,72 @@ public class ProductReceiptEditPage extends EntityEditPage<ProductReceipt, Integ
             public Specification<Product> createSpecification() {
                 return (root, query, cb) -> cb.equal(root.get("productReceipt"), ProductReceiptEditPage.this.getModelObject());
             }
-        }, 50);
-        ToolbarPanel toolbarPanel = new ToolbarPanel("product-toolbar");
-        DeleteButtonWithModal<Product> deleteButtonWithModal = new DeleteButtonWithModal<Product>() {
+
+        }, 50);*/
+        ToolbarPanel productsToolbar = new ToolbarPanel("product-toolbar");
+        productsToolbar.setOutputMarkupId(true);
+        MdalableTablePanel<Product, String> productDataTable = new MdalableTablePanel<Product, String>("products", columns, new EntityDataProvider<Product>() {
+
             @Override
-            public Modal createDeleteDialog(String id) {
-                return ProductEditPage.this.createDeleteDialog();
+            public JpaSpecificationExecutor<Product> getRepository() {
+                return productRepository;
             }
 
+            @Override
+            public Specification<Product> createSpecification() {
+                return (root, query, cb) -> cb.equal(root.get("productReceipt"), ProductReceiptEditPage.this.getModelObject());
+            }
+
+        }, 50) {
             @Override
             public void onDelete(Optional<AjaxRequestTarget> target, IModel<Collection<Product>> entityModel) {
+                super.onDelete(target, entityModel);
+            }
 
+            @Override
+            public void onSelect(AjaxRequestTarget target, IModel<Product> entity) {
+                super.onSelect(target, entity);
+                target.add(productsToolbar);
             }
         };
-        toolbarPanel.add(id -> new DeleteButton(id, form) {
+
+        productsToolbar.add(id -> new DeleteButton(id, form) {
             @Override
             protected void onSubmit(Optional<AjaxRequestTarget> target) {
-                super.onSubmit(target);
+                productDataTable.showModal(target);
+            }
+
+            @Override
+            public boolean isEnabled() {
+                return productDataTable.getModel().isPresent().getObject() && !productDataTable.getModelObject().isEmpty();
+            }
+        }, id -> new CreateNewButton(id, form) {
+            @Override
+            protected void onSubmit(Optional<AjaxRequestTarget> target) {
+                onAddNewProduct();
             }
         });
-        form.add(toolbarPanel);
+        form.add(productsToolbar);
         form.add(productDataTable);
+    }
+
+    public void onAddNewProduct() {
+        ProductEditPage page = new ProductEditPage() {
+            @Override
+            public void onSave(Optional<AjaxRequestTarget> target) {
+                super.onSave(target);
+                Optional<List<Product>> products = Optional.ofNullable(ProductReceiptEditPage.this.getModel().getObject().getProducts());
+                ProductReceiptEditPage.this.getModelObject().setProducts(Lists.newArrayList(
+                        Iterables.concat(ImmutableList.of(getModelObject()), products.orElse(ImmutableList.of()))
+                ));
+                ProductReceiptEditPage.this.onSave(Optional.empty());
+                setResponsePage(ProductReceiptEditPage.this);
+            }
+        };
+        Product product = page.createNewEntity();
+        product.setProductReceipt(getModelObject());
+        page.setBackNavigateAction((circle, model) -> circle.setResponsePage(getPage()));
+        page.onEdit(Model.of(product));
     }
 
     @Override
