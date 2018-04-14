@@ -12,6 +12,7 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.dialog.ModalCloseButton;
 import larisa.entity.DefaultEntity;
 import larisa.entity.IGetFile;
 import org.apache.wicket.Component;
+import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
@@ -184,6 +185,16 @@ public abstract class EntityPage<T extends DefaultEntity<? extends Serializable>
 
     public EntityPage<T> setBackNavigateAction(NavigateAction<T> backNavigateAction) {
         this.backNavigateAction = backNavigateAction;
+        return this;
+    }
+
+    public EntityPage<T> setBackNavigateAction(Page page) {
+        this.backNavigateAction = new NavigateAction<T>() {
+            @Override
+            public void navigate(RequestCycle circle, IModel<T> model) {
+                circle.setResponsePage(page);
+            }
+        };
         return this;
     }
 

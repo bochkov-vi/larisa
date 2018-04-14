@@ -14,4 +14,10 @@ import org.springframework.stereotype.Repository;
 public interface ProductRepository extends DefaultEntityRepository<Product, Integer> {
     @Query("SELECT SUM(o.volume) FROM Product o WHERE o.productType=:productType")
     Long comein(@Param("productType") ProductType productType);
+
+    @Query("SELECT SUM(o.volume) FROM Product o WHERE o.productType=:productType")
+    Long productTotal(@Param("productType") ProductType productType);
+
+
+
 }

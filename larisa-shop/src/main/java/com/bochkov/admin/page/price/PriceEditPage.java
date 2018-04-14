@@ -1,32 +1,32 @@
-package com.bochkov.admin.page.product;
+package com.bochkov.admin.page.price;
 
 import com.bochkov.admin.page.EntityEditPage;
-import larisa.entity.Product;
+import larisa.entity.Price;
 import larisa.repository.FileRepository;
-import larisa.repository.ProductRepository;
+import larisa.repository.PriceRepository;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.wicketstuff.wicket.mount.core.annotation.MountPath;
 
 import javax.inject.Inject;
 
-@MountPath("price")
-public class ProductEditPage extends EntityEditPage<Product, Integer> {
+@MountPath("product")
+public class PriceEditPage extends EntityEditPage<Price, Integer> {
 
     @Inject
-    ProductRepository repository;
+    PriceRepository repository;
 
     @Inject
     FileRepository fileRepository;
 
-    public ProductEditPage() {
+    public PriceEditPage() {
     }
 
-    public ProductEditPage(IModel<Product> model) {
+    public PriceEditPage(IModel<Price> model) {
         super(model);
     }
 
-    public ProductEditPage(PageParameters parameters) {
+    public PriceEditPage(PageParameters parameters) {
         super(parameters);
     }
 
@@ -42,12 +42,12 @@ public class ProductEditPage extends EntityEditPage<Product, Integer> {
     }
 
     @Override
-    public ProductEditPage createEditPage(IModel<Product> entityModel) {
-        return new ProductEditPage(entityModel);
+    public PriceEditPage createEditPage(IModel<Price> entityModel) {
+        return new PriceEditPage(entityModel);
     }
 
     @Override
-    protected ProductRepository getRepository() {
+    protected PriceRepository getRepository() {
         return repository;
     }
 

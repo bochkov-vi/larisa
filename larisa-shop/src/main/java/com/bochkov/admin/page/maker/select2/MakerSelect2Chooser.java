@@ -5,8 +5,11 @@ import larisa.DefaultMaskableEntityRepository;
 import larisa.entity.Maker;
 import larisa.repository.MakerRepository;
 import org.apache.wicket.injection.Injector;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.resource.ContextRelativeResourceReference;
 import org.wicketstuff.select2.ChoiceProvider;
 import org.wicketstuff.select2.Select2Choice;
 
@@ -40,6 +43,7 @@ public class MakerSelect2Chooser extends Select2Choice<Maker> {
 
     @Override
     protected void onInitialize() {
+        getSettings().setTheme("bootstrap");
         super.onInitialize();
         getSettings().setCloseOnSelect(true).setPlaceholder(new ResourceModel("placeholder").wrapOnAssignment(this).getObject()).setAllowClear(true);
 
@@ -59,5 +63,11 @@ public class MakerSelect2Chooser extends Select2Choice<Maker> {
     public Select2Choice<Maker> setPageSize(int pageSize) {
         this.pageSize = pageSize;
         return this;
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        response.render(CssHeaderItem.forReference(new ContextRelativeResourceReference("css/select2-bootstrap.css")));
     }
 }

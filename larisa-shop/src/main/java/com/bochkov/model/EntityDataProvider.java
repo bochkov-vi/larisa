@@ -19,6 +19,30 @@ public abstract class EntityDataProvider<T extends DefaultEntity> extends Sortab
 
     transient Long size = null;
 
+    public static <T extends DefaultEntity> EntityDataProvider<T> create(JpaSpecificationExecutor<T> repository) {
+        return new EntityDataProvider<T>() {
+            @Override
+            public JpaSpecificationExecutor<T> getRepository() {
+                return repository;
+            }
+        };
+    }
+
+    public static <T extends DefaultEntity> EntityDataProvider<T> create(JpaSpecificationExecutor<T> repository, Specification<T> specification) {
+        return new EntityDataProvider<T>() {
+            @Override
+            public JpaSpecificationExecutor<T> getRepository() {
+                return repository;
+            }
+
+            @Override
+            public Specification<T> createSpecification() {
+                return specification;
+            }
+        };
+
+    }
+
     @Override
     public Iterator<? extends T> iterator(long first, long count) {
         SingleSortState state = (SingleSortState) this.getSortState();

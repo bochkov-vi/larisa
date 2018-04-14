@@ -1,6 +1,7 @@
 package com.bochkov.admin.page;
 
 import com.bochkov.admin.page.maker.MakerTablePage;
+import com.bochkov.admin.page.price.PriceTablePage;
 import com.bochkov.admin.page.product.ProductTablePage;
 import com.bochkov.admin.page.productType.ProductTypeTablePage;
 import com.bochkov.admin.page.productreceipt.ProductReceiptTablePage;
@@ -16,6 +17,7 @@ import de.agilecoders.wicket.core.markup.html.bootstrap.navbar.*;
 import de.agilecoders.wicket.core.settings.IBootstrapSettings;
 import de.agilecoders.wicket.core.settings.ITheme;
 import de.agilecoders.wicket.extensions.markup.html.bootstrap.icon.FontAwesomeCssReference;
+import de.agilecoders.wicket.extensions.markup.html.bootstrap.icon.FontAwesomeIconType;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -96,7 +98,8 @@ abstract public class BasePage<T> extends GenericWebPage<T> {
                 new NavbarButton<Void>(MakerTablePage.class, new ResourceModel("maker.title")),
                 new NavbarButton<Void>(ProductTypeTablePage.class, new ResourceModel("productType.title")),
                 new NavbarButton<Void>(ProductReceiptTablePage.class, new ResourceModel("productReceipts.title")),
-                new NavbarButton<Void>(ProductTablePage.class, new ResourceModel("product.title"))
+                new NavbarButton<Void>(ProductTablePage.class, new ResourceModel("product.title")),
+                new NavbarButton<Void>(PriceTablePage.class, new ResourceModel("price.title"))
 
 //                ,newAticlesDropDownButton()
         ));
@@ -147,6 +150,7 @@ abstract public class BasePage<T> extends GenericWebPage<T> {
                 subMenu.add(new MenuBookmarkablePageLink<Void>(MakerTablePage.class, new ResourceModel("maker.title")).setIconType(GlyphIconType.refresh));
                 subMenu.add(new MenuBookmarkablePageLink<Void>(ProductTypeTablePage.class, new ResourceModel("productType.title")).setIconType(GlyphIconType.refresh));
                 subMenu.add(new MenuBookmarkablePageLink<Void>(ProductTablePage.class, new ResourceModel("product.title")).setIconType(GlyphIconType.refresh));
+                subMenu.add(new MenuBookmarkablePageLink<Void>(PriceTablePage.class, new ResourceModel("price.title")).setIconType(FontAwesomeIconType.dollar));
                 return subMenu;
             }
         }.setIconType(GlyphIconType.thlarge);

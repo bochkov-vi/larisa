@@ -35,6 +35,7 @@ public class InputPanel extends GenericPanel<ProductType> {
         form.add(new RequiredTextField<>("name").setRequired(true).setLabel(new ResourceModel("name")));
         form.add(new TextArea<>("volumeNote").setLabel(new ResourceModel("volumeNote")));
         Select2Choice<Maker> makerSelect2Choice = new MakerSelect2Chooser("maker");
+
         form.add(makerSelect2Choice);
         form.add(validation);
         form.add(new GetFileInputPanel<>("file", new PropertyModel(getModel(), "file")));

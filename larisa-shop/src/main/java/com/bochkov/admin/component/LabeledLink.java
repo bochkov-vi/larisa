@@ -30,7 +30,7 @@ public abstract class LabeledLink<T extends Serializable> extends GenericPanel<T
     }
 
     public LabeledLink(String id, IModel<T> model, IModel labelModel, boolean ajaxified) {
-        super(id);
+        super(id,model);
         Link<T> link;
         if (ajaxified) {
             link = new IndicatingAjaxFallbackLink<T>("linkId", model) {
@@ -42,16 +42,17 @@ public abstract class LabeledLink<T extends Serializable> extends GenericPanel<T
         } else {
             link = ComponentFactory.link("linkId", lnk -> onClick(Optional.empty()));
         }
-        add(link.add(new Label("labelId", labelModel).add(new ClassAttributeModifier() {
+        add(link.add(createLabel("labelId", labelModel).add(new ClassAttributeModifier() {
             @Override
             protected Set<String> update(Set<String> oldClasses) {
-                if(labelClasses!=null){
+                if (labelClasses != null) {
                     oldClasses.addAll(labelClasses);
                 }
                 return oldClasses;
             }
         })));
     }
+
 
     public LabeledLink(String id, T label) {
         this(id, null, Model.of(label), false);
@@ -66,17 +67,22 @@ public abstract class LabeledLink<T extends Serializable> extends GenericPanel<T
         };
     }
 
+    public Label createLabel(String id, IModel labelModel) {
+        return new Label(id, labelModel);
+    }
+
     public abstract void onClick(Optional<AjaxRequestTarget> target);
 
     public Collection<String> getLabelClasses() {
         return labelClasses;
     }
 
-    public void setLabelClasses(Collection<String> labelClasses) {
-        this.labelClasses = labelClasses;
-    }
     public LabeledLink<T> setLabelClasses(String... labelClass) {
         this.labelClasses = Sets.newHashSet(labelClass);
         return this;
+    }
+
+    public void setLabelClasses(Collection<String> labelClasses) {
+        this.labelClasses = labelClasses;
     }
 }

@@ -1,5 +1,6 @@
-package com.bochkov.admin.page.product;
+package com.bochkov.admin.page.price;
 
+import com.bochkov.admin.component.CurrencyLabeledLink;
 import com.bochkov.admin.page.EntityTablePage;
 import com.bochkov.admin.page.maker.select2.MakerSelect2Chooser;
 import com.bochkov.admin.page.productType.ProductTypeEditPage;
@@ -7,16 +8,19 @@ import com.bochkov.admin.page.productType.select2.SelectProductType;
 import com.google.common.collect.Lists;
 import de.agilecoders.wicket.core.markup.html.bootstrap.form.FormGroup;
 import larisa.entity.Maker;
-import larisa.entity.Product;
+import larisa.entity.Price;
 import larisa.entity.ProductReceipt;
 import larisa.entity.ProductType;
-import larisa.repository.ProductRepository;
+import larisa.repository.PriceRepository;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.LambdaColumn;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LambdaModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -28,10 +32,10 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 
-@MountPath("prices")
-public class ProductTablePage extends EntityTablePage<Product> {
+@MountPath("products")
+public class PriceTablePage extends EntityTablePage<Price> {
     @Inject
-    ProductRepository repository;
+    PriceRepository repository;
 
     IModel<Maker> filterMakerModel = new Model<>();
 
@@ -46,11 +50,11 @@ public class ProductTablePage extends EntityTablePage<Product> {
      *
      * @param parameters current backPage parameters
      */
-    public ProductTablePage(PageParameters parameters) {
+    public PriceTablePage(PageParameters parameters) {
         super(parameters);
     }
 
-    public ProductTablePage() {
+    public PriceTablePage() {
     }
 
 
@@ -87,33 +91,43 @@ public class ProductTablePage extends EntityTablePage<Product> {
     }
 
     @Override
-    public List<? extends IColumn<Product, String>> createColumns() {
+    public List<? extends IColumn<Price, String>> createColumns() {
 
-        List<IColumn<Product, String>> columns = Lists.newArrayList(
+        List<IColumn<Price, String>> columns = Lists.newArrayList(
                 ProductTypeEditPage.createProductTypeColumn("productType", getPage(), entityModel -> new ProductTypeEditPage(entityModel)),
-                createPriceColumn(new ResourceModel("product.price")),
-                new LambdaColumn<Product, String>(new ResourceModel("product.volume"), "volume", p -> p.getVolume()),
-                new LambdaColumn<Product, String>(new ResourceModel("product.totalPrice"), product -> product.getVolume() * product.getPrice())
+                new LambdaColumn<Price, String>(new ResourceModel("price"), "price", Price::getPrice) {
+                    @Override
+                    public void populateItem(Item<ICellPopulator<Price>> item, String componentId, IModel<Price> rowModel) {
+                        item.add(new CurrencyLabeledLink<Price>(componentId, rowModel, LambdaModel.of(rowModel, Price::getPrice)) {
+                            @Override
+                            public void onClick(Optional<AjaxRequestTarget> target) {
+                                PriceTablePage.this.setResponsePage(new PriceEditPage(getModel()).setBackNavigateAction(getPage()));
+                            }
+                        });
+                    }
+                },
+                new LambdaColumn<Price, String>(new ResourceModel("dateFrom"), "dateFrom", p -> p.getDateFrom()),
+                new LambdaColumn<Price, String>(new ResourceModel("dateTo"), price -> price.getDateTo())
         );
         return columns;
     }
 
     @Override
-    public ProductEditPage createEditPage(IModel<Product> entityModel) {
-        return new ProductEditPage(entityModel);
+    public PriceEditPage createEditPage(IModel<Price> entityModel) {
+        return new PriceEditPage(entityModel);
     }
 
     @Override
-    public ProductRepository getRepository() {
+    public PriceRepository getRepository() {
         return repository;
     }
 
     @Override
-    public Specification<Product> createSpecification() {
-        Specification<Product> makerSpecification = filterMakerModel.map(maker -> (Specification<Product>) (root, query, cb) -> cb.equal(root.get("maker"), maker)).getObject();
-        Specification<Product> productTypeSpecification = filterProductTypeModel.map(
-                productTypes -> (Specification<Product>) (root, query, cb) -> cb.equal(root.get("id"), productTypes.getId())).getObject();
-        Specifications<Product> result = Specifications.where(makerSpecification);
+    public Specification<Price> createSpecification() {
+        Specification<Price> makerSpecification = filterMakerModel.map(maker -> (Specification<Price>) (root, query, cb) -> cb.equal(root.get("maker"), maker)).getObject();
+        Specification<Price> productTypeSpecification = filterProductTypeModel.map(
+                productTypes -> (Specification<Price>) (root, query, cb) -> cb.equal(root.get("id"), productTypes.getId())).getObject();
+        Specifications<Price> result = Specifications.where(makerSpecification);
         result = result.and(productTypeSpecification);
         return result;
     }
@@ -122,7 +136,7 @@ public class ProductTablePage extends EntityTablePage<Product> {
         return filterMakerModel;
     }
 
-    public ProductTablePage setFilterMakerModel(IModel<Maker> filterMakerModel) {
+    public PriceTablePage setFilterMakerModel(IModel<Maker> filterMakerModel) {
         this.filterMakerModel = filterMakerModel;
         return this;
     }
@@ -131,26 +145,26 @@ public class ProductTablePage extends EntityTablePage<Product> {
         return filterProductTypeModel;
     }
 
-    public ProductTablePage setFilterProductTypeModel(IModel<ProductType> filterProductTypeModel) {
+    public PriceTablePage setFilterProductTypeModel(IModel<ProductType> filterProductTypeModel) {
         this.filterProductTypeModel = filterProductTypeModel;
         return this;
     }
 
     @Override
-    public Product createNewEntity() {
-        Product product = super.createNewEntity();
+    public Price createNewEntity() {
+        Price price = super.createNewEntity();
 
         Optional.ofNullable(filterProductTypeModel)
-                .ifPresent(m -> product.setProductType(
+                .ifPresent(m -> price.setProductType(
                         m.map(productType -> productType).getObject()));
-        return product;
+        return price;
     }
 
     public IModel<ProductReceipt> getFilterProductReceiptModel() {
         return filterProductReceiptModel;
     }
 
-    public ProductTablePage setFilterProductReceiptModel(IModel<ProductReceipt> filterProductReceiptModel) {
+    public PriceTablePage setFilterProductReceiptModel(IModel<ProductReceipt> filterProductReceiptModel) {
         this.filterProductReceiptModel = filterProductReceiptModel;
         return this;
     }
