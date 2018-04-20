@@ -99,6 +99,7 @@
                     <overwrite>true</overwrite>
                 </configuration>
             </plugin>
+
         </plugins>
         <extensions>
             <!-- Enabling the use of SSH -->
@@ -112,6 +113,7 @@
                 <artifactId>wagon-ssh</artifactId>
                 <version>3.0.0</version>
             </extension>
+
         </extensions>
     </build>
 </project>
